@@ -1,10 +1,11 @@
 -- Author: Emanuel Ramirez Alsina
 -- Date Created: 04/07/2020
 
---The idea of this project is for it to be really good at just one thing:
--- Provide VIM-Keybinds support ONLY where the user desire the VIM-keybinds
---I've tried using 'system-wide' VIM-Keybinds and more often than not; It ends
---with me disabling the VIM-keybinds.
+
+--TODO: Add variable that let the user decide: Mode alerts ON/OFF
+
+--Scrolling speed
+local SPEED = 2
 
 --Current Modes; Start in NORMAL mode.
 --Possible MODES: 'NORMAL', 'INSERT', 'VISUAL'
@@ -41,13 +42,85 @@ end
 
 
 function slackWatcher(name, event, app)
+
     if (contains(APPS, name) and event == hs.application.watcher.activated) then
-        --is.alert.show(name .. ' Focused') --Application with focus.
 
+        --------------------MODE'S KEYBINDS--------------------
 
-        --Bind normal mode key
+        --Bind Normal mode key
         --TODO: Think about a better 'ESC' key. I think is not wise to use ESC
         normalMode = hs.hotkey.bind({"ctrl"}, "J",
+        function()
+            --Do this ONLY if we are in 'Insert' or 'Visual' mode.
+            if MODE ~= 'NORMAL' then
+                normal:enter() 
+                hs.alert.show('Normal mode')
+                MODE = 'NORMAL'
+            end
+        end)
+
+        --Bind Insert mode key
+        insertMode = hs.hotkey.bind({}, "I",
+        function()
+            --Do this ONLY if we are in 'Normal' mode.
+            if MODE == 'NORMAL' then
+                normal:exit()
+                insert:enter() 
+                hs.alert.show('Insert mode')
+                MODE = 'INSERT'
+            end
+        end)
+
+        --Bind Visual mode key
+        visualMode = hs.hotkey.bind({}, "V",
+        function()
+            --Do this ONLY if we are in 'Normal' mode.
+            if MODE == 'NORMAL' then
+                normal:exit()
+                visual:enter() 
+                hs.alert.show('Visual mode')
+                MODE = 'VISUAL'
+            end
+        end)
+
+        -------------------------------------------------------
+
+
+
+        -------------NORMAL MODE MOVEMENT KEYBINDS-------------
+        
+        --Enable: Scroll UP --> 'K'
+        function scrollUP() hs.eventtap.scrollWheel({0, SPEED}, {}) end
+        normal:bind({}, 'K', scrollUP, nil, scrollUP)
+
+        --Enable: Scroll DOWN --> 'J'
+        function scrollDOWN() hs.eventtap.scrollWheel({0, -SPEED}, {}) end
+        normal:bind({}, 'J', scrollDOWN, nil, scrollDOWN)
+        
+        --Enable: Scroll LEFT --> 'H'
+        function scrollLEFT() hs.eventtap.scrollWheel({SPEED, 0}, {}) end
+        normal:bind({}, 'H', scrollLEFT, nil, scrollLEFT)
+
+        --Enable: Scroll RIGHT --> 'L'
+        function scrollRIGHT() hs.eventtap.scrollWheel({-SPEED, 0}, {}) end
+        normal:bind({}, 'L', scrollRIGHT, nil, scrollRIGHT)
+
+
+        -------------------------------------------------------
+
+        --Start in Normal mode.
+        normalMode:enable()
+        normal:enter()
+        normal:entered()
+    end
+
+
+    --When using other app that we don't want VIM keybinds.gg
+    if (contains(APPS, name) and event == hs.application.watcher.deactivated) then
+
+
+        --Disable Normal mode keybind
+        hs.hotkey.disableAll({"ctrl"}, "J",
         function()
             --Do this ONLY if we are in 'Insert' or 'Visual' mode.
             if MODE ~= 'NORMAL' then
@@ -56,6 +129,41 @@ function slackWatcher(name, event, app)
             MODE = 'NORMAL'
             end
         end)
+
+        --Disable Insert mode keybind
+        hs.hotkey.disableAll({}, "I",
+        function()
+            --Do this ONLY if we are in 'Normal' mode.
+            if MODE == 'NORMAL' then
+            insert:enter() 
+            hs.alert.show('Insert mode')
+            MODE = 'INSERT'
+            end
+        end)
+
+        --Disable Visual mode keybind
+        hs.hotkey.disableAll({}, "V",
+        function()
+            --Do this ONLY if we are in 'Normal' mode.
+            if MODE == 'NORMAL' then
+            visual:enter() 
+            hs.alert.show('Insert mode')
+            MODE = 'VISUAL'
+            end
+        end)
+
+        --Disable: 'K'
+        hs.hotkey.disableAll({}, 'K', scrollUP, nil, scrollUP)
+
+        --Disable: 'J'
+        hs.hotkey.disableAll({}, 'J', scrollDOWN, nil, scrollDOWN)
+
+        --Disable: 'H'
+        hs.hotkey.disableAll({}, 'H', scrollLEFT, nil, scrollLEFT)
+
+        --Disable: 'L'
+        hs.hotkey.disableAll({}, 'L', scrollRIGHT, nil, scrollRIGHT)
+
     end
 
 
