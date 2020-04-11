@@ -105,6 +105,22 @@ function slackWatcher(name, event, app)
         function scrollRIGHT() hs.eventtap.scrollWheel({-SPEED, 0}, {}) end
         normal:bind({}, 'L', scrollRIGHT, nil, scrollRIGHT)
 
+        --Enable: Go to TOP --> 'G'
+        function goTOP() hs.eventtap.keyStroke({'cmd'}, 'Up') end
+        normal:bind({}, 'G', goTOP)
+
+        --Enable: Go to BOTTOM --> 'SHIFT+G'
+        function goBOTTOM() hs.eventtap.keyStroke({'cmd'}, 'Down') end
+        normal:bind({'shift'}, 'G', goBOTTOM)
+
+        --Enable: Scroll one page foward --> 'Ctrl+f'
+        function nextPAGE() hs.eventtap.keyStroke({}, 'Right') end
+        normal:bind({'ctrl'}, 'F', nextPAGE)
+
+        --Enable: Scroll one page backwards --> 'Ctrl+b'
+        function previousPAGE() hs.eventtap.keyStroke({}, 'Left') end
+        normal:bind({'ctrl'}, 'B', previousPAGE)
+
 
         -------------------------------------------------------
 
@@ -164,6 +180,17 @@ function slackWatcher(name, event, app)
         --Disable: 'L'
         hs.hotkey.disableAll({}, 'L', scrollRIGHT, nil, scrollRIGHT)
 
+        --Disable: 'G'
+        hs.hotkey.disableAll({}, 'G', goTOP)
+
+        --Disable: 'SHIFT+G'
+        hs.hotkey.disableAll({'shift'}, 'G', goBOTTOM)
+
+        --Disable: 'Ctrl+f'
+        hs.hotkey.disableAll({'ctrl'}, 'F', nextPAGE)
+
+        --Disable: 'Ctrl+b'
+        hs.hotkey.disableAll({'ctrl'}, 'B', previousPAGE)
     end
 
 
