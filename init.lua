@@ -6,14 +6,18 @@
 --I've tried using 'system-wide' VIM-Keybinds and more often than not; It ends
 --with me disabling the VIM-keybinds.
 
+--Current Modes; Start in NORMAL mode.
+--Possible MODES: 'NORMAL', 'INSERT', 'VISUAL'
+local MODE = 'NORMAL'
+
 --Normal Mode
-local normalMode = hs.hotkey.modal.new()
+local normal = hs.hotkey.modal.new()
 
 --Insert Mode
-local insertMode = hs.hotkey.modal.new()
+local insert = hs.hotkey.modal.new()
 
 --Visual Mode
-local visualMode = hs.hotkey.modal.new()
+local visual = hs.hotkey.modal.new()
 
 --List of supported Applications
 --The user could add or remove applications as desired.
@@ -38,7 +42,20 @@ end
 
 function slackWatcher(name, event, app)
     if (contains(APPS, name) and event == hs.application.watcher.activated) then
-        hs.alert.show(name .. ' Focused')
+        --is.alert.show(name .. ' Focused') --Application with focus.
+
+
+        --Bind normal mode key
+        --TODO: Think about a better 'ESC' key. I think is not wise to use ESC
+        normalMode = hs.hotkey.bind({"ctrl"}, "J",
+        function()
+            --Do this ONLY if we are in 'Insert' or 'Visual' mode.
+            if MODE ~= 'NORMAL' then
+            normal:enter() 
+            hs.alert.show('Normal mode')
+            MODE = 'NORMAL'
+            end
+        end)
     end
 
 
