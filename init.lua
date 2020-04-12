@@ -7,6 +7,8 @@
 --Scrolling speed
 local SPEED = 2
 
+local ESC = 'ESCAPE'
+
 --Current Modes; Start in NORMAL mode.
 --Possible MODES: 'NORMAL', 'INSERT', 'VISUAL'
 local MODE = 'NORMAL'
@@ -94,7 +96,7 @@ end
     --------------------MODE'S KEYBINDS--------------------
 
 --Bind Normal Mode for regular apps like Slack, Discord, Notes
-normalMode = hs.hotkey.bind({"ctrl"}, "J",
+normalMode = hs.hotkey.bind({}, ESC,
 function()
     --Do this ONLY if we are in 'Insert' or 'Visual' mode.
     if MODE ~= 'NORMAL' then
@@ -105,7 +107,7 @@ function()
 end)
 
 --Bind Normal mode for PDF's key
-normalModePDF = hs.hotkey.bind({"ctrl"}, "J",
+normalModePDF = hs.hotkey.bind({}, ESC,
 function()
     --Do this ONLY if we are in 'Insert' or 'Visual' mode.
     if MODE ~= 'NORMAL' then
@@ -154,35 +156,35 @@ normalPDF:bind({}, 'I',
         end
     end)
 
---Enable: Scroll UP --> 'K'
+--Bind: Scroll UP --> 'K'
 function scrollUP() hs.eventtap.scrollWheel({0, SPEED}, {}) end
 normalPDF:bind({}, 'K', scrollUP, nil, scrollUP)
 
---Enable: Scroll DOWN --> 'J'
+--Bind: Scroll DOWN --> 'J'
 function scrollDOWN() hs.eventtap.scrollWheel({0, -SPEED}, {}) end
 normalPDF:bind({}, 'J', scrollDOWN, nil, scrollDOWN)
 
---Enable: Scroll LEFT --> 'H'
+--Bind: Scroll LEFT --> 'H'
 function scrollLEFT() hs.eventtap.scrollWheel({SPEED, 0}, {}) end
 normalPDF:bind({}, 'H', scrollLEFT, nil, scrollLEFT)
 
---Enable: Scroll RIGHT --> 'L'
+--Bind: Scroll RIGHT --> 'L'
 function scrollRIGHT() hs.eventtap.scrollWheel({-SPEED, 0}, {}) end
 normalPDF:bind({}, 'L', scrollRIGHT, nil, scrollRIGHT)
 
---Enable: Go to TOP --> 'G'
+--Bind: Go to TOP --> 'G'
 function goTOP() hs.eventtap.keyStroke({'cmd'}, 'Up') end
 normalPDF:bind({}, 'G', goTOP)
 
---Enable: Go to BOTTOM --> 'SHIFT+G'
+--Bind: Go to BOTTOM --> 'SHIFT+G'
 function goBOTTOM() hs.eventtap.keyStroke({'cmd'}, 'Down') end
 normalPDF:bind({'shift'}, 'G', goBOTTOM)
 
---Enable: Scroll one page foward --> 'Ctrl+f'
+--Bind: Scroll one page foward --> 'Ctrl+f'
 function nextPAGE() hs.eventtap.keyStroke({}, 'Right') end
 normalPDF:bind({'ctrl'}, 'F', nextPAGE)
 
---Enable: Scroll one page backwards --> 'Ctrl+b'
+--Bind: Scroll one page backwards --> 'Ctrl+b'
 function previousPAGE() hs.eventtap.keyStroke({}, 'Left') end
 normalPDF:bind({'ctrl'}, 'B', previousPAGE)
 
@@ -191,6 +193,7 @@ normalPDF:bind({'ctrl'}, 'B', previousPAGE)
 
 -------------NORMAL MODE MOVEMENT KEYBINDS-------------
 
+--Bind: 'I' for insert mode
 normal:bind({}, 'I',
     function()
         if MODE == 'NORMAL' then
@@ -200,26 +203,66 @@ normal:bind({}, 'I',
         end
 end)
 
+
+--Bind: Move UP --> 'K'
 function moveUP() hs.eventtap.keyStroke({}, 'up') end
 normal:bind({}, 'K', moveUP, nil, moveUP)
 
+--Bind: Move DOWN --> 'J'
 function moveDOWN() hs.eventtap.keyStroke({}, 'down') end
 normal:bind({}, 'J', moveDOWN, nil, moveDOWN)
 
+--Bind: Move LEFT --> 'L'
 function moveLEFT() hs.eventtap.keyStroke({}, 'left') end
 normal:bind({}, 'H', moveLEFT, nil, moveLEFT)
 
+--Bind: Move RIGHT --> 'R'
 function moveRIGHT() hs.eventtap.keyStroke({}, 'right') end
 normal:bind({}, 'l', moveRIGHT, nil, moveRIGHT)
 
---normal:bind({}, 'l',
---    function()
---        hs.eventtap.keyStroke({}, 'Right')
---    end,nil,
---    function()
---        hs.eventtap.keyStroke({}, 'Right')
---end)
+--Bind: Move to the NEXT word --> 'E' or 'W'
+function moveNextWord() hs.eventtap.keyStroke({'alt'}, 'right') end
+normal:bind({}, 'E', moveNextWord, nil, moveNextWord)
+normal:bind({}, 'W', moveNextWord, nil, moveNextWord)
 
+--Bind: Move to the PREVIOUS word --> 'B'
+function movePrevWord() hs.eventtap.keyStroke({'alt'}, 'left') end
+normal:bind({}, 'B', movePrevWord, nil, movePrevWord)
+
+--Bind: Move to the end of the line --> '$'
+normal:bind({'shift'}, '4',
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'right')
+    end)
+
+
+--Bind: Move to the end of the line in Insert mode --> '$'
+normal:bind({'shift'}, 'A',
+    function()
+        normal:exit()
+        MODE = 'INSERT'
+        hs.eventtap.keyStroke({'cmd'}, 'right')
+    end)
+
+--Bind: Move to the beginning of the line in Insert mode --> 'Shift + I'
+normal:bind({'shift'}, 'I',
+    function()
+        normal:exit()
+        MODE = 'INSERT'
+        hs.eventtap.keyStroke({'cmd'}, 'left')
+    end)
+
+--Bind: Move to the top of the page --> 'G'
+normal:bind({}, 'G',
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'Up')
+    end)
+
+--Bind: Move to the bottom of the page --> 'Shift + G'
+normal:bind({'shift'}, 'G',
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'Down')
+    end)
 
 
 
