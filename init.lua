@@ -44,13 +44,15 @@ function contains(APPS, name)
 end
 
 function applicationWatcher(name, event, app)
+    --normalMode:disable()
+    --normalModePDF:disable()
 
     --If we are readign a PDF
     if name == 'Preview' then
         --If the is begin focused
         if event == hs.application.watcher.activated then
             --insertMode:enable()
-            visualMode:enable()
+            --visualMode:enable()
             normalMode:disable()
             normalModePDF:enable()
             normalPDF:enter()
@@ -61,7 +63,7 @@ function applicationWatcher(name, event, app)
             --restriction (i.e Terminal)
             if not contains(APPS, hs.window.frontmostWindow():application():name()) then
                 --insertMode:disable()
-                visualMode:disable()
+                --visualMode:disable()
                 normalModePDF:disable()
             end
             normalPDF:exit()
@@ -74,7 +76,7 @@ function applicationWatcher(name, event, app)
     if contains(APPS, name) and name ~= 'Preview' then
         if event == hs.application.watcher.activated then
             --insertMode:enable()
-            visualMode:enable()
+            --visualMode:enable()
             normalModePDF:disable()
             normalMode:enable()
             normal:enter()
@@ -83,12 +85,16 @@ function applicationWatcher(name, event, app)
             if not contains(APPS, hs.window.frontmostWindow():application():name()) then
                 --normal:exit()
                 --insertMode:disable()
-                visualMode:disable()
+                --visualMode:disable()
                 normalModePDF:disable()
                 normalMode:disable()
             end
             normal:exit()
         end
+    --end
+    elseif not contains(APPS, hs.window.frontmostWindow():application():name()) then
+        normalModePDF:disable()
+        normalMode:disable()
     end
 end
 
@@ -130,16 +136,16 @@ end)
 --end)
 
 --Bind Visual mode key
-visualMode = hs.hotkey.bind({}, "V",
-function()
-    --Do this ONLY if we are in 'Normal' mode.
-    if MODE == 'NORMAL' then
-        normalPDF:exit()
-        visual:enter() 
-        hs.alert.show('Visual mode')
-        MODE = 'VISUAL'
-    end
-end)
+--visualMode = hs.hotkey.bind({}, "V",
+--function()
+--    --Do this ONLY if we are in 'Normal' mode.
+--    if MODE == 'NORMAL' then
+--        normalPDF:exit()
+--        visual:enter() 
+--        hs.alert.show('Visual mode')
+--        MODE = 'VISUAL'
+--    end
+--end)
 
 -------------------------------------------------------
 
@@ -256,6 +262,9 @@ normal:bind({'shift'}, 'I',
 normal:bind({}, 'G',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Up')
+        if hs.eventtap.event:getKeyCode() == 87 then
+            hs.alert.show('CW')
+        end
     end)
 
 --Bind: Move to the bottom of the page --> 'Shift + G'
