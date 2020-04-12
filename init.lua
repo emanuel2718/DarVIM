@@ -205,20 +205,20 @@ end)
 
 
 --Bind: Move UP --> 'K'
-function moveUP() hs.eventtap.keyStroke({}, 'up') end
-normal:bind({}, 'K', moveUP, nil, moveUP)
+function moveUP() hs.eventtap.keyStroke({}, 'Up', 200) end
+normal:bind({}, 'k', nil, moveUP, moveUP)
 
 --Bind: Move DOWN --> 'J'
-function moveDOWN() hs.eventtap.keyStroke({}, 'down') end
-normal:bind({}, 'J', moveDOWN, nil, moveDOWN)
+function moveDOWN() hs.eventtap.keyStroke({}, 'Down', 200) end
+normal:bind({}, 'j', nil, moveDOWN, moveDOWN)
 
 --Bind: Move LEFT --> 'L'
-function moveLEFT() hs.eventtap.keyStroke({}, 'left') end
-normal:bind({}, 'H', moveLEFT, nil, moveLEFT)
+function moveLEFT() hs.eventtap.keyStroke({}, 'Left', 200) end
+normal:bind({}, 'h', nil, moveLEFT, moveLEFT)
 
 --Bind: Move RIGHT --> 'R'
-function moveRIGHT() hs.eventtap.keyStroke({}, 'right') end
-normal:bind({}, 'l', moveRIGHT, nil, moveRIGHT)
+function moveRIGHT() hs.eventtap.keyStroke({}, 'Right', 200) end
+normal:bind({}, 'l', nil, moveRIGHT, moveRIGHT)
 
 --Bind: Move to the NEXT word --> 'E' or 'W'
 function moveNextWord() hs.eventtap.keyStroke({'alt'}, 'right') end
