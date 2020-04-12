@@ -12,10 +12,11 @@ local SPEED = 2
 local MODE = 'NORMAL'
 
 --Normal Mode
-local normal = hs.hotkey.modal.new()
+normal = hs.hotkey.modal.new()
+normalPDF = hs.hotkey.modal.new()
 
 --Insert Mode
-local insert = hs.hotkey.modal.new()
+--local insert = hs.hotkey.modal.new()
 
 --Visual Mode
 local visual = hs.hotkey.modal.new()
@@ -26,7 +27,7 @@ APPS = {'Preview', 'Slack', 'Discord', 'Notes'}
 
 
 function init()
-    appsWatcher = hs.application.watcher.new(slackWatcher)
+    appsWatcher = hs.application.watcher.new(applicationWatcher)
     appsWatcher:start()
 end
 
@@ -40,159 +41,187 @@ function contains(APPS, name)
     return false
 end
 
+function applicationWatcher(name, event, app)
 
-function slackWatcher(name, event, app)
-
-    if (contains(APPS, name) and event == hs.application.watcher.activated) then
-
-        --------------------MODE'S KEYBINDS--------------------
-
-        --Bind Normal mode key
-        --TODO: Think about a better 'ESC' key. I think is not wise to use ESC
-        normalMode = hs.hotkey.bind({"ctrl"}, "J",
-        function()
-            --Do this ONLY if we are in 'Insert' or 'Visual' mode.
-            if MODE ~= 'NORMAL' then
-                normal:enter() 
-                hs.alert.show('Normal mode')
-                MODE = 'NORMAL'
+    --If we are readign a PDF
+    if name == 'Preview' then
+        --If the is begin focused
+        if event == hs.application.watcher.activated then
+            --insertMode:enable()
+            visualMode:enable()
+            normalMode:disable()
+            normalModePDF:enable()
+            normalPDF:enter()
+        end
+        --We lost focus of the PDF window
+        if event == hs.application.watcher.deactivated then
+            --If the focused window is one where we don't want VIM keybinds
+            --restriction (i.e Terminal)
+            if not contains(APPS, hs.window.frontmostWindow():application():name()) then
+                --insertMode:disable()
+                visualMode:disable()
+                normalModePDF:disable()
             end
-        end)
-
-        --Bind Insert mode key
-        insertMode = hs.hotkey.bind({}, "I",
-        function()
-            --Do this ONLY if we are in 'Normal' mode.
-            if MODE == 'NORMAL' then
-                normal:exit()
-                insert:enter() 
-                hs.alert.show('Insert mode')
-                MODE = 'INSERT'
-            end
-        end)
-
-        --Bind Visual mode key
-        visualMode = hs.hotkey.bind({}, "V",
-        function()
-            --Do this ONLY if we are in 'Normal' mode.
-            if MODE == 'NORMAL' then
-                normal:exit()
-                visual:enter() 
-                hs.alert.show('Visual mode')
-                MODE = 'VISUAL'
-            end
-        end)
-
-        -------------------------------------------------------
-
-
-
-        -------------NORMAL MODE MOVEMENT KEYBINDS-------------
-        
-        --Enable: Scroll UP --> 'K'
-        function scrollUP() hs.eventtap.scrollWheel({0, SPEED}, {}) end
-        normal:bind({}, 'K', scrollUP, nil, scrollUP)
-
-        --Enable: Scroll DOWN --> 'J'
-        function scrollDOWN() hs.eventtap.scrollWheel({0, -SPEED}, {}) end
-        normal:bind({}, 'J', scrollDOWN, nil, scrollDOWN)
-        
-        --Enable: Scroll LEFT --> 'H'
-        function scrollLEFT() hs.eventtap.scrollWheel({SPEED, 0}, {}) end
-        normal:bind({}, 'H', scrollLEFT, nil, scrollLEFT)
-
-        --Enable: Scroll RIGHT --> 'L'
-        function scrollRIGHT() hs.eventtap.scrollWheel({-SPEED, 0}, {}) end
-        normal:bind({}, 'L', scrollRIGHT, nil, scrollRIGHT)
-
-        --Enable: Go to TOP --> 'G'
-        function goTOP() hs.eventtap.keyStroke({'cmd'}, 'Up') end
-        normal:bind({}, 'G', goTOP)
-
-        --Enable: Go to BOTTOM --> 'SHIFT+G'
-        function goBOTTOM() hs.eventtap.keyStroke({'cmd'}, 'Down') end
-        normal:bind({'shift'}, 'G', goBOTTOM)
-
-        --Enable: Scroll one page foward --> 'Ctrl+f'
-        function nextPAGE() hs.eventtap.keyStroke({}, 'Right') end
-        normal:bind({'ctrl'}, 'F', nextPAGE)
-
-        --Enable: Scroll one page backwards --> 'Ctrl+b'
-        function previousPAGE() hs.eventtap.keyStroke({}, 'Left') end
-        normal:bind({'ctrl'}, 'B', previousPAGE)
-
-
-        -------------------------------------------------------
-
-        --Start in Normal mode.
-        normalMode:enable()
-        normal:enter()
-        normal:entered()
+            normalPDF:exit()
+        end
     end
 
-
-    --When using other app that we don't want VIM keybinds.gg
-    if (contains(APPS, name) and event == hs.application.watcher.deactivated) then
-
-
-        --Disable Normal mode keybind
-        hs.hotkey.disableAll({"ctrl"}, "J",
-        function()
-            --Do this ONLY if we are in 'Insert' or 'Visual' mode.
-            if MODE ~= 'NORMAL' then
-            normal:enter() 
-            hs.alert.show('Normal mode')
-            MODE = 'NORMAL'
+    --For apps like Slack, Discord, Notes, etc.
+    --We dont want scrolling features like in Preview. We want 'hjkl' to behave
+    --like arrows to edit text.
+    if contains(APPS, name) and name ~= 'Preview' then
+        if event == hs.application.watcher.activated then
+            --insertMode:enable()
+            visualMode:enable()
+            normalModePDF:disable()
+            normalMode:enable()
+            normal:enter()
+        end
+        if event == hs.application.watcher.deactivated then
+            if not contains(APPS, hs.window.frontmostWindow():application():name()) then
+                --normal:exit()
+                --insertMode:disable()
+                visualMode:disable()
+                normalModePDF:disable()
+                normalMode:disable()
             end
-        end)
+            normal:exit()
+        end
+    end
+end
 
-        --Disable Insert mode keybind
-        hs.hotkey.disableAll({}, "I",
-        function()
-            --Do this ONLY if we are in 'Normal' mode.
-            if MODE == 'NORMAL' then
-            insert:enter() 
+
+    --------------------MODE'S KEYBINDS--------------------
+
+--Bind Normal Mode for regular apps like Slack, Discord, Notes
+normalMode = hs.hotkey.bind({"ctrl"}, "J",
+function()
+    --Do this ONLY if we are in 'Insert' or 'Visual' mode.
+    if MODE ~= 'NORMAL' then
+        normal:enter() 
+        hs.alert.show('Normal mode')
+        MODE = 'NORMAL'
+    end
+end)
+
+--Bind Normal mode for PDF's key
+normalModePDF = hs.hotkey.bind({"ctrl"}, "J",
+function()
+    --Do this ONLY if we are in 'Insert' or 'Visual' mode.
+    if MODE ~= 'NORMAL' then
+        normalPDF:enter() 
+        hs.alert.show('Normal mode')
+        MODE = 'NORMAL'
+    end
+end)
+
+--Bind Insert mode key
+--insertMode = hs.hotkey.bind({}, "I",
+--function()
+    --Do this ONLY if we are in 'Normal' mode.
+    --if MODE == 'NORMAL' then
+        --normalPDF:exit()
+        --insert:enter() 
+        --hs.alert.show('Insert mode')
+        --MODE = 'INSERT'
+    --end
+--end)
+
+--Bind Visual mode key
+visualMode = hs.hotkey.bind({}, "V",
+function()
+    --Do this ONLY if we are in 'Normal' mode.
+    if MODE == 'NORMAL' then
+        normalPDF:exit()
+        visual:enter() 
+        hs.alert.show('Visual mode')
+        MODE = 'VISUAL'
+    end
+end)
+
+-------------------------------------------------------
+
+
+
+-------------NORMAL MODE PDF NAVIGATION KEYBINDS-------------
+
+normalPDF:bind({}, 'I',
+    function()
+        if MODE == 'NORMAL' then
+            normalPDF:exit()
             hs.alert.show('Insert mode')
             MODE = 'INSERT'
-            end
-        end)
+        end
+    end)
 
-        --Disable Visual mode keybind
-        hs.hotkey.disableAll({}, "V",
-        function()
-            --Do this ONLY if we are in 'Normal' mode.
-            if MODE == 'NORMAL' then
-            visual:enter() 
+--Enable: Scroll UP --> 'K'
+function scrollUP() hs.eventtap.scrollWheel({0, SPEED}, {}) end
+normalPDF:bind({}, 'K', scrollUP, nil, scrollUP)
+
+--Enable: Scroll DOWN --> 'J'
+function scrollDOWN() hs.eventtap.scrollWheel({0, -SPEED}, {}) end
+normalPDF:bind({}, 'J', scrollDOWN, nil, scrollDOWN)
+
+--Enable: Scroll LEFT --> 'H'
+function scrollLEFT() hs.eventtap.scrollWheel({SPEED, 0}, {}) end
+normalPDF:bind({}, 'H', scrollLEFT, nil, scrollLEFT)
+
+--Enable: Scroll RIGHT --> 'L'
+function scrollRIGHT() hs.eventtap.scrollWheel({-SPEED, 0}, {}) end
+normalPDF:bind({}, 'L', scrollRIGHT, nil, scrollRIGHT)
+
+--Enable: Go to TOP --> 'G'
+function goTOP() hs.eventtap.keyStroke({'cmd'}, 'Up') end
+normalPDF:bind({}, 'G', goTOP)
+
+--Enable: Go to BOTTOM --> 'SHIFT+G'
+function goBOTTOM() hs.eventtap.keyStroke({'cmd'}, 'Down') end
+normalPDF:bind({'shift'}, 'G', goBOTTOM)
+
+--Enable: Scroll one page foward --> 'Ctrl+f'
+function nextPAGE() hs.eventtap.keyStroke({}, 'Right') end
+normalPDF:bind({'ctrl'}, 'F', nextPAGE)
+
+--Enable: Scroll one page backwards --> 'Ctrl+b'
+function previousPAGE() hs.eventtap.keyStroke({}, 'Left') end
+normalPDF:bind({'ctrl'}, 'B', previousPAGE)
+
+-------------------------------------------------------
+
+
+-------------NORMAL MODE MOVEMENT KEYBINDS-------------
+
+normal:bind({}, 'I',
+    function()
+        if MODE == 'NORMAL' then
+            normal:exit()
             hs.alert.show('Insert mode')
-            MODE = 'VISUAL'
-            end
-        end)
+            MODE = 'INSERT'
+        end
+end)
 
-        --Disable: 'K'
-        hs.hotkey.disableAll({}, 'K', scrollUP, nil, scrollUP)
+function moveUP() hs.eventtap.keyStroke({}, 'up') end
+normal:bind({}, 'K', moveUP, nil, moveUP)
 
-        --Disable: 'J'
-        hs.hotkey.disableAll({}, 'J', scrollDOWN, nil, scrollDOWN)
+function moveDOWN() hs.eventtap.keyStroke({}, 'down') end
+normal:bind({}, 'J', moveDOWN, nil, moveDOWN)
 
-        --Disable: 'H'
-        hs.hotkey.disableAll({}, 'H', scrollLEFT, nil, scrollLEFT)
+function moveLEFT() hs.eventtap.keyStroke({}, 'left') end
+normal:bind({}, 'H', moveLEFT, nil, moveLEFT)
 
-        --Disable: 'L'
-        hs.hotkey.disableAll({}, 'L', scrollRIGHT, nil, scrollRIGHT)
+function moveRIGHT() hs.eventtap.keyStroke({}, 'right') end
+normal:bind({}, 'l', moveRIGHT, nil, moveRIGHT)
 
-        --Disable: 'G'
-        hs.hotkey.disableAll({}, 'G', goTOP)
-
-        --Disable: 'SHIFT+G'
-        hs.hotkey.disableAll({'shift'}, 'G', goBOTTOM)
-
-        --Disable: 'Ctrl+f'
-        hs.hotkey.disableAll({'ctrl'}, 'F', nextPAGE)
-
-        --Disable: 'Ctrl+b'
-        hs.hotkey.disableAll({'ctrl'}, 'B', previousPAGE)
-    end
+--normal:bind({}, 'l',
+--    function()
+--        hs.eventtap.keyStroke({}, 'Right')
+--    end,nil,
+--    function()
+--        hs.eventtap.keyStroke({}, 'Right')
+--end)
 
 
-end
+
+
+
 init()
