@@ -194,6 +194,15 @@ normalPDF:bind({'ctrl'}, 'F', nextPAGE, nil, nextPAGE)
 function previousPAGE() hs.eventtap.keyStroke({}, 'Left', 200) end
 normalPDF:bind({'ctrl'}, 'B', previousPAGE, nil, previousPAGE)
 
+--To enable this shortcut, choose Apple menu  > System Preferences, then click Keyboard.
+--In the Shortcuts tab, select Accessibility on the left, then select ”Invert colours” on the right.
+
+--Bind: Invert Colors of display.
+normalPDF:bind({}, 'S',
+    function()
+        hs.eventtap.keyStroke({'ctrl', 'option', 'cmd'}, '8')
+    end)
+
 -------------------------------------------------------
 
 
