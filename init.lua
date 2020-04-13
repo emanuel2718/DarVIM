@@ -85,10 +85,10 @@ function applicationWatcher(name, event, app)
             --restriction (i.e Terminal)
             if not contains(APPS, hs.window.frontmostWindow():application():name()) then
                 --insertMode:disable()
-                --visualMode:disable()
                 normalModePDF:disable()
             end
             normalPDF:exit()
+            visual:exit()
         end
     end
 
@@ -112,6 +112,7 @@ function applicationWatcher(name, event, app)
                 normalMode:disable()
             end
             normal:exit()
+            visual:exit()
         end
     --end
     elseif not contains(APPS, hs.window.frontmostWindow():application():name()) then
@@ -504,12 +505,81 @@ normal:bind({}, 'I',
         normal:exit()
         hs.alert.closeAll()
         hs.alert.show(insertNotification, alertStyle)
-end)
+    end)
+
+--ENTER VISUAL MODE --> 'v'
+normal:bind({}, 'v',
+    function()
+        normal:exit()
+        visual:enter()
+        hs.alert.closeAll()
+        hs.alert.show(visualNotification, alertStyle)
+    end)
+
+normal:bind({'shift'}, 'v',
+    function()
+        normal:exit()
+        visual:enter()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
+        hs.alert.closeAll()
+        hs.alert.show(visualNotification, alertStyle)
+    end)
+
 
 --Bind: Placebo key
 normal:bind({}, 'Q',
     function()
 end)
 
+
+---------------------------------------------------------------------
+--                          VISUAL MODE                            --
+---------------------------------------------------------------------
+
+
+--VISUAL: MOVE UP --> 'k'
+function visualUP() hs.eventtap.keyStroke('shift', 'Up', 50) end
+visual:bind({}, 'k', visualUP, nil, visualUP)
+
+
+--VISUAL: MOVE DOWN --> 'j'
+function visualDOWN() hs.eventtap.keyStroke('shift', 'Down', 50) end
+visual:bind({}, 'j', visualDOWN, nil, visualDOWN)
+
+
+--VISUAL: MOVE LEFT --> 'h'
+function visualLEFT() hs.eventtap.keyStroke('shift', 'Left', 50) end
+visual:bind({}, 'h', visualLEFT, nil, visualLEFT)
+
+
+--VISUAL: MOVE DOWN --> 'l'
+function visualRIGHT() hs.eventtap.keyStroke('shift', 'Right', 50) end
+visual:bind({}, 'l', visualRIGHT, nil, visualRIGHT)
+
+
+--VISUAL: MOVE TO END OF WORD --> 'e'
+function visualEndOfWord() 
+    hs.eventtap.keyStroke({'shift', 'alt'}, 'right', 50)
+    hs.eventtap.keyStroke({'shift'}, 'Left', 50)
+end
+visual:bind({}, 'E', visualEndOfWord, nil, visualEndOfWord)
+
+
+--VISUAL: MOVE TO NEXT WORD --> 'w'
+function visualNextWord() 
+    hs.eventtap.keyStroke({'shift', 'alt'}, 'right', 50)
+end
+
+visual:bind({}, 'W', visualNextWord, nil, visualNextWord)
+
+
+--VISUAL: YANK AND TAKE US TO NORMAL MODE --> 'y'
+visual:bind({}, 'Y',
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'c')
+        hs.eventtap.keyStroke({}, 'Right')
+        visual:exit()
+        normal:enter()
+    end)
 
 init()
