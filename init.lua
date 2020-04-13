@@ -24,7 +24,7 @@ local visual = hs.hotkey.modal.new()
 
 --List of supported Applications
 --The user could add or remove applications as desired.
-APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader'}
+APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'anki'}
 PDF = {'Preview', 'Acrobat Reader'}
 
 
