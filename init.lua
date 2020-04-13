@@ -110,6 +110,7 @@ function()
     --Do this ONLY if we are in 'Insert' or 'Visual' mode.
     if MODE ~= 'NORMAL' then
         normal:enter() 
+        hs.alert.closeAll()
         hs.alert.show('Normal mode')
         MODE = 'NORMAL'
     end
@@ -121,10 +122,23 @@ function()
     --Do this ONLY if we are in 'Insert' or 'Visual' mode.
     if MODE ~= 'NORMAL' then
         normalPDF:enter() 
+        hs.alert.closeAll()
         hs.alert.show('Normal mode')
         MODE = 'NORMAL'
     end
 end)
+
+normal:bind({}, 'v',
+    function()
+        if MODE ~= 'INSERT' then
+            normal:exit()
+            visual:enter()
+            hs.alert.closeAll()
+            hs.alert.show('Visual mode')
+            MODE = 'VISUAL'
+        end
+    end)
+
 
 --Bind Insert mode key
 --insertMode = hs.hotkey.bind({}, "I",
@@ -235,6 +249,15 @@ function moveRIGHT() hs.eventtap.keyStroke({}, 'Right', 200) end
 normal:bind({}, 'l', nil, moveRIGHT, moveRIGHT)
 
 
+--SCROLL UP --> 'k'
+function scrollUP() hs.eventtap.scrollWheel({0, SPEED}, {}) end
+normal:bind({'ctrl'}, 'y', scrollUP, nil, scrollUP)
+
+
+--SCROLL DOWN --> 'j'
+function scrollDOWN() hs.eventtap.scrollWheel({0, -SPEED}, {}) end
+normal:bind({'ctrl'}, 'e', scrollDOWN, nil, scrollDOWN)
+
 
 --MOVE TO PREVIOUS WORD --> 'b'
 function movePrevWord() hs.eventtap.keyStroke({'alt'}, 'left') end
@@ -339,12 +362,21 @@ normal:bind({}, 'r',
 function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
 
 
+--TODO: Fix bug: If there is empty space between the cursor position and the
+--next character...it will jump to that next word and delete it instead of
+--deleting the space in betwen like in Native VIM.
+--Make 'D' behave like 'dw' or 'dd'?
+--For 'dw' we have 'C', do I want both? Do I have something that does 'dd'?
+
+
 --DELETE WORD NEXT TO CURSOR --> 'd'
 normal:bind({}, 'D',
     function()
         --normal:exit()
         --MODE = 'INSERT'
-        jumpNextWord()
+        --jumpNextWord()
+        hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
         hs.eventtap.keyStroke({'option'}, 'delete')
     end)
 
@@ -397,15 +429,28 @@ normal:bind({'ctrl'}, 'R',
     end)
 
 
---YANK --> 'y'
+--TODO: Is this what we want to happen when we yank in Normal mode?
+--YANK WORD IN FRONT OF CURSOR --> 'y'
 normal:bind({}, 'Y',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'C')
+        hs.eventtap.keyStroke({'shift', 'option'}, 'Right', 1)
+        hs.eventtap.keyStroke({'cmd'}, 'c')
     end)
 
---PASTE --> 'p'
+
+--YANK UNTIL THE END OF LINE --> 'y'
+normal:bind({'shift'}, 'y',
+    function()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
+        hs.eventtap.keyStroke({'cmd'}, 'c')
+    end)
+
+
+--PASTE BELOW CURRENT CURSOR LINE --> 'p'
 normal:bind({}, 'P',
     function()
+        hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
+        hs.eventtap.keyStroke({}, 'Return')
         hs.eventtap.keyStroke({'cmd'}, 'V')
     end)
 
@@ -425,6 +470,10 @@ normal:bind({}, '/',
     function()
         if MODE == 'NORMAL' then
             hs.eventtap.keyStroke({'cmd'}, 'F')
+            normal:exit()
+            hs.alert.closeAll()
+            hs.alert.show('Insert mode')
+            MODE = 'INSERT'
         end
     end)
 
@@ -448,6 +497,7 @@ normal:bind({}, 'I',
     function()
         if MODE == 'NORMAL' then
             normal:exit()
+            hs.alert.closeAll()
             hs.alert.show('Insert mode')
             MODE = 'INSERT'
         end
@@ -459,6 +509,10 @@ normal:bind({}, 'Q',
 end)
 
 
+
+---------------------------------------------------------------------
+--                     VISUAL MODE KEYBINDS                        --
+---------------------------------------------------------------------
 
 
 init()
