@@ -235,6 +235,7 @@ function moveRIGHT() hs.eventtap.keyStroke({}, 'Right', 200) end
 normal:bind({}, 'l', nil, moveRIGHT, moveRIGHT)
 
 
+
 --MOVE TO PREVIOUS WORD --> 'b'
 function movePrevWord() hs.eventtap.keyStroke({'alt'}, 'left') end
 normal:bind({}, 'B', movePrevWord, nil, movePrevWord)
@@ -319,10 +320,20 @@ normal:bind({}, 'O', nil,
 
 
 --DELETE CHARACTER IN FRONT OF CURSOR --> 'x'
-normal:bind({}, 'X',
+function deleteNextChar() hs.eventtap.keyStroke({'ctrl'}, 'd', 50) end
+normal:bind({}, 'x', deleteNextChar, nil, deleteNextChar)
+
+
+
+--TODO: Need to fix this like in native VIM: Replace -> Get Char -> Type Char--(While still in Normal Mode)
+--REPLACE CHARACTER IN FRONT OF CURSOR + INSERT MODE--> 'x'
+normal:bind({}, 'r',
     function()
-        hs.eventtap.keyStroke({'ctrl'}, 'D')
+        deleteNextChar()
+        normal:exit()
+        MODE = 'INSERT'
     end)
+
 
 --move to the next word without delay
 function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
@@ -333,6 +344,14 @@ normal:bind({}, 'D',
     function()
         --normal:exit()
         --MODE = 'INSERT'
+        jumpNextWord()
+        hs.eventtap.keyStroke({'option'}, 'delete')
+    end)
+
+normal:bind({}, 'C',
+    function()
+        normal:exit()
+        MODE = 'INSERT'
         jumpNextWord()
         hs.eventtap.keyStroke({'option'}, 'delete')
     end)
