@@ -281,11 +281,17 @@ normal:bind({}, 'G',
     end)
 
 
---MOVE TO NEXT WORD --> 'e', 'w'
-function moveNextWord() hs.eventtap.keyStroke({'alt'}, 'right') end
-normal:bind({}, 'E', moveNextWord, nil, moveNextWord)
-normal:bind({}, 'W', moveNextWord, nil, moveNextWord)
+--MOVE TO NEXT WORD --> 'w'
+function moveNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
+normal:bind({}, 'w', moveNextWord, nil, moveNextWord)
 
+
+--MOVE TO END OF WORD --> 'e'
+function moveEndOfWord()
+    hs.eventtap.keyStroke({'alt'}, 'right', 50)
+    hs.eventtap.keyStroke({}, 'left', 50)
+end
+normal:bind({}, 'e', moveEndOfWord, nil, moveEndOfWord)
 
 
 
