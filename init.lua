@@ -27,6 +27,29 @@ local visual = hs.hotkey.modal.new()
 APPS = {'Preview', 'Slack', 'Discord', 'Notes'}
 
 
+-- If you have the dock showing at all time and in the bottom, having
+-- notification on the bottom might be an issue. To change their placement:
+--      Center of screen: atScreenEdge=0
+--      Top of screen: atScreenEdge=1
+--      Bottom of screen: atScreenEdge=2
+local alertStyle = {
+                textSize    = 18,
+                strokeWidth = 2,
+                strokeColor = { white = 0, alpha = 1 },
+                fillColor   = { white = 0, alpha = 0.85 },
+                textColor   = { white = 1, alpha = 1 },
+                textFont    = '.AppleSystemUIFont',
+                radius      = 10,
+                atScreenEdge= 2}
+
+
+--Mode's notification text
+local normalNotification = 'NORMAL'
+local insertNotification = 'INSERT'
+local visualNotification = 'VISUAL'
+
+
+
 function init()
     appsWatcher = hs.application.watcher.new(applicationWatcher)
     appsWatcher:start()
@@ -111,7 +134,7 @@ function()
     if MODE ~= 'NORMAL' then
         normal:enter() 
         hs.alert.closeAll()
-        hs.alert.show('Normal mode')
+        hs.alert.show(normalNotification, alertStyle)
         MODE = 'NORMAL'
     end
 end)
@@ -123,7 +146,7 @@ function()
     if MODE ~= 'NORMAL' then
         normalPDF:enter() 
         hs.alert.closeAll()
-        hs.alert.show('Normal mode')
+        hs.alert.show(normalNotification, alertStyle)
         MODE = 'NORMAL'
     end
 end)
@@ -134,7 +157,7 @@ normal:bind({}, 'v',
             normal:exit()
             visual:enter()
             hs.alert.closeAll()
-            hs.alert.show('Visual mode')
+            hs.alert.show(visualNotification, alertStyle)
             MODE = 'VISUAL'
         end
     end)
@@ -174,7 +197,7 @@ normalPDF:bind({}, 'I',
     function()
         if MODE == 'NORMAL' then
             normalPDF:exit()
-            hs.alert.show('Insert mode')
+            hs.alert.show(insertNotification, alertStyle)
             MODE = 'INSERT'
         end
     end)
@@ -472,7 +495,7 @@ normal:bind({}, '/',
             hs.eventtap.keyStroke({'cmd'}, 'F')
             normal:exit()
             hs.alert.closeAll()
-            hs.alert.show('Insert mode')
+            hs.alert.show(insertNotification, alertStyle)
             MODE = 'INSERT'
         end
     end)
@@ -498,7 +521,7 @@ normal:bind({}, 'I',
         if MODE == 'NORMAL' then
             normal:exit()
             hs.alert.closeAll()
-            hs.alert.show('Insert mode')
+            hs.alert.show(insertNotification, alertStyle)
             MODE = 'INSERT'
         end
 end)
@@ -507,12 +530,6 @@ end)
 normal:bind({}, 'Q',
     function()
 end)
-
-
-
----------------------------------------------------------------------
---                     VISUAL MODE KEYBINDS                        --
----------------------------------------------------------------------
 
 
 init()
