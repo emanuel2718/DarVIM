@@ -222,8 +222,8 @@ function previousPAGE() hs.eventtap.keyStroke({}, 'Left', 200) end
 normalPDF:bind({'ctrl'}, 'B', previousPAGE, nil, previousPAGE)
 
 
---INVERT DISPLAY COLORS --> 'ctrl + b'
-normalPDF:bind({}, 'S',
+--INVERT DISPLAY COLORS --> 't'
+normalPDF:bind({}, 's',
     function()
         hs.eventtap.keyStroke({'ctrl', 'option', 'cmd'}, '8')
     end)
@@ -522,6 +522,9 @@ normal:bind({}, 'v',
         hs.alert.show(visualNotification, alertStyle)
     end)
 
+
+
+--HIGHLIGHT COMPLETE LINE + VISUAL --> 'v'
 normal:bind({'shift'}, 'v',
     function()
         normal:exit()
@@ -587,5 +590,59 @@ visual:bind({}, 'Y',
         visual:exit()
         normal:enter()
     end)
+
+
+
+--VISUAL: HIGHLIGHT FROM CURSOR UNTIL BEGINNING OF LINE --> '0'
+visual:bind({}, '0',
+    function()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Left', 50)
+    end)
+
+
+--VISUAL: HIGHLIGHT FROM CURSOR UNTIL BEGINNING OF FILE --> 'Shift + h'
+visual:bind({'shift'}, 'h',
+    function()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', 50)
+    end)
+
+
+--VISUAL: HIGHLIGHT FROM CURSOR UNTIL BEGINNING OF FILE --> 'g'
+visual:bind({}, 'g',
+    function()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', 50)
+    end)
+
+
+--VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF FILE --> 'Shift + l'
+visual:bind({'shift'}, 'l',
+    function()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', 50)
+    end)
+
+
+--VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF FILE --> 'Shift + g'
+visual:bind({'shift'}, 'g',
+    function()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', 50)
+    end)
+
+
+--VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'x'
+visual:bind({}, 'x', 
+    function()
+        visual:exit()
+        normal:enter()
+        deleteNextChar()
+    end)
+
+--VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'd'
+visual:bind({}, 'd', 
+    function()
+        visual:exit()
+        normal:enter()
+        deleteNextChar()
+    end)
+
 
 init()
