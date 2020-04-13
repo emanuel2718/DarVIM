@@ -1,2 +1,1 @@
-# vimslack
-# vimslack
+# DarVIM
