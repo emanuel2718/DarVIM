@@ -99,7 +99,10 @@ function applicationWatcher(name, event, app)
 end
 
 
-    --------------------MODE'S KEYBINDS--------------------
+---------------------------------------------------------------------
+--                  MODE'S KEYBINDS                                --
+---------------------------------------------------------------------
+
 
 --Bind Normal Mode for regular apps like Slack, Discord, Notes
 normalMode = hs.hotkey.bind({}, 'Escape',
@@ -147,11 +150,11 @@ end)
 --    end
 --end)
 
--------------------------------------------------------
 
 
-
--------------NORMAL MODE PDF NAVIGATION KEYBINDS-------------
+---------------------------------------------------------------------
+--                NORMAL MODE PDF NAVIGATION KEYBINDS              --
+---------------------------------------------------------------------
 
 normalPDF:bind({}, 'I',
     function()
@@ -162,117 +165,121 @@ normalPDF:bind({}, 'I',
         end
     end)
 
---Bind: Scroll UP --> 'K'
+--SCROLL UP --> 'k'
 function scrollUP() hs.eventtap.scrollWheel({0, SPEED}, {}) end
 normalPDF:bind({}, 'K', scrollUP, nil, scrollUP)
 
---Bind: Scroll DOWN --> 'J'
+--SCROLL DOWN --> 'j'
 function scrollDOWN() hs.eventtap.scrollWheel({0, -SPEED}, {}) end
 normalPDF:bind({}, 'J', scrollDOWN, nil, scrollDOWN)
 
---Bind: Scroll LEFT --> 'H'
+--SCROLL LEFT --> 'h'
 function scrollLEFT() hs.eventtap.scrollWheel({SPEED, 0}, {}) end
 normalPDF:bind({}, 'H', scrollLEFT, nil, scrollLEFT)
 
---Bind: Scroll RIGHT --> 'L'
+--SCROLL RIGHT --> 'l'
 function scrollRIGHT() hs.eventtap.scrollWheel({-SPEED, 0}, {}) end
 normalPDF:bind({}, 'L', scrollRIGHT, nil, scrollRIGHT)
 
---Bind: Go to TOP --> 'G'
+--GO TO TOP OF PAGE --> 'g'
 function goTOP() hs.eventtap.keyStroke({'cmd'}, 'Up') end
 normalPDF:bind({}, 'G', goTOP)
 
---Bind: Go to BOTTOM --> 'SHIFT+G'
+--GO TO BOTTOM OF PAGE --> 'g'
 function goBOTTOM() hs.eventtap.keyStroke({'cmd'}, 'Down') end
 normalPDF:bind({'shift'}, 'G', goBOTTOM)
 
---Bind: Scroll one page foward --> 'Ctrl+f'
+--SCROLL ONE PAGE FOWARD --> 'ctrl + f'
 function nextPAGE() hs.eventtap.keyStroke({}, 'Right', 200) end
 normalPDF:bind({'ctrl'}, 'F', nextPAGE, nil, nextPAGE)
 
---Bind: Scroll one page backwards --> 'Ctrl+b'
+--SCROLL ONE PAGE BACKWARD --> 'ctrl + b'
 function previousPAGE() hs.eventtap.keyStroke({}, 'Left', 200) end
 normalPDF:bind({'ctrl'}, 'B', previousPAGE, nil, previousPAGE)
 
---To enable this shortcut, choose Apple menu  > System Preferences, then click Keyboard.
---In the Shortcuts tab, select Accessibility on the left, then select ”Invert colours” on the right.
 
---Bind: Invert Colors of display.
+--INVERT DISPLAY COLORS --> 'ctrl + b'
 normalPDF:bind({}, 'S',
     function()
         hs.eventtap.keyStroke({'ctrl', 'option', 'cmd'}, '8')
     end)
-
--------------------------------------------------------
-
-
--------------NORMAL MODE MOVEMENT KEYBINDS-------------
-
---Bind: 'I' for insert mode
-normal:bind({}, 'I',
-    function()
-        if MODE == 'NORMAL' then
-            normal:exit()
-            hs.alert.show('Insert mode')
-            MODE = 'INSERT'
-        end
-end)
+--To enable this shortcut, choose Apple menu  > System Preferences, then click Keyboard.
+--In the Shortcuts tab, select Accessibility on the left, then select ”Invert colours” on the right.
 
 
---Bind: Move UP --> 'K'
+
+
+---------------------------------------------------------------------
+--                     NORMAL MODE KEYBINDS                        --
+---------------------------------------------------------------------
+
+
+
+--MOVE UP --> 'k'
 function moveUP() hs.eventtap.keyStroke({}, 'Up', 200) end
 normal:bind({}, 'k', nil, moveUP, moveUP)
 
---Bind: Move DOWN --> 'J'
+
+--MOVE DOWN --> 'j'
 function moveDOWN() hs.eventtap.keyStroke({}, 'Down', 200) end
 normal:bind({}, 'j', nil, moveDOWN, moveDOWN)
 
---Bind: Move LEFT --> 'L'
+
+--MOVE LEFT --> 'h'
 function moveLEFT() hs.eventtap.keyStroke({}, 'Left', 200) end
 normal:bind({}, 'h', nil, moveLEFT, moveLEFT)
 
---Bind: Move RIGHT --> 'R'
+
+--MOVE RIGHT --> 'l'
 function moveRIGHT() hs.eventtap.keyStroke({}, 'Right', 200) end
 normal:bind({}, 'l', nil, moveRIGHT, moveRIGHT)
 
---Bind: Move to the NEXT word --> 'E' or 'W'
+
+--MOVE TO PREVIOUS WORD --> 'b'
+function movePrevWord() hs.eventtap.keyStroke({'alt'}, 'left') end
+normal:bind({}, 'B', movePrevWord, nil, movePrevWord)
+
+
+--MOVE TO TOP OF PAGE --> 'g'
+normal:bind({}, 'G',
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'Up')
+    end)
+
+
+--MOVE TO NEXT WORD --> 'e', 'w'
 function moveNextWord() hs.eventtap.keyStroke({'alt'}, 'right') end
 normal:bind({}, 'E', moveNextWord, nil, moveNextWord)
 normal:bind({}, 'W', moveNextWord, nil, moveNextWord)
 
---Bind: Move to the PREVIOUS word --> 'B'
-function movePrevWord() hs.eventtap.keyStroke({'alt'}, 'left') end
-normal:bind({}, 'B', movePrevWord, nil, movePrevWord)
-
---Bind: Placebo key
-normal:bind({}, 'Q',
-    function()
-end)
 
 
---Bind: Move to the top of the page --> 'G'
-normal:bind({}, 'G',
-    function()
-        hs.eventtap.keyStroke({'cmd'}, 'Up')
-        if hs.eventtap.event:getKeyCode() == 87 then
-            hs.alert.show('CW')
-        end
-    end)
 
---Bind: Move to the bottom of the page --> 'Shift + G'
+--MOVE TO BOTTOM OF PAGE --> 'Shift + g'
 normal:bind({'shift'}, 'G',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Down')
     end)
 
---Bind: Move to the end of the line --> '$'
+
+
+--MOVE TO END OF LINE --> '$'
 normal:bind({'shift'}, '4',
     function()
         hs.eventtap.keyStroke({'ctrl'}, 'e')
     end)
 
 
---Bind: Move to the end of the line in Insert mode --> 'Shift + A'
+--MOVE CURSOR ONE SPACE FOWARD + INSERT MODE --> 'a'
+normal:bind({}, 'A',
+    function()
+        normal:exit()
+        MODE = 'INSERT'
+        hs.eventtap.keyStroke({}, 'Right')
+    end)
+
+
+--MOVE TO END OF LINE + INSERT MODE --> 'Shift + a'
 normal:bind({'shift'}, 'A',
     function()
         normal:exit()
@@ -281,15 +288,7 @@ normal:bind({'shift'}, 'A',
     end)
 
 
---Bind: Move cursor foward one space in Insert mode --> 'A'
-normal:bind({}, 'A',
-    function()
-        normal:exit()
-        MODE = 'INSERT'
-        hs.eventtap.keyStroke({}, 'Right')
-    end)
-
---Bind: Move to the beginning of the line in Insert mode --> 'Shift + I'
+--MOVE TO BEGINNING OF LINE + INSERT MODE --> 'Shift + i'
 normal:bind({'shift'}, 'I',
     function()
         normal:exit()
@@ -298,16 +297,7 @@ normal:bind({'shift'}, 'I',
     end)
 
 
---Bind: Open a new line BELOW the current cursor line --> 'O'
-normal:bind({}, 'O', nil,
-    function()
-        hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
-        normal:exit()
-        MODE = 'INSERT'
-        hs.eventtap.keyStroke({}, 'Return')
-    end)
-
---Bind: Open a new line ABOVE the current cursor line --> 'Shift + O'
+--OPEN A NEW LINE ABOVE CURRENT CURSOR LINE + INSERT MODE --> 'o'
 normal:bind({'shift'}, 'O', nil,
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 0)
@@ -318,32 +308,27 @@ normal:bind({'shift'}, 'O', nil,
     end)
 
 
-    -----------DELETE-----------
---Bind: Delete character in front of cursor --> 'X'
+--OPEN A NEW LINE BELOW CURRENT CURSOR LINE + INSERT MODE --> 'Shift + o'
+normal:bind({}, 'O', nil,
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
+        normal:exit()
+        MODE = 'INSERT'
+        hs.eventtap.keyStroke({}, 'Return')
+    end)
+
+
+--DELETE CHARACTER IN FRONT OF CURSOR --> 'x'
 normal:bind({}, 'X',
     function()
         hs.eventtap.keyStroke({'ctrl'}, 'D')
     end)
 
-
---Bind: Delete until end of line --> 'Shift + D'
-normal:bind({'shift'}, 'D',
-    function()
-        hs.eventtap.keyStroke({'ctrl'}, 'K')
-    end)
-
---Bind: Delete until end of line and put us in Insert Mode--> 'Shift + C'
-normal:bind({'shift'}, 'C',
-    function()
-        normal:exit()
-        MODE = 'INSERT'
-        hs.eventtap.keyStroke({'ctrl'}, 'K')
-    end)
-
---move to the next word without delay and delte backwards
+--move to the next word without delay
 function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
 
---Bind: Delete word next to cursor --> 'd'
+
+--DELETE WORD NEXT TO CURSOR --> 'd'
 normal:bind({}, 'D',
     function()
         --normal:exit()
@@ -352,7 +337,8 @@ normal:bind({}, 'D',
         hs.eventtap.keyStroke({'option'}, 'delete')
     end)
 
---Bind: Delete word next to cursor and put us in insert mode --> 'c'
+
+--DELETE WORD NEXT TO CURSOR + INSERT MODE --> 'c'
 normal:bind({}, 'C',
     function()
         normal:exit()
@@ -361,35 +347,51 @@ normal:bind({}, 'C',
         hs.eventtap.keyStroke({'option'}, 'delete')
     end)
 
--------------------------------------------------
 
---Bind: Undo --> 'U'
+--DELETE UNITIL END OF LINE --> 'Shift + d'
+normal:bind({'shift'}, 'D',
+    function()
+        hs.eventtap.keyStroke({'ctrl'}, 'K')
+    end)
+
+
+--DELETE UNITIL END OF LINE + INSERT MODE --> 'Shift + c'
+normal:bind({'shift'}, 'C',
+    function()
+        normal:exit()
+        MODE = 'INSERT'
+        hs.eventtap.keyStroke({'ctrl'}, 'K')
+    end)
+
+
+--UNDO --> 'u'
 normal:bind({}, 'U',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Z')
     end)
 
---Bind: Redo --> 'ctrl-u'
+
+--REDO --> 'Ctrl + r'
 normal:bind({'ctrl'}, 'R',
     function()
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Z')
     end)
 
 
---Bind: Paste --> 'P'
+--YANK --> 'y'
 normal:bind({}, 'Y',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'C')
     end)
 
---Bind: Paste --> 'P'
+--PASTE --> 'p'
 normal:bind({}, 'P',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'V')
     end)
 
 
---Bind: Paste ABOVE the current cursor line --> 'Shift + P'
+--PASTE ABOVE CURRENT CURSOR LINE --> 'Shift + p'
 normal:bind({'shift'}, 'P', nil,
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
@@ -399,8 +401,7 @@ normal:bind({'shift'}, 'P', nil,
     end)
 
 
-
---Bind: Find --> '/'
+--Search --> '/'
 normal:bind({}, '/',
     function()
         if MODE == 'NORMAL' then
@@ -408,19 +409,35 @@ normal:bind({}, '/',
         end
     end)
 
---Bind: Find: Go to NEXT ocurrence --> 'n'
+
+--SEARCH FOWARD --> 'n'
 normal:bind({}, 'n',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'G')
     end)
 
---Bind: Find: Go to PREVIOUS ocurrence --> 'Shift + n'
+
+--SEARCH BACKWARDS --> 'n'
 normal:bind({'shift'}, 'n',
     function()
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'G')
     end)
 
 
+--ENTER INSERT MODE --> 'n'
+normal:bind({}, 'I',
+    function()
+        if MODE == 'NORMAL' then
+            normal:exit()
+            hs.alert.show('Insert mode')
+            MODE = 'INSERT'
+        end
+end)
+
+--Bind: Placebo key
+normal:bind({}, 'Q',
+    function()
+end)
 
 
 
