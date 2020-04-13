@@ -386,6 +386,7 @@ function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
 
 
 --DELETE WORD NEXT TO CURSOR --> 'd'
+--TODO: THIS IS NOT WORKING PROPERLY.
 normal:bind({}, 'D',
     function()
         --normal:exit()
@@ -502,6 +503,18 @@ normal:bind({}, 'n',
 normal:bind({'shift'}, 'n',
     function()
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'G')
+    end)
+
+--INDENT FOWARD --> '>'
+normal:bind({'shift'}, '.',
+    function()
+        hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', 50)
+    end)
+
+--INDENT BACKWARDS --> '<'
+normal:bind({'shift'}, ',',
+    function()
+        hs.eventtap.keyStroke({}, 'Delete', nil, 'Delete', 50)
     end)
 
 
@@ -636,7 +649,7 @@ visual:bind({}, 'x',
         deleteNextChar()
     end)
 
---VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'd'
+--VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'x'
 visual:bind({}, 'd', 
     function()
         visual:exit()
