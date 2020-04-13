@@ -10,7 +10,7 @@ local SPEED = 2
 
 --Current Modes; Start in NORMAL mode.
 --Possible MODES: 'NORMAL', 'INSERT', 'VISUAL'
-local MODE = 'NORMAL'
+--local MODE = 'NORMAL'
 
 --Normal Mode
 normal = hs.hotkey.modal.new()
@@ -130,36 +130,25 @@ end
 --Bind Normal Mode for regular apps like Slack, Discord, Notes
 normalMode = hs.hotkey.bind({}, 'Escape',
 function()
-    --Do this ONLY if we are in 'Insert' or 'Visual' mode.
-    if MODE ~= 'NORMAL' then
-        normal:enter() 
-        hs.alert.closeAll()
-        hs.alert.show(normalNotification, alertStyle)
-        MODE = 'NORMAL'
-    end
+    normal:enter() 
+    hs.alert.closeAll()
+    hs.alert.show(normalNotification, alertStyle)
 end)
 
 --Bind Normal mode for PDF's key
 normalModePDF = hs.hotkey.bind({}, 'Escape',
 function()
-    --Do this ONLY if we are in 'Insert' or 'Visual' mode.
-    if MODE ~= 'NORMAL' then
-        normalPDF:enter() 
-        hs.alert.closeAll()
-        hs.alert.show(normalNotification, alertStyle)
-        MODE = 'NORMAL'
-    end
+    normalPDF:enter() 
+    hs.alert.closeAll()
+    hs.alert.show(normalNotification, alertStyle)
 end)
 
 normal:bind({}, 'v',
     function()
-        if MODE ~= 'INSERT' then
-            normal:exit()
-            visual:enter()
-            hs.alert.closeAll()
-            hs.alert.show(visualNotification, alertStyle)
-            MODE = 'VISUAL'
-        end
+        normal:exit()
+        visual:enter()
+        hs.alert.closeAll()
+        hs.alert.show(visualNotification, alertStyle)
     end)
 
 
@@ -195,11 +184,8 @@ normal:bind({}, 'v',
 
 normalPDF:bind({}, 'I',
     function()
-        if MODE == 'NORMAL' then
-            normalPDF:exit()
-            hs.alert.show(insertNotification, alertStyle)
-            MODE = 'INSERT'
-        end
+        normalPDF:exit()
+        hs.alert.show(insertNotification, alertStyle)
     end)
 
 --SCROLL UP --> 'k'
@@ -491,13 +477,10 @@ normal:bind({'shift'}, 'P', nil,
 --Search --> '/'
 normal:bind({}, '/',
     function()
-        if MODE == 'NORMAL' then
-            hs.eventtap.keyStroke({'cmd'}, 'F')
-            normal:exit()
-            hs.alert.closeAll()
-            hs.alert.show(insertNotification, alertStyle)
-            MODE = 'INSERT'
-        end
+        hs.eventtap.keyStroke({'cmd'}, 'F')
+        normal:exit()
+        hs.alert.closeAll()
+        hs.alert.show(insertNotification, alertStyle)
     end)
 
 
@@ -518,12 +501,9 @@ normal:bind({'shift'}, 'n',
 --ENTER INSERT MODE --> 'n'
 normal:bind({}, 'I',
     function()
-        if MODE == 'NORMAL' then
-            normal:exit()
-            hs.alert.closeAll()
-            hs.alert.show(insertNotification, alertStyle)
-            MODE = 'INSERT'
-        end
+        normal:exit()
+        hs.alert.closeAll()
+        hs.alert.show(insertNotification, alertStyle)
 end)
 
 --Bind: Placebo key
