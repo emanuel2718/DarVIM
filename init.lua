@@ -92,6 +92,7 @@ function applicationWatcher(name, event, app)
         end
     --end
     elseif not contains(APPS, hs.window.frontmostWindow():application():name()) then
+        --TODO: This is throwing nil values.
         normalModePDF:disable()
         normalMode:disable()
     end
@@ -101,7 +102,7 @@ end
     --------------------MODE'S KEYBINDS--------------------
 
 --Bind Normal Mode for regular apps like Slack, Discord, Notes
-normalMode = hs.hotkey.bind({'ctrl'}, 'J',
+normalMode = hs.hotkey.bind({}, 'Escape',
 function()
     --Do this ONLY if we are in 'Insert' or 'Visual' mode.
     if MODE ~= 'NORMAL' then
@@ -112,7 +113,7 @@ function()
 end)
 
 --Bind Normal mode for PDF's key
-normalModePDF = hs.hotkey.bind({'ctrl'}, 'J',
+normalModePDF = hs.hotkey.bind({}, 'Escape',
 function()
     --Do this ONLY if we are in 'Insert' or 'Visual' mode.
     if MODE ~= 'NORMAL' then
@@ -291,7 +292,7 @@ normal:bind({'shift'}, 'I',
 --Bind: Open a new line BELOW the current cursor line --> 'O'
 normal:bind({}, 'O', nil,
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Right')
+        hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
         normal:exit()
         MODE = 'INSERT'
         hs.eventtap.keyStroke({}, 'Return')
@@ -300,11 +301,11 @@ normal:bind({}, 'O', nil,
 --Bind: Open a new line ABOVE the current cursor line --> 'Shift + O'
 normal:bind({'shift'}, 'O', nil,
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Left')
-        normal:exit()
-        MODE = 'INSERT'
+        hs.eventtap.keyStroke({'cmd'}, 'Left', 0)
         hs.eventtap.keyStroke({}, 'Return')
         hs.eventtap.keyStroke({}, 'Up')
+        normal:exit()
+        MODE = 'INSERT'
     end)
 
 
@@ -330,52 +331,6 @@ normal:bind({'shift'}, 'C',
         hs.eventtap.keyStroke({'ctrl'}, 'K')
     end)
 
---TODO: add CW, DW
--------------------------------------------------
-
---Bind: Undo --> 'U'
-normal:bind({}, 'U',
-    function()
-        hs.eventtap.keyStroke({'cmd'}, 'Z')
-    end)
-
---Bind: Redo --> 'ctrl-u'
-normal:bind({'ctrl'}, 'R',
-    function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Z')
-    end)
-
-
---Bind: Paste --> 'P'
-normal:bind({}, 'P',
-    function()
-        hs.eventtap.keyStroke({'ctrl'}, 'Y')
-    end)
-
---TODO: Paste below line
---TODO: Paste above line
-
-
---Bind: Find --> '/'
-normal:bind({}, '/',
-    function()
-        hs.eventtap.keyStroke({'cmd'}, 'F')
-    end)
-
---Bind: Find: Go to NEXT ocurrence --> 'n'
-normal:bind({}, 'n',
-    function()
-        hs.eventtap.keyStroke({'cmd'}, 'G')
-    end)
-
---Bind: Find: Go to PREVIOUS ocurrence --> 'Shift + n'
-normal:bind({'shift'}, 'n',
-    function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'G')
-    end)
-
-
-
 --move to the next word without delay and delte backwards
 function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
 
@@ -396,6 +351,69 @@ normal:bind({}, 'C',
         jumpNextWord()
         hs.eventtap.keyStroke({'option'}, 'delete')
     end)
+
+-------------------------------------------------
+
+--Bind: Undo --> 'U'
+normal:bind({}, 'U',
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'Z')
+    end)
+
+--Bind: Redo --> 'ctrl-u'
+normal:bind({'ctrl'}, 'R',
+    function()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Z')
+    end)
+
+
+--Bind: Paste --> 'P'
+normal:bind({}, 'Y',
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'C')
+    end)
+
+--Bind: Paste --> 'P'
+normal:bind({}, 'P',
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'V')
+    end)
+
+
+--Bind: Paste ABOVE the current cursor line --> 'Shift + P'
+normal:bind({'shift'}, 'P', nil,
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
+        hs.eventtap.keyStroke({}, 'Return')
+        hs.eventtap.keyStroke({}, 'Up')
+        hs.eventtap.keyStroke({'cmd'}, 'v')
+    end)
+
+
+
+--Bind: Find --> '/'
+normal:bind({}, '/',
+    function()
+        if MODE == 'NORMAL' then
+            hs.eventtap.keyStroke({'cmd'}, 'F')
+        end
+    end)
+
+--Bind: Find: Go to NEXT ocurrence --> 'n'
+normal:bind({}, 'n',
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'G')
+    end)
+
+--Bind: Find: Go to PREVIOUS ocurrence --> 'Shift + n'
+normal:bind({'shift'}, 'n',
+    function()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'G')
+    end)
+
+
+
+
 
 
 init()
