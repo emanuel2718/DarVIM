@@ -121,6 +121,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] Add SHIFT+`key` to scroll faster than normal scrolling speed.
 - [ ] Add prefix keys functionality for cases like: `c-w`, `d-w`, etc.
 - [ ] Disable all hotkeys when spotlight is beign used.
+- [ ] Somehow add `:` command to be able to do stuff like `:w`
 
 ### Credits:
 This project couldn't have been possible without [Hammerspoon](https://github.com/Hammerspoon/hammerspoon), which is a powerful OSX automation tool.
