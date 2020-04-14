@@ -659,4 +659,16 @@ visual:bind({}, 'c',
     end)
 
 
+--VISUAL: INDENT FOWARD --> '>'
+visual:bind({'shift'}, '.',
+    function()
+        hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', 50)
+    end)
+
+--VISUAL: INDENT BACKWARDS --> '<'
+visual:bind({'shift'}, ',',
+    function()
+        hs.eventtap.keyStroke({'shift'}, 'Tab', 50)
+    end)
+
 init()
