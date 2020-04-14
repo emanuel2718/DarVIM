@@ -315,7 +315,7 @@ normal:bind({'shift'}, 'I',
 normal:bind({'shift'}, 'O', nil,
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 0)
-        hs.eventtap.keyStroke({}, 'Return')
+        hs.eventtap.keyStroke({'shift'}, 'Return', 0)
         hs.eventtap.keyStroke({}, 'Up')
         normal:exit()
         --MODE = 'INSERT'
@@ -328,7 +328,7 @@ normal:bind({}, 'O', nil,
         hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
         normal:exit()
         --MODE = 'INSERT'
-        hs.eventtap.keyStroke({}, 'Return')
+        hs.eventtap.keyStroke({'shift'}, 'Return')
     end)
 
 
