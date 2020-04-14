@@ -314,7 +314,7 @@ normal:bind({'shift'}, 'O', nil,
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 0)
         hs.eventtap.keyStroke({'shift'}, 'Return', 0)
-        hs.eventtap.keyStroke({}, 'Up')
+        hs.eventtap.keyStroke({}, 'Up', 0)
         normal:exit()
         --MODE = 'INSERT'
     end)
@@ -324,14 +324,17 @@ normal:bind({'shift'}, 'O', nil,
 normal:bind({}, 'O', nil,
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
+        hs.eventtap.keyStroke({'shift'}, 'Return')
         normal:exit()
         --MODE = 'INSERT'
-        hs.eventtap.keyStroke({'shift'}, 'Return')
     end)
 
 
 --NORMAL: DELETE CHARACTER IN FRONT OF CURSOR --> 'x'
-function deleteNextChar() hs.eventtap.keyStroke({'ctrl'}, 'd', 50) end
+function deleteNextChar()
+    hs.eventtap.keyStroke({}, 'Right', 50)
+    hs.eventtap.keyStroke({'fn'}, 'delete', 50)
+end
 normal:bind({}, 'x', deleteNextChar, nil, deleteNextChar)
 
 
@@ -358,16 +361,21 @@ function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
 
 
 --NORMAL: DELETE WHOLE LINE --> 'd'
---TODO: THIS IS NOT WORKING PROPERLY.
 normal:bind({}, 'd',
     function()
-        --normal:exit()
-        --MODE = 'INSERT'
-        --jumpNextWord()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
         hs.eventtap.keyStroke({'ctrl'}, 'k')
     end)
+
+
+--NORMAL: DELETE WORD --> 'ctrl + d'
+normal:bind({'ctrl'}, 'd',
+    function()
+        hs.eventtap.keyStroke({'shift', 'option'}, 'Right', 1)
+        hs.eventtap.keyStroke({''}, 'delete')
+    end)
+
 
 normal:bind({}, 'c',
     function()
@@ -378,11 +386,20 @@ normal:bind({}, 'c',
     end)
 
 
+--NORMAL: CHANGE WORD --> 'ctrl + d'
+normal:bind({'ctrl'}, 'c',
+    function()
+        normal:exit()
+        hs.eventtap.keyStroke({'shift', 'option'}, 'Right', 1)
+        hs.eventtap.keyStroke({''}, 'delete')
+    end)
+
 
 --NORMAL: DELETE UNITIL END OF LINE --> 'Shift + d'
 normal:bind({'shift'}, 'D',
     function()
-        hs.eventtap.keyStroke({'ctrl'}, 'K')
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
+        hs.eventtap.keyStroke({'fn'}, 'delete', 50)
     end)
 
 
@@ -391,7 +408,8 @@ normal:bind({'shift'}, 'C',
     function()
         normal:exit()
         --MODE = 'INSERT'
-        hs.eventtap.keyStroke({'ctrl'}, 'K')
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
+        hs.eventtap.keyStroke({'fn'}, 'delete', 50)
     end)
 
 
@@ -629,9 +647,16 @@ visual:bind({}, 'd',
     function()
         visual:exit()
         normal:enter()
-        deleteNextChar()
+        hs.eventtap.keyStroke({''}, 'delete')
     end)
 
+
+--VISUAL: CHANGE HIGHLIGHTED CHARACTERS --> 'c'
+visual:bind({}, 'c', 
+    function()
+        visual:exit()
+        hs.eventtap.keyStroke({''}, 'delete')
+    end)
 
 
 init()
