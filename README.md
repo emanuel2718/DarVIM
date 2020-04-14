@@ -16,15 +16,33 @@ Pseudo-VIM keybinds ONLY on the apps you decide you want VIM keybinds.
 ##### Homebrew installation:
   * `brew cask install hammerspoon`
 
+
+&nbsp; 
 ### Step 2: Install DarVIM:
+
+&nbsp; 
+##### OPTION 1: If you already have an `init.lua` file:
+
+1. Copy the contents of the `init.lua` from this repo and paste it on your
+    existing `init.lua` file.
+
+2. `ln -s <path-to-DarVIM-folder>/darvim.lua ~/.hammerspoon/darvim.lua`
+
+&nbsp; 
+
+##### OPTION 2: If you DON'T already have an `init.lua` file then;
+
 On a Terminal window:
 
 1. `git clone https://github.com/emanuel2718/DarVIM.git`
 
 2. `mkdir ~/.hammerspoon`
 
-3. `ln -s <path-to-DarVIM-folder>/init.lua ~/.hammerspoon/init.lua`
+3. `ln -s <path-to-DarVIM-folder>/darvim.lua ~/.hammerspoon/darvim.lua`
 
+4. `ln -s <path-to-DarVIM-folder>/init.lua ~/.hammerspoon/init.lua`
+
+&nbsp; 
 
 ### Step 3: Reaload Hammerspoon configuration:
 Open Hammerspoon application either with a Spotlight search or by Right
@@ -129,11 +147,14 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 # TODO LIST:
 - [x] Add prefix keys functionality for cases like: `c-w`, `d-w`, etc.
 - [ ] Add `.` repetition functionality
+- [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`
+- [ ] Add leader key functionality.
+- [ ] Add mode in mode status in the menu bar using hs.menubar
+- [ ] Add real `c-w`, `d-w`, etc. functionalities
 - [ ] Complete documentation on how to install and use.
 - [ ] Add SHIFT+`key` to scroll faster than normal scrolling speed.
 - [ ] Disable all hotkeys when spotlight is beign used.
-- [ ] Somehow add `:` command to be able to do stuff like `:w`
-- [ ] Add leader key functionality.
+- [ ] Add macro recordings
 
 # Credits:
 This project couldn't have been possible without [Hammerspoon](https://github.com/Hammerspoon/hammerspoon), which is a powerful OSX automation tool.
