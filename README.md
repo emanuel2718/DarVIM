@@ -16,12 +16,10 @@ Pseudo-VIM keybinds ONLY on the apps you decide you want VIM keybinds.
 ##### Homebrew installation:
   * `brew cask install hammerspoon`
 
-
-&nbsp; 
 ### Step 2: Install DarVIM:
 
 &nbsp; 
-##### OPTION 1: If you already have an `init.lua` file:
+##### CASE 1: If you already have an `init.lua` file:
 
 1. Copy the contents of the `init.lua` from this repo and paste it on your
     existing `init.lua` file.
@@ -30,9 +28,9 @@ Pseudo-VIM keybinds ONLY on the apps you decide you want VIM keybinds.
 
 &nbsp; 
 
-##### OPTION 2: If you DON'T already have an `init.lua` file then;
+##### CASE 2: If you DON'T already have an `init.lua` file then on a Terminal window:
 
-On a Terminal window:
+
 
 1. `git clone https://github.com/emanuel2718/DarVIM.git`
 
