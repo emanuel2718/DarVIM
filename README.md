@@ -5,6 +5,8 @@ DarVIM
 Pseudo-VIM keybinds ONLY on the apps you decide you want VIM keybinds.
 
 
+# Installation:
+
 ### Step 1: Install Hammerspoon:
 
 ##### Manual Installation:
@@ -32,11 +34,13 @@ At this point VIM keybinds should be enabled while using Preview.
 
 TLDR: `Open` Hammerspoon appllication and press `Shift + Cmd + R`.
 
+
 # How to use:
 **TODO:** Explain what keybinds ara available in which apps.
 
 **TODO:** Get official movement descriptions from:
 https://hea-www.harvard.edu/~fine/Tech/vi.html
+
 
 
 # Supported Keybinds:
@@ -116,14 +120,14 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `x` : Delete highlighted characters
 
 
-### TODO LIST:
+# TODO LIST:
 - [ ] Complete documentation on how to install and use.
 - [ ] Add SHIFT+`key` to scroll faster than normal scrolling speed.
 - [ ] Add prefix keys functionality for cases like: `c-w`, `d-w`, etc.
 - [ ] Disable all hotkeys when spotlight is beign used.
 - [ ] Somehow add `:` command to be able to do stuff like `:w`
 
-### Credits:
+# Credits:
 This project couldn't have been possible without [Hammerspoon](https://github.com/Hammerspoon/hammerspoon), which is a powerful OSX automation tool.
 
 Visit their [Website](http://www.hammerspoon.org/) for more imformation.
