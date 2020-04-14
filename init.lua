@@ -233,12 +233,12 @@ function moveRIGHT() hs.eventtap.keyStroke({}, 'Right', 200) end
 normal:bind({}, 'l', nil, moveRIGHT, moveRIGHT)
 
 
---NORMAL: SCROLL UP --> 'k'
+--NORMAL: SCROLL UP --> 'ctrl + y'
 function scrollUP() hs.eventtap.scrollWheel({0, SPEED}, {}) end
 normal:bind({'ctrl'}, 'y', scrollUP, nil, scrollUP)
 
 
---NORMAL: SCROLL DOWN --> 'j'
+--NORMAL: SCROLL DOWN --> 'ctrl + e'
 function scrollDOWN() hs.eventtap.scrollWheel({0, -SPEED}, {}) end
 normal:bind({'ctrl'}, 'e', scrollDOWN, nil, scrollDOWN)
 
@@ -255,6 +255,13 @@ normal:bind({}, 'G',
     end)
 
 
+--NORMAL: MOVE TO BOTTOM OF PAGE --> 'Shift + g'
+normal:bind({'shift'}, 'G',
+    function()
+        hs.eventtap.keyStroke({'cmd'}, 'Down')
+    end)
+
+
 --NORMAL: MOVE TO NEXT WORD --> 'w'
 function moveNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
 normal:bind({}, 'w', moveNextWord, nil, moveNextWord)
@@ -266,15 +273,6 @@ function moveEndOfWord()
     hs.eventtap.keyStroke({}, 'left', 50)
 end
 normal:bind({}, 'e', moveEndOfWord, nil, moveEndOfWord)
-
-
-
---NORMAL: MOVE TO BOTTOM OF PAGE --> 'Shift + g'
-normal:bind({'shift'}, 'G',
-    function()
-        hs.eventtap.keyStroke({'cmd'}, 'Down')
-    end)
-
 
 
 --NORMAL: MOVE TO END OF LINE --> '$'
@@ -361,7 +359,7 @@ function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
 
 --NORMAL: DELETE WHOLE LINE --> 'd'
 --TODO: THIS IS NOT WORKING PROPERLY.
-normal:bind({}, 'D',
+normal:bind({}, 'd',
     function()
         --normal:exit()
         --MODE = 'INSERT'
@@ -371,7 +369,7 @@ normal:bind({}, 'D',
         hs.eventtap.keyStroke({'ctrl'}, 'k')
     end)
 
-normal:bind({}, 'C',
+normal:bind({}, 'c',
     function()
         normal:exit()
         --MODE = 'INSERT'
@@ -379,15 +377,6 @@ normal:bind({}, 'C',
         hs.eventtap.keyStroke({'option'}, 'delete')
     end)
 
-
---NORMAL: DELETE WORD NEXT TO CURSOR + INSERT MODE --> 'c'
-normal:bind({}, 'C',
-    function()
-        normal:exit()
-        --MODE = 'INSERT'
-        jumpNextWord()
-        hs.eventtap.keyStroke({'option'}, 'delete')
-    end)
 
 
 --NORMAL: DELETE UNITIL END OF LINE --> 'Shift + d'
@@ -430,7 +419,7 @@ normal:bind({}, 'Y',
     end)
 
 
---NORMAL: YANK UNTIL THE END OF LINE --> 'y'
+--NORMAL: YANK WHOLE LINE --> 'Shift + y'
 normal:bind({'shift'}, 'y',
     function()
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
@@ -605,6 +594,13 @@ visual:bind({}, 'g',
     end)
 
 
+--VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF FILE --> 'Shift + g'
+visual:bind({'shift'}, 'g',
+    function()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', 50)
+    end)
+
+
 --VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF FILE --> 'Shift + l'
 visual:bind({'shift'}, 'l',
     function()
@@ -618,12 +614,6 @@ visual:bind({'shift'}, '4',
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
     end)
 
-
---VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF FILE --> 'Shift + g'
-visual:bind({'shift'}, 'g',
-    function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', 50)
-    end)
 
 
 --VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'x'
