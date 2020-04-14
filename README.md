@@ -121,11 +121,14 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `Shift + l` : Highlight from cursor to end of file
  * `d` : Delete highlighted characters
  * `c` : Change highlighted characters and put us in insert mode.
+ * `>` : Indent
+ * `<` : Unindent
  
 
 
 # TODO LIST:
 - [x] Add prefix keys functionality for cases like: `c-w`, `d-w`, etc.
+- [ ] Add `.` repetition functionality
 - [ ] Complete documentation on how to install and use.
 - [ ] Add SHIFT+`key` to scroll faster than normal scrolling speed.
 - [ ] Disable all hotkeys when spotlight is beign used.
