@@ -83,8 +83,10 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `r` : Replace single character at cursor (Need to fix this)
  * `d` : Works like `d-d` in native VIM
  * `Shift + d` : Delete to end of line
+ * `Ctrl + d` : Delete next word (works like `d-w`)
  * `c` : Works like `c-w` in native VIM
  * `Shift + c` : Change to end of line
+ * `Ctrl + c` : Change next word (works like `c-w`)
  * `u` : Undo
  * `Ctrl + r` : Redo
  * `y` : Yank (Works like `yy` in native VIM)
@@ -117,15 +119,18 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `y` : Yank selected text block
  * `Shift + g` : Highlight from cursor to end of file
  * `Shift + l` : Highlight from cursor to end of file
- * `x` : Delete highlighted characters
+ * `d` : Delete highlighted characters
+ * `c` : Change highlighted characters and put us in insert mode.
+ 
 
 
 # TODO LIST:
+- [x] Add prefix keys functionality for cases like: `c-w`, `d-w`, etc.
 - [ ] Complete documentation on how to install and use.
 - [ ] Add SHIFT+`key` to scroll faster than normal scrolling speed.
-- [ ] Add prefix keys functionality for cases like: `c-w`, `d-w`, etc.
 - [ ] Disable all hotkeys when spotlight is beign used.
 - [ ] Somehow add `:` command to be able to do stuff like `:w`
+- [ ] Add leader key functionality.
 
 # Credits:
 This project couldn't have been possible without [Hammerspoon](https://github.com/Hammerspoon/hammerspoon), which is a powerful OSX automation tool.
