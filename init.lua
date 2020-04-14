@@ -8,24 +8,19 @@
 local SPEED = 2
 
 
---Current Modes; Start in NORMAL mode.
---Possible MODES: 'NORMAL', 'INSERT', 'VISUAL'
---local MODE = 'NORMAL'
-
 --Normal Mode
-normal = hs.hotkey.modal.new()
-normalPDF = hs.hotkey.modal.new()
+local normal = hs.hotkey.modal.new()
+local normalPDF = hs.hotkey.modal.new()
 
---Insert Mode
---local insert = hs.hotkey.modal.new()
 
 --Visual Mode
 local visual = hs.hotkey.modal.new()
 
+
 --List of supported Applications
 --The user could add or remove applications as desired.
-APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'anki'}
-PDF = {'Preview', 'Acrobat Reader'}
+local APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki', 'Xcode'}
+local PDF = {'Preview', 'Acrobat Reader'}
 
 
 -- If you have the dock showing at all time and in the bottom, having
@@ -42,6 +37,7 @@ local alertStyle = {
                 textFont    = '.AppleSystemUIFont',
                 radius      = 10,
                 atScreenEdge= 2}
+
 
 
 --Mode's notification text
@@ -151,6 +147,7 @@ normal:bind({}, 'v',
 --                NORMAL MODE PDF NAVIGATION KEYBINDS              --
 ---------------------------------------------------------------------
 
+
 --NORMAL PDF: ENABLE INSERT MODE --> 'i'
 normalPDF:bind({}, 'I',
     function()
@@ -158,33 +155,41 @@ normalPDF:bind({}, 'I',
         hs.alert.show(insertNotification, alertStyle)
     end)
 
+
 --NORMALPDF: SCROLL UP --> 'k'
 function scrollUP() hs.eventtap.scrollWheel({0, SPEED}, {}) end
 normalPDF:bind({}, 'K', scrollUP, nil, scrollUP)
+
 
 --NORMALPDF: SCROLL DOWN --> 'j'
 function scrollDOWN() hs.eventtap.scrollWheel({0, -SPEED}, {}) end
 normalPDF:bind({}, 'J', scrollDOWN, nil, scrollDOWN)
 
+
 --NORMALPDF: SCROLL LEFT --> 'h'
 function scrollLEFT() hs.eventtap.scrollWheel({SPEED, 0}, {}) end
 normalPDF:bind({}, 'H', scrollLEFT, nil, scrollLEFT)
+
 
 --NORMALPDF: SCROLL RIGHT --> 'l'
 function scrollRIGHT() hs.eventtap.scrollWheel({-SPEED, 0}, {}) end
 normalPDF:bind({}, 'L', scrollRIGHT, nil, scrollRIGHT)
 
+
 --NORMALPDF: GO TO TOP OF PAGE --> 'g'
 function goTOP() hs.eventtap.keyStroke({'cmd'}, 'Up') end
 normalPDF:bind({}, 'G', goTOP)
+
 
 --NORMALPDF: GO TO BOTTOM OF PAGE --> 'g'
 function goBOTTOM() hs.eventtap.keyStroke({'cmd'}, 'Down') end
 normalPDF:bind({'shift'}, 'G', goBOTTOM)
 
+
 --NORMALPDF: SCROLL ONE PAGE FOWARD --> 'ctrl + f'
 function nextPAGE() hs.eventtap.keyStroke({}, 'Right', 200) end
 normalPDF:bind({'ctrl'}, 'F', nextPAGE, nil, nextPAGE)
+
 
 --NORMALPDF: SCROLL ONE PAGE BACKWARD --> 'ctrl + b'
 function previousPAGE() hs.eventtap.keyStroke({}, 'Left', 200) end
@@ -283,7 +288,7 @@ normal:bind({'shift'}, '4',
 normal:bind({}, 'A',
     function()
         normal:exit()
-        MODE = 'INSERT'
+        --MODE = 'INSERT'
         hs.eventtap.keyStroke({}, 'Right')
     end)
 
@@ -292,7 +297,7 @@ normal:bind({}, 'A',
 normal:bind({'shift'}, 'A',
     function()
         normal:exit()
-        MODE = 'INSERT'
+        --MODE = 'INSERT'
         hs.eventtap.keyStroke({'cmd'}, 'right')
     end)
 
@@ -301,7 +306,7 @@ normal:bind({'shift'}, 'A',
 normal:bind({'shift'}, 'I',
     function()
         normal:exit()
-        MODE = 'INSERT'
+        --MODE = 'INSERT'
         hs.eventtap.keyStroke({'cmd'}, 'left')
     end)
 
@@ -313,7 +318,7 @@ normal:bind({'shift'}, 'O', nil,
         hs.eventtap.keyStroke({}, 'Return')
         hs.eventtap.keyStroke({}, 'Up')
         normal:exit()
-        MODE = 'INSERT'
+        --MODE = 'INSERT'
     end)
 
 
@@ -322,7 +327,7 @@ normal:bind({}, 'O', nil,
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
         normal:exit()
-        MODE = 'INSERT'
+        --MODE = 'INSERT'
         hs.eventtap.keyStroke({}, 'Return')
     end)
 
@@ -339,7 +344,7 @@ normal:bind({}, 'r',
     function()
         deleteNextChar()
         normal:exit()
-        MODE = 'INSERT'
+        --MODE = 'INSERT'
     end)
 
 
@@ -354,7 +359,7 @@ function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
 --For 'dw' we have 'C', do I want both? Do I have something that does 'dd'?
 
 
---NORMAL: DELETE WORD NEXT TO CURSOR --> 'd'
+--NORMAL: DELETE WHOLE LINE --> 'd'
 --TODO: THIS IS NOT WORKING PROPERLY.
 normal:bind({}, 'D',
     function()
@@ -363,13 +368,13 @@ normal:bind({}, 'D',
         --jumpNextWord()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
-        hs.eventtap.keyStroke({'option'}, 'delete')
+        hs.eventtap.keyStroke({'ctrl'}, 'k')
     end)
 
 normal:bind({}, 'C',
     function()
         normal:exit()
-        MODE = 'INSERT'
+        --MODE = 'INSERT'
         jumpNextWord()
         hs.eventtap.keyStroke({'option'}, 'delete')
     end)
@@ -379,7 +384,7 @@ normal:bind({}, 'C',
 normal:bind({}, 'C',
     function()
         normal:exit()
-        MODE = 'INSERT'
+        --MODE = 'INSERT'
         jumpNextWord()
         hs.eventtap.keyStroke({'option'}, 'delete')
     end)
@@ -396,7 +401,7 @@ normal:bind({'shift'}, 'D',
 normal:bind({'shift'}, 'C',
     function()
         normal:exit()
-        MODE = 'INSERT'
+        --MODE = 'INSERT'
         hs.eventtap.keyStroke({'ctrl'}, 'K')
     end)
 
@@ -419,7 +424,8 @@ normal:bind({'ctrl'}, 'R',
 --NORMAL: YANK WORD IN FRONT OF CURSOR --> 'y'
 normal:bind({}, 'Y',
     function()
-        hs.eventtap.keyStroke({'shift', 'option'}, 'Right', 1)
+        hs.eventtap.keyStroke({'cmd'}, 'Left', 5)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 5)
         hs.eventtap.keyStroke({'cmd'}, 'c')
     end)
 
@@ -477,13 +483,15 @@ normal:bind({'shift'}, 'n',
 --NORMAL: INDENT FOWARD --> '>'
 normal:bind({'shift'}, '.',
     function()
+        hs.eventtap.keyStroke({'cmd'}, 'Left', 50)
         hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', 50)
     end)
 
 --NORMAL: INDENT BACKWARDS --> '<'
 normal:bind({'shift'}, ',',
     function()
-        hs.eventtap.keyStroke({}, 'Delete', nil, 'Delete', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'Right', 50)
+        hs.eventtap.keyStroke({'shift'}, 'Tab', 50)
     end)
 
 
@@ -511,6 +519,7 @@ normal:bind({'shift'}, 'v',
     function()
         normal:exit()
         visual:enter()
+        hs.eventtap.keyStroke({'cmd'}, 'Left', 5)
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
         hs.alert.closeAll()
         hs.alert.show(visualNotification, alertStyle)
@@ -603,6 +612,13 @@ visual:bind({'shift'}, 'l',
     end)
 
 
+--VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF Line --> '$'
+visual:bind({'shift'}, '4',
+    function()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
+    end)
+
+
 --VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF FILE --> 'Shift + g'
 visual:bind({'shift'}, 'g',
     function()
@@ -618,13 +634,14 @@ visual:bind({}, 'x',
         deleteNextChar()
     end)
 
---VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'x'
+--VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'd'
 visual:bind({}, 'd', 
     function()
         visual:exit()
         normal:enter()
         deleteNextChar()
     end)
+
 
 
 init()
