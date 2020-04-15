@@ -412,8 +412,16 @@ function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
 --For 'dw' we have 'C', do I want both? Do I have something that does 'dd'?
 
 
---NORMAL: DELETE WHOLE LINE --> 'd'
+--NORMAL: DELETE WORD --> 'd'
 normal:bind({}, 'd',
+    function()
+        hs.eventtap.keyStroke({'shift', 'option'}, 'Right', 1)
+        hs.eventtap.keyStroke({''}, 'delete')
+    end)
+
+
+--NORMAL: DELETE WHOLE LINE --> 'Ctrl + d'
+normal:bind({'ctrl'}, 'd',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
@@ -421,14 +429,7 @@ normal:bind({}, 'd',
     end)
 
 
---NORMAL: DELETE WORD --> 'ctrl + d'
-normal:bind({'ctrl'}, 'd',
-    function()
-        hs.eventtap.keyStroke({'shift', 'option'}, 'Right', 1)
-        hs.eventtap.keyStroke({''}, 'delete')
-    end)
-
-
+--NORMAL: CHANGE WORD --> 'c'
 normal:bind({}, 'c',
     function()
         normal:exit()
@@ -442,7 +443,8 @@ normal:bind({}, 'c',
 normal:bind({'ctrl'}, 'c',
     function()
         normal:exit()
-        hs.eventtap.keyStroke({'shift', 'option'}, 'Right', 1)
+        hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
         hs.eventtap.keyStroke({''}, 'delete')
         setBarIcon('INSERT')
     end)

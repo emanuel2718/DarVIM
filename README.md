@@ -100,9 +100,9 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `x` : Delete single character in front of cursor
  * `s` : Delete single character in front of cursor + Insert Mode
  * `r` : Replace single character at cursor (Need to fix this)
- * `d` : Works like `d-d` in native VIM
+ * `d` : Delete next word (works like `d-w`)
  * `Shift + d` : Delete to end of line
- * `Ctrl + d` : Delete next word (works like `d-w`)
+ * `Ctrl + d` : Works like `d-d` in native VIM
  * `c` : Works like `c-w` in native VIM
  * `Shift + c` : Change to end of line
  * `Ctrl + c` : Change next word (works like `c-w`)
@@ -147,6 +147,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 # TODO LIST:
 - [x] Add prefix keys functionality for cases like: `c-w`, `d-w`, etc.
+- [x] Add menu bar icon to display current mode.
 - [ ] Add `.` repetition functionality
 - [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`
 - [ ] Add leader key functionality.
