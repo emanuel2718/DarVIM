@@ -148,7 +148,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 # TODO LIST:
 - [x] Add prefix keys functionality for cases like: `c-w`, `d-w`, etc.
 - [x] Add menu bar icon to display current mode.
-- [ ] Add `.` repetition functionality
+- [x] Add `.` repetition functionality
 - [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`
 - [ ] Add leader key functionality.
 - [ ] Add mode in mode status in the menu bar using hs.menubar
