@@ -568,8 +568,8 @@ normal:bind({'shift'}, 'v',
         visual:enter()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 5)
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
-        hs.alert.closeAll()
-        hs.alert.show(visualNotification, alertStyle)
+        --hs.alert.closeAll()
+        --hs.alert.show(visualNotification, alertStyle)
         setBarIcon('VISUAL')
     end)
 
