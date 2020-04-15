@@ -47,7 +47,8 @@ local normalNotification = 'NORMAL'
 local insertNotification = 'INSERT'
 local visualNotification = 'VISUAL'
 
-
+local keys = {}
+local mods = {}
 
 function init()
     appsWatcher = hs.application.watcher.new(applicationWatcher)
@@ -85,6 +86,15 @@ end
 --    setBarIcon(hs.caffeinate.get('CLICKED'))
 --end
 --
+
+--Saves the last modifiers and/or key used by the user.
+function lastOperation(mod, command)
+    keys[0] = command
+    mods[0] = mod
+end
+
+
+
 
 function applicationWatcher(name, event, app)
 
@@ -311,7 +321,7 @@ normal:bind({}, 'w', moveNextWord, nil, moveNextWord)
 --NORMAL: MOVE TO END OF WORD --> 'e'
 function moveEndOfWord()
     hs.eventtap.keyStroke({'alt'}, 'right', 50)
-    hs.eventtap.keyStroke({}, 'left', 50)
+    --hs.eventtap.keyStroke({}, 'left', 50)
 end
 normal:bind({}, 'e', moveEndOfWord, nil, moveEndOfWord)
 
@@ -359,6 +369,7 @@ normal:bind({'shift'}, 'O', nil,
         hs.eventtap.keyStroke({}, 'Up', 0)
         normal:exit()
         setBarIcon('INSERT')
+        lastOperation('shift', 'o')
     end)
 
 
@@ -369,14 +380,14 @@ normal:bind({}, 'O', nil,
         hs.eventtap.keyStroke({'shift'}, 'Return')
         normal:exit()
         setBarIcon('INSERT')
+        lastOperation('', 'o')
     end)
 
 
 --NORMAL: DELETE CHARACTER IN FRONT OF CURSOR --> 'x'
 function deleteNextChar()
-    --hs.eventtap.keyStroke({}, 'Right', 50)
-    --hs.eventtap.keyStroke({'fn'}, 'delete', 50)
     hs.eventtap.keyStroke({}, 'forwarddelete', 50)
+    lastOperation('', 'x')
 end
 normal:bind({}, 'x', deleteNextChar, nil, deleteNextChar)
 
@@ -387,6 +398,7 @@ normal:bind({}, 's',
         hs.eventtap.keyStroke({}, 'forwarddelete', 50)
         normal:exit()
         setBarIcon('INSERT')
+        lastOperation('', 's')
     end)
 
 
@@ -398,6 +410,7 @@ normal:bind({}, 'r',
         deleteNextChar()
         normal:exit()
         setBarIcon('INSERT')
+        --TODO: Add correct repetition...
     end)
 
 
@@ -417,6 +430,7 @@ normal:bind({}, 'd',
     function()
         hs.eventtap.keyStroke({'shift', 'option'}, 'Right', 1)
         hs.eventtap.keyStroke({''}, 'delete')
+        lastOperation('', 'd')
     end)
 
 
@@ -426,6 +440,7 @@ normal:bind({'ctrl'}, 'd',
         hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
         hs.eventtap.keyStroke({''}, 'delete')
+        lastOperation('ctrl', 'd')
     end)
 
 
@@ -436,6 +451,7 @@ normal:bind({}, 'c',
         jumpNextWord()
         hs.eventtap.keyStroke({'option'}, 'delete')
         setBarIcon('INSERT')
+        lastOperation('', 'c')
     end)
 
 
@@ -447,14 +463,16 @@ normal:bind({'ctrl'}, 'c',
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
         hs.eventtap.keyStroke({''}, 'delete')
         setBarIcon('INSERT')
+        lastOperation('ctrl', 'c')
     end)
 
 
 --NORMAL: DELETE UNITIL END OF LINE --> 'Shift + d'
-normal:bind({'shift'}, 'D',
+normal:bind({'shift'}, 'd',
     function()
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
         hs.eventtap.keyStroke({'fn'}, 'delete', 50)
+        lastOperation('shift', 'd')
     end)
 
 
@@ -465,6 +483,7 @@ normal:bind({'shift'}, 'C',
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
         hs.eventtap.keyStroke({'fn'}, 'delete', 50)
         setBarIcon('INSERT')
+        lastOperation('shift', 'c')
     end)
 
 
@@ -506,6 +525,7 @@ normal:bind({}, 'P',
         hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
         hs.eventtap.keyStroke({}, 'Return')
         hs.eventtap.keyStroke({'cmd'}, 'V')
+        lastOperation('', 'p')
     end)
 
 
@@ -516,6 +536,7 @@ normal:bind({'shift'}, 'P', nil,
         hs.eventtap.keyStroke({}, 'Return')
         hs.eventtap.keyStroke({}, 'Up')
         hs.eventtap.keyStroke({'cmd'}, 'v')
+        lastOperation('shift', 'p')
     end)
 
 
@@ -549,6 +570,7 @@ normal:bind({'shift'}, '.',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 50)
         hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', 50)
+        lastOperation('shift', '.')
     end)
 
 
@@ -557,6 +579,7 @@ normal:bind({'shift'}, ',',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Right', 50)
         hs.eventtap.keyStroke({'shift'}, 'Tab', 50)
+        lastOperation('shift', ',')
     end)
 
 
@@ -578,6 +601,20 @@ normal:bind({'shift'}, 'v',
 normal:bind({}, 'Q',
     function()
 end)
+
+
+--NORMAL: REPEAT LAST COMMAND
+normal:bind({}, '.', 
+    function()
+        if keys[0] ~= nil then
+            hs.eventtap.keyStroke({mods[0]}, keys[0], 50)
+            hs.eventtap.keyStroke({}, 'Escape', 1) --To deal with cases that put us in Insert
+        end
+    end, nil,
+    function()
+        hs.eventtap.keyStroke({mods[0]}, keys[0], 50)
+        hs.eventtap.keyStroke({}, 'Escape', 1)
+    end)
 
 ---------------------------------------------------------------------
 --                          VISUAL MODE                            --
@@ -682,6 +719,7 @@ visual:bind({}, 'x',
         normal:enter()
         deleteNextChar()
         setBarIcon('NORMAL')
+        lastOperation('', 'x')
     end)
 
 --VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'd'
@@ -691,6 +729,7 @@ visual:bind({}, 'd',
         normal:enter()
         hs.eventtap.keyStroke({''}, 'delete')
         setBarIcon('NORMAL')
+        lastOperation('', 'd')
     end)
 
 
@@ -698,21 +737,30 @@ visual:bind({}, 'd',
 visual:bind({}, 'c', 
     function()
         visual:exit()
-        hs.eventtap.keyStroke({''}, 'delete')
-        setBarIcon('Insert')
+        hs.eventtap.keyStroke({''}, 'delete', 1)
+        setBarIcon('INSERT')
+        lastOperation('', 'c')
     end)
 
 
 --VISUAL: INDENT FOWARD --> '>'
 visual:bind({'shift'}, '.',
     function()
+        hs.eventtap.keyStroke({'cmd'}, 'Left', 50)
         hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', 50)
+        visual:exit()
+        normal:enter()
+        lastOperation('shift', '.')
     end)
 
 --VISUAL: INDENT BACKWARDS --> '<'
 visual:bind({'shift'}, ',',
     function()
+        hs.eventtap.keyStroke({'cmd'}, 'Right', 50)
         hs.eventtap.keyStroke({'shift'}, 'Tab', 50)
+        visual:exit()
+        normal:enter()
+        lastOperation('shift', ',')
     end)
 
 
