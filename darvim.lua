@@ -7,6 +7,8 @@
 --Scrolling speed
 local SPEED = 2
 
+local barIcon = hs.menubar.new()
+
 
 --Normal Mode
 local normal = hs.hotkey.modal.new()
@@ -62,6 +64,28 @@ function contains(APP, name)
     return false
 end
 
+function setBarIcon(state)
+    if state == 'VISUAL' then
+        barIcon:setTitle('V')
+    elseif state == 'INSERT' then
+        barIcon:setTitle('I')
+    elseif state == 'NORMAL' then
+        barIcon:setTitle('N')
+    else
+        barIcon:setTitle('')
+    end
+end
+
+--function barIconClicked()
+--    setBarIcon(hs.caffeinate.toggle('CLICKED'))
+--end
+--
+--if barIcon then
+--    barIcon:setClickCallback(barIconClicked)
+--    setBarIcon(hs.caffeinate.get('CLICKED'))
+--end
+--
+
 function applicationWatcher(name, event, app)
 
     --If we are readign a PDF
@@ -71,6 +95,7 @@ function applicationWatcher(name, event, app)
             normalMode:disable()
             normalModePDF:enable()
             normalPDF:enter()
+            setBarIcon('NORMAL')
         end
         --We lost focus of the PDF window
         if event == hs.application.watcher.deactivated then
@@ -78,6 +103,7 @@ function applicationWatcher(name, event, app)
             --restriction (i.e Terminal)
             if not contains(APPS, hs.window.frontmostWindow():application():name()) then
                 normalModePDF:disable()
+                setBarIcon('')
             end
             normalPDF:exit()
             visual:exit()
@@ -92,11 +118,13 @@ function applicationWatcher(name, event, app)
             normalModePDF:disable()
             normalMode:enable()
             normal:enter()
+            setBarIcon('NORMAL')
         end
         if event == hs.application.watcher.deactivated then
             if not contains(APPS, hs.window.frontmostWindow():application():name()) then
                 normalModePDF:disable()
                 normalMode:disable()
+                setBarIcon('')
             end
             normal:exit()
             visual:exit()
@@ -106,6 +134,7 @@ function applicationWatcher(name, event, app)
         --TODO: This is throwing nil values.
         normalModePDF:disable()
         normalMode:disable()
+        setBarIcon('')
     end
 end
 
@@ -119,27 +148,38 @@ end
 normalMode = hs.hotkey.bind({}, 'Escape',
 function()
     normal:enter() 
-    hs.alert.closeAll()
-    hs.alert.show(normalNotification, alertStyle)
+    --hs.alert.closeAll()
+    setBarIcon('NORMAL')
+    --hs.alert.show(normalNotification, alertStyle)
 end)
 
 --NORMAL: ENABLE NORMAL MODE IN PDF'S --> 'Escape'
 normalModePDF = hs.hotkey.bind({}, 'Escape',
 function()
     normalPDF:enter() 
-    hs.alert.closeAll()
-    hs.alert.show(normalNotification, alertStyle)
+    setBarIcon('NORMAL')
+    --hs.alert.closeAll()
+    --hs.alert.show(normalNotification, alertStyle)
 end)
 
 --NORMAL: ENABLE VISUAL MODE --> 'v'
 normal:bind({}, 'v',
     function()
+        setBarIcon('VISUAL')
         normal:exit()
         visual:enter()
-        hs.alert.closeAll()
-        hs.alert.show(visualNotification, alertStyle)
+        --hs.alert.closeAll()
+        --hs.alert.show(visualNotification, alertStyle)
     end)
 
+--NORMAL: ENTER INSERT MODE --> 'n'
+normal:bind({}, 'I',
+    function()
+        normal:exit()
+        --hs.alert.closeAll()
+        --hs.alert.show(insertNotification, alertStyle)
+        setBarIcon('INSERT')
+    end)
 
 
 
@@ -152,7 +192,8 @@ normal:bind({}, 'v',
 normalPDF:bind({}, 'I',
     function()
         normalPDF:exit()
-        hs.alert.show(insertNotification, alertStyle)
+        setBarIcon('INSERT')
+        --hs.alert.show(insertNotification, alertStyle)
     end)
 
 
@@ -286,8 +327,8 @@ normal:bind({'shift'}, '4',
 normal:bind({}, 'A',
     function()
         normal:exit()
-        --MODE = 'INSERT'
         hs.eventtap.keyStroke({}, 'Right')
+        setBarIcon('INSERT')
     end)
 
 
@@ -297,6 +338,7 @@ normal:bind({'shift'}, 'A',
         normal:exit()
         --MODE = 'INSERT'
         hs.eventtap.keyStroke({'cmd'}, 'right')
+        setBarIcon('INSERT')
     end)
 
 
@@ -304,8 +346,8 @@ normal:bind({'shift'}, 'A',
 normal:bind({'shift'}, 'I',
     function()
         normal:exit()
-        --MODE = 'INSERT'
         hs.eventtap.keyStroke({'cmd'}, 'left')
+        setBarIcon('INSERT')
     end)
 
 
@@ -316,7 +358,7 @@ normal:bind({'shift'}, 'O', nil,
         hs.eventtap.keyStroke({'shift'}, 'Return', 0)
         hs.eventtap.keyStroke({}, 'Up', 0)
         normal:exit()
-        --MODE = 'INSERT'
+        setBarIcon('INSERT')
     end)
 
 
@@ -326,7 +368,7 @@ normal:bind({}, 'O', nil,
         hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
         hs.eventtap.keyStroke({'shift'}, 'Return')
         normal:exit()
-        --MODE = 'INSERT'
+        setBarIcon('INSERT')
     end)
 
 
@@ -339,11 +381,12 @@ end
 normal:bind({}, 'x', deleteNextChar, nil, deleteNextChar)
 
 
---NORMAL: DELETE CHARACTER IN FRONT OF CURSOR --> 's'
+--NORMAL: DELETE CHARACTER IN FRONT OF CURSOR + INSERT MODE--> 's'
 normal:bind({}, 's',
     function()
         hs.eventtap.keyStroke({}, 'forwarddelete', 50)
         normal:exit()
+        setBarIcon('INSERT')
     end)
 
 
@@ -354,7 +397,7 @@ normal:bind({}, 'r',
     function()
         deleteNextChar()
         normal:exit()
-        --MODE = 'INSERT'
+        setBarIcon('INSERT')
     end)
 
 
@@ -389,9 +432,9 @@ normal:bind({'ctrl'}, 'd',
 normal:bind({}, 'c',
     function()
         normal:exit()
-        --MODE = 'INSERT'
         jumpNextWord()
         hs.eventtap.keyStroke({'option'}, 'delete')
+        setBarIcon('INSERT')
     end)
 
 
@@ -401,6 +444,7 @@ normal:bind({'ctrl'}, 'c',
         normal:exit()
         hs.eventtap.keyStroke({'shift', 'option'}, 'Right', 1)
         hs.eventtap.keyStroke({''}, 'delete')
+        setBarIcon('INSERT')
     end)
 
 
@@ -416,9 +460,9 @@ normal:bind({'shift'}, 'D',
 normal:bind({'shift'}, 'C',
     function()
         normal:exit()
-        --MODE = 'INSERT'
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
         hs.eventtap.keyStroke({'fn'}, 'delete', 50)
+        setBarIcon('INSERT')
     end)
 
 
@@ -480,6 +524,7 @@ normal:bind({}, '/',
         normal:exit()
         hs.alert.closeAll()
         hs.alert.show(insertNotification, alertStyle)
+        setBarIcon('INSERT')
     end)
 
 
@@ -496,6 +541,7 @@ normal:bind({'shift'}, 'n',
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'G')
     end)
 
+
 --NORMAL: INDENT FOWARD --> '>'
 normal:bind({'shift'}, '.',
     function()
@@ -503,29 +549,12 @@ normal:bind({'shift'}, '.',
         hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', 50)
     end)
 
+
 --NORMAL: INDENT BACKWARDS --> '<'
 normal:bind({'shift'}, ',',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Right', 50)
         hs.eventtap.keyStroke({'shift'}, 'Tab', 50)
-    end)
-
-
---NORMAL: ENTER INSERT MODE --> 'n'
-normal:bind({}, 'I',
-    function()
-        normal:exit()
-        hs.alert.closeAll()
-        hs.alert.show(insertNotification, alertStyle)
-    end)
-
---NORMAL: ENTER VISUAL MODE --> 'v'
-normal:bind({}, 'v',
-    function()
-        normal:exit()
-        visual:enter()
-        hs.alert.closeAll()
-        hs.alert.show(visualNotification, alertStyle)
     end)
 
 
@@ -539,6 +568,7 @@ normal:bind({'shift'}, 'v',
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
         hs.alert.closeAll()
         hs.alert.show(visualNotification, alertStyle)
+        setBarIcon('VISUAL')
     end)
 
 
@@ -595,6 +625,7 @@ visual:bind({}, 'Y',
         hs.eventtap.keyStroke({}, 'Right')
         visual:exit()
         normal:enter()
+        setBarIcon('NORMAL')
     end)
 
 
@@ -648,6 +679,7 @@ visual:bind({}, 'x',
         visual:exit()
         normal:enter()
         deleteNextChar()
+        setBarIcon('NORMAL')
     end)
 
 --VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'd'
@@ -656,6 +688,7 @@ visual:bind({}, 'd',
         visual:exit()
         normal:enter()
         hs.eventtap.keyStroke({''}, 'delete')
+        setBarIcon('NORMAL')
     end)
 
 
@@ -664,6 +697,7 @@ visual:bind({}, 'c',
     function()
         visual:exit()
         hs.eventtap.keyStroke({''}, 'delete')
+        setBarIcon('Insert')
     end)
 
 
