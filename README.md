@@ -154,9 +154,13 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] Add mode in mode status in the menu bar using hs.menubar
 - [ ] Add real `c-w`, `d-w`, etc. functionalities
 - [ ] Complete documentation on how to install and use.
-- [ ] Add SHIFT+`key` to scroll faster than normal scrolling speed.
+- [ ] Add Shift + `key` to scroll faster than normal scrolling speed.
 - [ ] Disable all hotkeys when spotlight is beign used.
 - [ ] Add macro recordings
+- [ ] Add window tiling like in i3wm. Moving and resizing.
+- [ ] Add options in menu to let user chose keybinds for specific operations
+    like (i.e Normal Mode keybind = '**choose keybind**')
+
 
 # Credits:
 This project couldn't have been possible without [Hammerspoon](https://github.com/Hammerspoon/hammerspoon), which is a powerful OSX automation tool.
