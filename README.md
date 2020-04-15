@@ -21,10 +21,12 @@ Pseudo-VIM keybinds ONLY on the apps you decide you want VIM keybinds.
 &nbsp; 
 ##### CASE 1: If you already have an `init.lua` file:
 
-1. Copy the contents of the `init.lua` from this repo and paste it on your
+1. `git clone https://github.com/emanuel2718/DarVIM.git`
+
+2. Copy the contents of the `init.lua` from this repo and paste it on your
     existing `init.lua` file.
 
-2. `ln -s <path-to-DarVIM-folder>/darvim.lua ~/.hammerspoon/darvim.lua`
+3. `ln -s <path-to-DarVIM-folder>/darvim.lua ~/.hammerspoon/darvim.lua`
 
 &nbsp; 
 
