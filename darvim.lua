@@ -332,10 +332,19 @@ normal:bind({}, 'O', nil,
 
 --NORMAL: DELETE CHARACTER IN FRONT OF CURSOR --> 'x'
 function deleteNextChar()
-    hs.eventtap.keyStroke({}, 'Right', 50)
-    hs.eventtap.keyStroke({'fn'}, 'delete', 50)
+    --hs.eventtap.keyStroke({}, 'Right', 50)
+    --hs.eventtap.keyStroke({'fn'}, 'delete', 50)
+    hs.eventtap.keyStroke({}, 'forwarddelete', 50)
 end
 normal:bind({}, 'x', deleteNextChar, nil, deleteNextChar)
+
+
+--NORMAL: DELETE CHARACTER IN FRONT OF CURSOR --> 's'
+normal:bind({}, 's',
+    function()
+        hs.eventtap.keyStroke({}, 'forwarddelete', 50)
+        normal:exit()
+    end)
 
 
 
@@ -537,7 +546,6 @@ normal:bind({'shift'}, 'v',
 normal:bind({}, 'Q',
     function()
 end)
-
 
 ---------------------------------------------------------------------
 --                          VISUAL MODE                            --

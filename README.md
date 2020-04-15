@@ -96,6 +96,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `Shift + o` : Open line above and enter insertion mode
  * `o` : Open line below and enter insertion mode
  * `x` : Delete single character in front of cursor
+ * `s` : Delete single character in front of cursor + Insert Mode
  * `r` : Replace single character at cursor (Need to fix this)
  * `d` : Works like `d-d` in native VIM
  * `Shift + d` : Delete to end of line
