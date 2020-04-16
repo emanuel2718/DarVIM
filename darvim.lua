@@ -518,14 +518,14 @@ normal:bind({'shift'}, 'C',
 --NORMAL: UNDO --> 'u'
 normal:bind({}, 'U',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Z')
+        hs.eventtap.keyStroke({'cmd'}, 'Z', 50)
     end)
 
 
 --NORMAL: REDO --> 'Ctrl + r'
 normal:bind({'ctrl'}, 'R',
     function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Z')
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Z', 50)
     end)
 
 
@@ -552,11 +552,11 @@ normal:bind({}, 'P',
     function()
         if wholeLineYanked then
             hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
-            hs.eventtap.keyStroke({}, 'Return')
-            hs.eventtap.keyStroke({'cmd'}, 'v')
+            hs.eventtap.keyStroke({}, 'Return', 50)
+            hs.eventtap.keyStroke({'cmd'}, 'v', 50)
             lastOperation('', 'p')
         else
-            hs.eventtap.keyStroke({'cmd'}, 'v')
+            hs.eventtap.keyStroke({'cmd'}, 'v', 50)
             lastOperation('', 'p')
         end
     end)
@@ -566,9 +566,9 @@ normal:bind({}, 'P',
 normal:bind({'shift'}, 'P', nil,
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
-        hs.eventtap.keyStroke({}, 'Return')
-        hs.eventtap.keyStroke({}, 'Up')
-        hs.eventtap.keyStroke({'cmd'}, 'v')
+        hs.eventtap.keyStroke({}, 'Return', 50)
+        hs.eventtap.keyStroke({}, 'Up', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'v', 50)
         lastOperation('shift', 'p')
     end)
 
