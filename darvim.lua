@@ -407,6 +407,17 @@ normal:bind({}, 's',
         lastOperation('', 's')
     end)
 
+--NORMAL: SUBSTITUTE ENTIRE LINE-DELTES LINE + INSERT MODE --> 'Shift + s'
+normal:bind({'shift'}, 's',
+    function()
+        normal:exit()
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'c', 50)
+        hs.eventtap.keyStroke({'fn'}, 'delete', 50)
+        setBarIcon('INSERT')
+        lastOperation('shift', 's')
+        wholeLineYanked = true
+    end)
 
 
 --TODO: Need to fix this like in native VIM: Replace -> Get Char -> Type Char--(While still in Normal Mode)
