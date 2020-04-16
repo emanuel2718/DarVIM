@@ -52,7 +52,6 @@ At this point VIM keybinds should be enabled while using Preview.
 
 TLDR: `Open` Hammerspoon appllication and press `Shift + Cmd + R`.
 
-
 # How to use:
 **TODO:** Explain what keybinds ara available in which apps.
 
@@ -60,6 +59,7 @@ TLDR: `Open` Hammerspoon appllication and press `Shift + Cmd + R`.
 https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 
+&nbsp; 
 
 # Supported Keybinds:
 
@@ -76,6 +76,8 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `ESC` : Enter Normal Mode
  * `i` : Enter Insert Mode (VIM keybinds stop working)
  * `s` : Invert screen colors
+
+&nbsp; 
 
 ### Normal Mode:
  * `Ctrl + y` : Scroll Up
@@ -122,6 +124,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `v` : Enter Visual Mode
  * `Shift + v` : Enter Visual mode and highlight whole line
 
+&nbsp; 
 
 ### Visual Mode:
  * `h` : Highlight Left
@@ -145,6 +148,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `<` : Unindent
  
 
+&nbsp; 
 
 # TODO LIST:
 - [x] Add prefix keys functionality for cases like: `c-w`, `d-w`, etc.
