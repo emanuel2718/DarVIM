@@ -50,6 +50,12 @@ local visualNotification = 'VISUAL'
 local keys = {}
 local mods = {}
 
+--In charge of keeping track if a whole line was yanked or a portion (i.e word)
+--When this is true; paste will open a new line (above or below) and paste line
+--When this is false; paste will paste in place
+local wholeLineYanked = false
+
+
 function init()
     appsWatcher = hs.application.watcher.new(applicationWatcher)
     appsWatcher:start()
@@ -429,8 +435,10 @@ function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
 normal:bind({}, 'd',
     function()
         hs.eventtap.keyStroke({'shift', 'option'}, 'Right', 1)
+        hs.eventtap.keyStroke({'cmd'}, 'c', 50)
         hs.eventtap.keyStroke({''}, 'delete')
         lastOperation('', 'd')
+        wholeLineYanked = false
     end)
 
 
@@ -439,8 +447,10 @@ normal:bind({'ctrl'}, 'd',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
+        hs.eventtap.keyStroke({'cmd'}, 'c', 50)
         hs.eventtap.keyStroke({''}, 'delete')
         lastOperation('ctrl', 'd')
+        wholeLineYanked = true
     end)
 
 
@@ -449,9 +459,11 @@ normal:bind({}, 'c',
     function()
         normal:exit()
         jumpNextWord()
+        --TODO: implement copy to clipboard
         hs.eventtap.keyStroke({'option'}, 'delete')
         setBarIcon('INSERT')
         lastOperation('', 'c')
+        wholeLineYanked = false
     end)
 
 
@@ -464,6 +476,7 @@ normal:bind({'ctrl'}, 'c',
         hs.eventtap.keyStroke({''}, 'delete')
         setBarIcon('INSERT')
         lastOperation('ctrl', 'c')
+        wholeLineYanked = false
     end)
 
 
@@ -471,8 +484,10 @@ normal:bind({'ctrl'}, 'c',
 normal:bind({'shift'}, 'd',
     function()
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'c', 50)
         hs.eventtap.keyStroke({'fn'}, 'delete', 50)
         lastOperation('shift', 'd')
+        wholeLineYanked = false
     end)
 
 
@@ -481,9 +496,11 @@ normal:bind({'shift'}, 'C',
     function()
         normal:exit()
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'c', 50)
         hs.eventtap.keyStroke({'fn'}, 'delete', 50)
         setBarIcon('INSERT')
         lastOperation('shift', 'c')
+        wholeLineYanked = false
     end)
 
 
@@ -501,13 +518,12 @@ normal:bind({'ctrl'}, 'R',
     end)
 
 
---TODO: Is this what we want to happen when we yank in Normal mode?
---NORMAL: YANK WORD IN FRONT OF CURSOR --> 'y'
 normal:bind({}, 'Y',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Left', 5)
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 5)
         hs.eventtap.keyStroke({'cmd'}, 'c')
+        wholeLineYanked = false
     end)
 
 
@@ -516,16 +532,22 @@ normal:bind({'shift'}, 'y',
     function()
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
         hs.eventtap.keyStroke({'cmd'}, 'c')
+        wholeLineYanked = true
     end)
 
 
 --NORMAL: PASTE BELOW CURRENT CURSOR LINE --> 'p'
 normal:bind({}, 'P',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
-        hs.eventtap.keyStroke({}, 'Return')
-        hs.eventtap.keyStroke({'cmd'}, 'V')
-        lastOperation('', 'p')
+        if wholeLineYanked then
+            hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
+            hs.eventtap.keyStroke({}, 'Return')
+            hs.eventtap.keyStroke({'cmd'}, 'v')
+            lastOperation('', 'p')
+        else
+            hs.eventtap.keyStroke({'cmd'}, 'v')
+            lastOperation('', 'p')
+        end
     end)
 
 
