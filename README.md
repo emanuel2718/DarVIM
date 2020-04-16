@@ -155,6 +155,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [x] Add menu bar icon to display current mode.
 - [x] Add `.` repetition functionality
 - [x] Add delay variable
+- [ ] Create installation script
 - [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`
 - [ ] Add leader key functionality.
 - [ ] Add mode in mode status in the menu bar using hs.menubar
