@@ -7,6 +7,9 @@
 --Scrolling speed
 local SPEED = 2
 
+--Key press delay in ms.
+local delay = 1
+
 local barIcon = hs.menubar.new()
 
 
@@ -244,12 +247,12 @@ normalPDF:bind({'shift'}, 'G', goBOTTOM)
 
 
 --NORMALPDF: SCROLL ONE PAGE FOWARD --> 'ctrl + f'
-function nextPAGE() hs.eventtap.keyStroke({}, 'Right', 200) end
+function nextPAGE() hs.eventtap.keyStroke({}, 'Right', delay) end
 normalPDF:bind({'ctrl'}, 'F', nextPAGE, nil, nextPAGE)
 
 
 --NORMALPDF: SCROLL ONE PAGE BACKWARD --> 'ctrl + b'
-function previousPAGE() hs.eventtap.keyStroke({}, 'Left', 200) end
+function previousPAGE() hs.eventtap.keyStroke({}, 'Left', delay) end
 normalPDF:bind({'ctrl'}, 'B', previousPAGE, nil, previousPAGE)
 
 
@@ -271,22 +274,22 @@ normalPDF:bind({}, 's',
 
 
 --NORMAL: MOVE UP --> 'k'
-function moveUP() hs.eventtap.keyStroke({}, 'Up', 200) end
+function moveUP() hs.eventtap.keyStroke({}, 'Up', delay) end
 normal:bind({}, 'k', nil, moveUP, moveUP)
 
 
 --NORMAL: MOVE DOWN --> 'j'
-function moveDOWN() hs.eventtap.keyStroke({}, 'Down', 200) end
+function moveDOWN() hs.eventtap.keyStroke({}, 'Down', delay) end
 normal:bind({}, 'j', nil, moveDOWN, moveDOWN)
 
 
 --NORMAL: MOVE LEFT --> 'h'
-function moveLEFT() hs.eventtap.keyStroke({}, 'Left', 200) end
+function moveLEFT() hs.eventtap.keyStroke({}, 'Left', delay) end
 normal:bind({}, 'h', nil, moveLEFT, moveLEFT)
 
 
 --NORMAL: MOVE RIGHT --> 'l'
-function moveRIGHT() hs.eventtap.keyStroke({}, 'Right', 200) end
+function moveRIGHT() hs.eventtap.keyStroke({}, 'Right', delay) end
 normal:bind({}, 'l', nil, moveRIGHT, moveRIGHT)
 
 
@@ -301,32 +304,32 @@ normal:bind({'ctrl'}, 'e', scrollDOWN, nil, scrollDOWN)
 
 
 --NORMAL: MOVE TO PREVIOUS WORD --> 'b'
-function movePrevWord() hs.eventtap.keyStroke({'alt'}, 'left') end
+function movePrevWord() hs.eventtap.keyStroke({'alt'}, 'left', delay) end
 normal:bind({}, 'B', movePrevWord, nil, movePrevWord)
 
 
 --NORMAL: MOVE TO TOP OF PAGE --> 'g'
 normal:bind({}, 'G',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Up')
+        hs.eventtap.keyStroke({'cmd'}, 'Up', delay)
     end)
 
 
 --NORMAL: MOVE TO BOTTOM OF PAGE --> 'Shift + g'
 normal:bind({'shift'}, 'G',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Down')
+        hs.eventtap.keyStroke({'cmd'}, 'Down', delay)
     end)
 
 
 --NORMAL: MOVE TO NEXT WORD --> 'w'
-function moveNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
+function moveNextWord() hs.eventtap.keyStroke({'alt'}, 'right', delay) end
 normal:bind({}, 'w', moveNextWord, nil, moveNextWord)
 
 
 --NORMAL: MOVE TO END OF WORD --> 'e'
 function moveEndOfWord()
-    hs.eventtap.keyStroke({'alt'}, 'right', 50)
+    hs.eventtap.keyStroke({'alt'}, 'right', delay)
     --hs.eventtap.keyStroke({}, 'left', 50)
 end
 normal:bind({}, 'e', moveEndOfWord, nil, moveEndOfWord)
@@ -335,7 +338,7 @@ normal:bind({}, 'e', moveEndOfWord, nil, moveEndOfWord)
 --NORMAL: MOVE TO END OF LINE --> '$'
 normal:bind({'shift'}, '4',
     function()
-        hs.eventtap.keyStroke({'ctrl'}, 'e')
+        hs.eventtap.keyStroke({'ctrl'}, 'e', delay)
     end)
 
 
@@ -343,7 +346,7 @@ normal:bind({'shift'}, '4',
 normal:bind({}, 'A',
     function()
         normal:exit()
-        hs.eventtap.keyStroke({}, 'Right')
+        hs.eventtap.keyStroke({}, 'Right', delay)
         setBarIcon('INSERT')
     end)
 
@@ -353,7 +356,7 @@ normal:bind({'shift'}, 'A',
     function()
         normal:exit()
         --MODE = 'INSERT'
-        hs.eventtap.keyStroke({'cmd'}, 'right')
+        hs.eventtap.keyStroke({'cmd'}, 'right', delay)
         setBarIcon('INSERT')
     end)
 
@@ -362,7 +365,7 @@ normal:bind({'shift'}, 'A',
 normal:bind({'shift'}, 'I',
     function()
         normal:exit()
-        hs.eventtap.keyStroke({'cmd'}, 'left')
+        hs.eventtap.keyStroke({'cmd'}, 'left', delay)
         setBarIcon('INSERT')
     end)
 
@@ -370,9 +373,9 @@ normal:bind({'shift'}, 'I',
 --NORMAL: OPEN A NEW LINE ABOVE CURRENT CURSOR LINE + INSERT MODE --> 'o'
 normal:bind({'shift'}, 'O', nil,
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Left', 0)
-        hs.eventtap.keyStroke({'shift'}, 'Return', 0)
-        hs.eventtap.keyStroke({}, 'Up', 0)
+        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+        hs.eventtap.keyStroke({'shift'}, 'Return', delay)
+        hs.eventtap.keyStroke({}, 'Up', delay)
         normal:exit()
         setBarIcon('INSERT')
         lastOperation('shift', 'o')
@@ -382,8 +385,8 @@ normal:bind({'shift'}, 'O', nil,
 --NORMAL: OPEN A NEW LINE BELOW CURRENT CURSOR LINE + INSERT MODE --> 'Shift + o'
 normal:bind({}, 'O', nil,
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
-        hs.eventtap.keyStroke({'shift'}, 'Return')
+        hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'shift'}, 'Return', delay)
         normal:exit()
         setBarIcon('INSERT')
         lastOperation('', 'o')
@@ -392,7 +395,7 @@ normal:bind({}, 'O', nil,
 
 --NORMAL: DELETE CHARACTER IN FRONT OF CURSOR --> 'x'
 function deleteNextChar()
-    hs.eventtap.keyStroke({}, 'forwarddelete', 50)
+    hs.eventtap.keyStroke({}, 'forwarddelete', delay)
     lastOperation('', 'x')
 end
 normal:bind({}, 'x', deleteNextChar, nil, deleteNextChar)
@@ -401,7 +404,7 @@ normal:bind({}, 'x', deleteNextChar, nil, deleteNextChar)
 --NORMAL: DELETE CHARACTER IN FRONT OF CURSOR + INSERT MODE--> 's'
 normal:bind({}, 's',
     function()
-        hs.eventtap.keyStroke({}, 'forwarddelete', 50)
+        hs.eventtap.keyStroke({}, 'forwarddelete', delay)
         normal:exit()
         setBarIcon('INSERT')
         lastOperation('', 's')
@@ -411,9 +414,9 @@ normal:bind({}, 's',
 normal:bind({'shift'}, 's',
     function()
         normal:exit()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
-        hs.eventtap.keyStroke({'cmd'}, 'c', 50)
-        hs.eventtap.keyStroke({'fn'}, 'delete', 50)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+        hs.eventtap.keyStroke({'fn'}, 'delete', delay)
         setBarIcon('INSERT')
         lastOperation('shift', 's')
         wholeLineYanked = true
@@ -432,7 +435,7 @@ normal:bind({}, 'r',
 
 
 --NORMAL: move to the next word without delay
-function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
+function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', delay) end
 
 
 --TODO: Fix bug: If there is empty space between the cursor position and the
@@ -445,9 +448,9 @@ function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', 50) end
 --NORMAL: DELETE WORD --> 'd'
 normal:bind({}, 'd',
     function()
-        hs.eventtap.keyStroke({'shift', 'option'}, 'Right', 1)
-        hs.eventtap.keyStroke({'cmd'}, 'c', 50)
-        hs.eventtap.keyStroke({''}, 'delete')
+        hs.eventtap.keyStroke({'shift', 'option'}, 'Right', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+        hs.eventtap.keyStroke({''}, 'delete', delay)
         lastOperation('', 'd')
         wholeLineYanked = false
     end)
@@ -456,10 +459,10 @@ normal:bind({}, 'd',
 --NORMAL: DELETE WHOLE LINE --> 'Ctrl + d'
 normal:bind({'ctrl'}, 'd',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
-        hs.eventtap.keyStroke({'cmd'}, 'c', 50)
-        hs.eventtap.keyStroke({''}, 'delete')
+        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+        hs.eventtap.keyStroke({''}, 'delete', delay)
         lastOperation('ctrl', 'd')
         wholeLineYanked = true
     end)
@@ -471,7 +474,7 @@ normal:bind({}, 'c',
         normal:exit()
         jumpNextWord()
         --TODO: implement copy to clipboard
-        hs.eventtap.keyStroke({'option'}, 'delete')
+        hs.eventtap.keyStroke({'option'}, 'delete', delay)
         setBarIcon('INSERT')
         lastOperation('', 'c')
         wholeLineYanked = false
@@ -482,9 +485,9 @@ normal:bind({}, 'c',
 normal:bind({'ctrl'}, 'c',
     function()
         normal:exit()
-        hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
-        hs.eventtap.keyStroke({''}, 'delete')
+        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({''}, 'delete', delay)
         setBarIcon('INSERT')
         lastOperation('ctrl', 'c')
         wholeLineYanked = false
@@ -494,9 +497,9 @@ normal:bind({'ctrl'}, 'c',
 --NORMAL: DELETE UNITIL END OF LINE --> 'Shift + d'
 normal:bind({'shift'}, 'd',
     function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
-        hs.eventtap.keyStroke({'cmd'}, 'c', 50)
-        hs.eventtap.keyStroke({'fn'}, 'delete', 50)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+        hs.eventtap.keyStroke({'fn'}, 'delete', delay)
         lastOperation('shift', 'd')
         wholeLineYanked = false
     end)
@@ -506,9 +509,9 @@ normal:bind({'shift'}, 'd',
 normal:bind({'shift'}, 'C',
     function()
         normal:exit()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
-        hs.eventtap.keyStroke({'cmd'}, 'c', 50)
-        hs.eventtap.keyStroke({'fn'}, 'delete', 50)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+        hs.eventtap.keyStroke({'fn'}, 'delete', delay)
         setBarIcon('INSERT')
         lastOperation('shift', 'c')
         wholeLineYanked = false
@@ -518,22 +521,22 @@ normal:bind({'shift'}, 'C',
 --NORMAL: UNDO --> 'u'
 normal:bind({}, 'U',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Z', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'Z', delay)
     end)
 
 
 --NORMAL: REDO --> 'Ctrl + r'
 normal:bind({'ctrl'}, 'R',
     function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Z', 50)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Z', delay)
     end)
 
 
 normal:bind({}, 'Y',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Left', 5)
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 5)
-        hs.eventtap.keyStroke({'cmd'}, 'c')
+        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
         wholeLineYanked = false
     end)
 
@@ -541,8 +544,8 @@ normal:bind({}, 'Y',
 --NORMAL: YANK WHOLE LINE --> 'Shift + y'
 normal:bind({'shift'}, 'y',
     function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 1)
-        hs.eventtap.keyStroke({'cmd'}, 'c')
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
         wholeLineYanked = true
     end)
 
@@ -551,12 +554,12 @@ normal:bind({'shift'}, 'y',
 normal:bind({}, 'P',
     function()
         if wholeLineYanked then
-            hs.eventtap.keyStroke({'cmd'}, 'Right', 0)
-            hs.eventtap.keyStroke({}, 'Return', 50)
-            hs.eventtap.keyStroke({'cmd'}, 'v', 50)
+            hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
+            hs.eventtap.keyStroke({}, 'Return', delay)
+            hs.eventtap.keyStroke({'cmd'}, 'v', delay)
             lastOperation('', 'p')
         else
-            hs.eventtap.keyStroke({'cmd'}, 'v', 50)
+            hs.eventtap.keyStroke({'cmd'}, 'v', delay)
             lastOperation('', 'p')
         end
     end)
@@ -565,10 +568,10 @@ normal:bind({}, 'P',
 --NORMAL: PASTE ABOVE CURRENT CURSOR LINE --> 'Shift + p'
 normal:bind({'shift'}, 'P', nil,
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Left', 1)
-        hs.eventtap.keyStroke({}, 'Return', 50)
-        hs.eventtap.keyStroke({}, 'Up', 50)
-        hs.eventtap.keyStroke({'cmd'}, 'v', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+        hs.eventtap.keyStroke({}, 'Return', delay)
+        hs.eventtap.keyStroke({}, 'Up', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'v', delay)
         lastOperation('shift', 'p')
     end)
 
@@ -576,7 +579,7 @@ normal:bind({'shift'}, 'P', nil,
 --NORMAL: Search --> '/'
 normal:bind({}, '/',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'F')
+        hs.eventtap.keyStroke({'cmd'}, 'F', delay)
         normal:exit()
         hs.alert.closeAll()
         hs.alert.show(insertNotification, alertStyle)
@@ -587,22 +590,22 @@ normal:bind({}, '/',
 --NORMAL: SEARCH FOWARD --> 'n'
 normal:bind({}, 'n',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'G')
+        hs.eventtap.keyStroke({'cmd'}, 'G', delay)
     end)
 
 
 --NORMAL: SEARCH BACKWARDS --> 'n'
 normal:bind({'shift'}, 'n',
     function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'G')
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'G', delay)
     end)
 
 
 --NORMAL: INDENT FOWARD --> '>'
 normal:bind({'shift'}, '.',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Left', 50)
-        hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+        hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', delay)
         lastOperation('shift', '.')
     end)
 
@@ -610,8 +613,8 @@ normal:bind({'shift'}, '.',
 --NORMAL: INDENT BACKWARDS --> '<'
 normal:bind({'shift'}, ',',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Right', 50)
-        hs.eventtap.keyStroke({'shift'}, 'Tab', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'shift'}, 'Tab', delay)
         lastOperation('shift', ',')
     end)
 
@@ -622,8 +625,8 @@ normal:bind({'shift'}, 'v',
     function()
         normal:exit()
         visual:enter()
-        hs.eventtap.keyStroke({'cmd'}, 'Left', 5)
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
         --hs.alert.closeAll()
         --hs.alert.show(visualNotification, alertStyle)
         setBarIcon('VISUAL')
@@ -640,13 +643,13 @@ end)
 normal:bind({}, '.', 
     function()
         if keys[0] ~= nil then
-            hs.eventtap.keyStroke({mods[0]}, keys[0], 50)
-            hs.eventtap.keyStroke({}, 'Escape', 1) --To deal with cases that put us in Insert
+            hs.eventtap.keyStroke({mods[0]}, keys[0], delay)
+            hs.eventtap.keyStroke({}, 'Escape', delay) --To deal with cases that put us in Insert
         end
     end, nil,
     function()
-        hs.eventtap.keyStroke({mods[0]}, keys[0], 50)
-        hs.eventtap.keyStroke({}, 'Escape', 1)
+        hs.eventtap.keyStroke({mods[0]}, keys[0], delay)
+        hs.eventtap.keyStroke({}, 'Escape', delay)
     end)
 
 ---------------------------------------------------------------------
@@ -655,36 +658,36 @@ normal:bind({}, '.',
 
 
 --VISUAL: MOVE UP --> 'k'
-function visualUP() hs.eventtap.keyStroke('shift', 'Up', 50) end
+function visualUP() hs.eventtap.keyStroke('shift', 'Up', delay) end
 visual:bind({}, 'k', visualUP, nil, visualUP)
 
 
 --VISUAL: MOVE DOWN --> 'j'
-function visualDOWN() hs.eventtap.keyStroke('shift', 'Down', 50) end
+function visualDOWN() hs.eventtap.keyStroke('shift', 'Down', delay) end
 visual:bind({}, 'j', visualDOWN, nil, visualDOWN)
 
 
 --VISUAL: MOVE LEFT --> 'h'
-function visualLEFT() hs.eventtap.keyStroke('shift', 'Left', 50) end
+function visualLEFT() hs.eventtap.keyStroke('shift', 'Left', delay) end
 visual:bind({}, 'h', visualLEFT, nil, visualLEFT)
 
 
 --VISUAL: MOVE DOWN --> 'l'
-function visualRIGHT() hs.eventtap.keyStroke('shift', 'Right', 50) end
+function visualRIGHT() hs.eventtap.keyStroke('shift', 'Right', delay) end
 visual:bind({}, 'l', visualRIGHT, nil, visualRIGHT)
 
 
 --VISUAL: MOVE TO END OF WORD --> 'e'
 function visualEndOfWord() 
-    hs.eventtap.keyStroke({'shift', 'alt'}, 'right', 50)
-    hs.eventtap.keyStroke({'shift'}, 'Left', 50)
+    hs.eventtap.keyStroke({'shift', 'alt'}, 'right', delay)
+    hs.eventtap.keyStroke({'shift'}, 'Left', delay)
 end
 visual:bind({}, 'E', visualEndOfWord, nil, visualEndOfWord)
 
 
 --VISUAL: MOVE TO NEXT WORD --> 'w'
 function visualNextWord() 
-    hs.eventtap.keyStroke({'shift', 'alt'}, 'right', 50)
+    hs.eventtap.keyStroke({'shift', 'alt'}, 'right', delay)
 end
 
 visual:bind({}, 'W', visualNextWord, nil, visualNextWord)
@@ -693,8 +696,8 @@ visual:bind({}, 'W', visualNextWord, nil, visualNextWord)
 --VISUAL: YANK AND TAKE US TO NORMAL MODE --> 'y'
 visual:bind({}, 'Y',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'c')
-        hs.eventtap.keyStroke({}, 'Right')
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+        hs.eventtap.keyStroke({}, 'Right', delay)
         visual:exit()
         normal:enter()
         setBarIcon('NORMAL')
@@ -705,42 +708,42 @@ visual:bind({}, 'Y',
 --VISUAL: HIGHLIGHT FROM CURSOR UNTIL BEGINNING OF LINE --> '0'
 visual:bind({}, '0',
     function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Left', 50)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Left', delay)
     end)
 
 
 --VISUAL: HIGHLIGHT FROM CURSOR UNTIL BEGINNING OF FILE --> 'Shift + h'
 visual:bind({'shift'}, 'h',
     function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', 50)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', delay)
     end)
 
 
 --VISUAL: HIGHLIGHT FROM CURSOR UNTIL BEGINNING OF FILE --> 'g'
 visual:bind({}, 'g',
     function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', 50)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', delay)
     end)
 
 
 --VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF FILE --> 'Shift + g'
 visual:bind({'shift'}, 'g',
     function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', 50)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', delay)
     end)
 
 
 --VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF FILE --> 'Shift + l'
 visual:bind({'shift'}, 'l',
     function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', 50)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', delay)
     end)
 
 
 --VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF Line --> '$'
 visual:bind({'shift'}, '4',
     function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', 50)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
     end)
 
 
@@ -760,7 +763,7 @@ visual:bind({}, 'd',
     function()
         visual:exit()
         normal:enter()
-        hs.eventtap.keyStroke({''}, 'delete')
+        hs.eventtap.keyStroke({''}, 'delete', delay)
         setBarIcon('NORMAL')
         lastOperation('', 'd')
     end)
@@ -770,7 +773,7 @@ visual:bind({}, 'd',
 visual:bind({}, 'c', 
     function()
         visual:exit()
-        hs.eventtap.keyStroke({''}, 'delete', 1)
+        hs.eventtap.keyStroke({''}, 'delete', delay)
         setBarIcon('INSERT')
         lastOperation('', 'c')
     end)
@@ -779,8 +782,8 @@ visual:bind({}, 'c',
 --VISUAL: INDENT FOWARD --> '>'
 visual:bind({'shift'}, '.',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Left', 50)
-        hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+        hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', delay)
         visual:exit()
         normal:enter()
         lastOperation('shift', '.')
@@ -789,8 +792,8 @@ visual:bind({'shift'}, '.',
 --VISUAL: INDENT BACKWARDS --> '<'
 visual:bind({'shift'}, ',',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Right', 50)
-        hs.eventtap.keyStroke({'shift'}, 'Tab', 50)
+        hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'shift'}, 'Tab', delay)
         visual:exit()
         normal:enter()
         lastOperation('shift', ',')
