@@ -99,6 +99,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `o` : Open line below and enter insertion mode
  * `x` : Delete single character in front of cursor
  * `s` : Delete single character in front of cursor + Insert Mode
+ * `Shift + s` : Substitutes entire line/Delete line + Insert Mode
  * `r` : Replace single character at cursor (Need to fix this)
  * `d` : Delete next word (works like `d-w`)
  * `Shift + d` : Delete to end of line
