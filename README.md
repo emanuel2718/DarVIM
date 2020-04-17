@@ -80,72 +80,76 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 &nbsp; 
 
 ### Normal Mode:
- * `Ctrl + y` : Scroll Up
- * `Ctrl + e` : Scroll Down
- * `h` : Move Left
- * `j` : Move Down
- * `k` : Move Up
- * `l` : Move Right
- * `g` : Move to top of page
+- [x] `Ctrl + y` : Scroll Up
+- [x] `Ctrl + e` : Scroll Down
+- [x] `h` : Move Left
+- [x] `j` : Move Down
+- [x] `k` : Move Up
+- [x] `l` : Move Right
+- [x] `g` : Move to top of page
 
 
- * `Shift + g` : Move to bottom of page
- * `b` : Move to previous word
- * `w` : Move to next word
- * `e` : Move to end of word
- * `$` : Move to end of the line
- * `a` : Enter insertion mode after current character
- * `Shift + a` : Enter insertion mode after end of line
- * `Shift + i` : Enter insertion mode before first non-whitespace character
- * `Shift + o` : Open line above and enter insertion mode
- * `o` : Open line below and enter insertion mode
- * `x` : Delete single character in front of cursor
- * `s` : Delete single character in front of cursor + Insert Mode
- * `Shift + s` : Substitutes entire line/Delete line + Insert Mode
- * `r` : Replace single character at cursor (Need to fix this)
- * `d` : Delete next word (works like `d-w`)
- * `Shift + d` : Delete to end of line
- * `Ctrl + d` : Works like `d-d` in native VIM
- * `c` : Works like `c-w` in native VIM
- * `Shift + c` : Change to end of line
- * `Ctrl + c` : Change next word (works like `c-w`)
- * `u` : Undo
- * `Ctrl + r` : Redo
- * `y` : Yank (Works like `yy` in native VIM)
- * `Shift + y` : Yank whole line
- * `p` : Paste below current cursor line (**TODO:** Change this)
- * `Shift + p` : Paste above current cursor line.
- * `/` : Search
- * `n` : Repeat last search; Foward
- * `Shift + n` : Repeat last search; Backwards
- * `>` : Indent
- * `<` : Unindent
- * `i` : Enter Insert Mode
- * `v` : Enter Visual Mode
- * `Shift + v` : Enter Visual mode and highlight whole line
+- [x] `Shift + g` : Move to bottom of page
+- [x] `b` : Move to previous word
+- [x] `w` : Move to next word
+- [x] `e` : Move to end of word
+- [x] `$` : Move to end of the line
+- [x] `a` : Enter insertion mode after current character
+- [x] `Shift + a` : Enter insertion mode after end of line
+- [x] `Shift + i` : Enter insertion mode before first non-whitespace character
+- [x] `Shift + o` : Open line above and enter insertion mode
+- [x] `o` : Open line below and enter insertion mode
+- [x] `x` : Delete single character in front of cursor
+- [x] `s` : Delete single character in front of cursor + Insert Mode
+- [x] `Shift + s` : Substitutes entire line/Delete line + Insert Mode
+- [ ] `r<char>` : Replace single character at cursor (Missing)
+- [x] `r` : delete character + insert mode
+- [ ] `dw` : Delete next word
+- [x] `d` : Delete next word (works like `dw`)
+- [ ] `dd` : Delete whole line
+- [x] `Ctrl + d` : Works like `dd` 
+- [x] `Shift + d` : Delete to end of line
+- [ ] `cw` : Change word
+- [x] `c` : Works like `cw`
+- [x] `Shift + c` : Change to end of line
+- [x] `Ctrl + c` : Change next word (works like `c-w`)
+- [x] `u` : Undo
+- [x] `Ctrl + r` : Redo
+- [x] `y` : Yank (Works like `yy` in native VIM)
+- [x] `Shift + y` : Yank whole line
+- [x] `p` : Paste
+- [x] `Shift + p` : Paste above current cursor line.
+- [x] `/` : Search
+- [x] `n` : Repeat last search; Foward
+- [x] `Shift + n` : Repeat last search; Backwards
+- [x] `>` : Indent
+- [x] `<` : Unindent
+- [x] `i` : Enter Insert Mode
+- [x] `v` : Enter Visual Mode
+- [x] `Shift + v` : Enter Visual mode and highlight whole line
 
 &nbsp; 
 
 ### Visual Mode:
- * `h` : Highlight Left
- * `j` : Highlight Down
- * `k` : Highlight Up
- * `l` : Highlight Right
- * `e` : Highlight to end of word
- * `w` : Highlight to next of word
- * `0` : Highlight from cursor to beginning of line
- * `$` : Highlight until end of line
- * `Shift + h` : Highlight from cursor to beginning of file
+- [x] `h` : Highlight Left
+- [x] `j` : Highlight Down
+- [x] `k` : Highlight Up
+- [x] `l` : Highlight Right
+- [x] `e` : Highlight to end of word
+- [x] `w` : Highlight to next of word
+- [x] `0` : Highlight from cursor to beginning of line
+- [x] `$` : Highlight until end of line
+- [x] `Shift + h` : Highlight from cursor to beginning of file
 
 
- * `g` : Highlight from cursor to beginning of file
- * `y` : Yank selected text block
- * `Shift + g` : Highlight from cursor to end of file
- * `Shift + l` : Highlight from cursor to end of file
- * `d` : Delete highlighted characters
- * `c` : Change highlighted characters and put us in insert mode.
- * `>` : Indent
- * `<` : Unindent
+- [x] `g` : Highlight from cursor to beginning of file
+- [x] `y` : Yank selected text block
+- [x] `Shift + g` : Highlight from cursor to end of file
+- [x] `Shift + l` : Highlight from cursor to end of file
+- [x] `d` : Delete highlighted characters
+- [x] `c` : Change highlighted characters and put us in insert mode.
+- [x] `>` : Indent
+- [x] `<` : Unindent
  
 
 &nbsp; 
