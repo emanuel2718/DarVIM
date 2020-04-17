@@ -1,11 +1,11 @@
--- Author: Emanuel Ramirez Alsina
--- Date Created: 04/07/2020
+-- Author  : Emanuel Ramirez Alsina
+-- Project : DarVIM
 
 
 --TODO: Add variable that let the user decide: Mode alerts ON/OFF
 
 --Scrolling speed
-local SPEED = 2
+local SPEED = 3
 
 --Key press delay in ms.
 local delay = 1
@@ -41,7 +41,7 @@ local alertStyle = {
                 textColor   = { white = 1, alpha = 1 },
                 textFont    = '.AppleSystemUIFont',
                 radius      = 10,
-                atScreenEdge= 2}
+                atScreenEdge= 0}
 
 
 
@@ -94,7 +94,8 @@ end
 --    barIcon:setClickCallback(barIconClicked)
 --    setBarIcon(hs.caffeinate.get('CLICKED'))
 --end
---
+
+
 
 --Saves the last modifiers and/or key used by the user.
 function lastOperation(mod, command)
@@ -650,6 +651,18 @@ normal:bind({}, '.',
     function()
         hs.eventtap.keyStroke({mods[0]}, keys[0], delay)
         hs.eventtap.keyStroke({}, 'Escape', delay)
+    end)
+
+
+--RELOADS HAMMERSPOON CONFIGURATION
+hs.hotkey.bind({'shift', 'option', 'cmd'}, 'r',
+    function()
+        focusedWindow = hs.window.frontmostWindow():application():name()
+        hammerspoonWindow = hs.window.get('Hammerspoon Console')
+        hs.application.launchOrFocus('Hammerspoon')
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'r', delay)
+        hs.alert.show('Configuration reloaded', alertStyle)
+        hs.application.launchOrFocus(focusedWindow)
     end)
 
 ---------------------------------------------------------------------
