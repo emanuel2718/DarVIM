@@ -21,6 +21,9 @@ local normalPDF = hs.hotkey.modal.new()
 --Visual Mode
 local visual = hs.hotkey.modal.new()
 
+local replace = hs.hotkey.modal.new()
+
+
 
 --TODO: have this on another separate file and should provide thorough
 --instructions on how to add more applications and a decent list of examples.
@@ -206,6 +209,8 @@ normal:bind({}, 'I',
         --hs.alert.show(insertNotification, alertStyle)
         setBarIcon('INSERT')
     end)
+
+
 
 
 
@@ -438,15 +443,20 @@ normal:bind({'shift'}, 's',
     end)
 
 
---TODO: Need to fix this like in native VIM: Replace -> Get Char -> Type Char--(While still in Normal Mode)
---NORMAL: REPLACE CHARACTER IN FRONT OF CURSOR + INSERT MODE--> 'x'
+--NORMAL: REPLACE CHARACTER IN FRONT OF CURSOR--> 'r'
 normal:bind({}, 'r',
     function()
-        deleteNextChar()
         normal:exit()
-        setBarIcon('INSERT')
-        --TODO: Add correct repetition...
+        listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+            char = event:getCharacters()
+            listener:stop()
+            hs.eventtap.keyStroke({}, 'forwarddelete', 200)
+            hs.eventtap.keyStroke({}, char, 200)
+            return normal:enter()
+        end)
+        listener:start()
     end)
+
 
 
 --NORMAL: move to the next word without delay

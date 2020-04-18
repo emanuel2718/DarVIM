@@ -104,6 +104,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `x` : Delete single character in front of cursor
  * `s` : Delete single character in front of cursor + Insert Mode
  * `S` : Substitutes entire line/Delete line + Insert Mode
+ * `r<char>` : Replace single character at cursor
  * `r` : Delete character + insert mode [**Temporary**]
  * `d` : Delete next word (works like `dw`) [**Temporary**]
  * `D` : Delete to end of line
@@ -160,7 +161,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] `Ctrl + d` : Page down
 - [ ] `Ctrl + +` : Zoom in
 - [ ] `Ctrl + -` : Zoom out
-- [ ] `r<char>` : Replace single character at cursor (Missing)
 - [ ] `yy` : yank whole line
 - [ ] `dd` : Delete whole line
 - [ ] `cw` : Change word
@@ -186,6 +186,9 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [x] Add `.` repetition functionality
 - [x] Add delay variable
 - [x] Add mode in mode status in the menu bar using hs.menubar
+- [ ] `r<char>` handle missing keymap cases (i.e `r<+>`)
+- [ ] `r<char>` handle modifiers (i.e `shift + g`)
+- [ ] Missing `.` functionality when using `r<char>`
 - [ ] Fix configurarion reload bug (Sometimes it has to be clicked more than
     once for it to be responsive.)
 - [ ] Create installation script
