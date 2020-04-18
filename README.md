@@ -151,11 +151,19 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 &nbsp; 
 
 # TODO LIST:
+- [ ] `<key>` : Bind unusable Normal mode characters. One of those could be
+    mapped by the user to be their `<leader` key.
+- [ ] `z` : Center cursor (ctrl + z)
+- [ ] `Ctrl + u` : Page up
+- [ ] `Ctrl + d` : Page down
+- [ ] `Ctrl + +` : Zoom in
+- [ ] `Ctrl + -` : Zoom out
+- [ ] `r<char>` : Replace single character at cursor (Missing)
 - [ ] `yy` : yank whole line
 - [ ] `dd` : Delete whole line
 - [ ] `cw` : Change word
+- [ ] `cc` : Change whole line
 - [ ] `gg` : Move to top of page
-- [ ] `r<char>` : Replace single character at cursor (Missing)
 - [ ] `f<char>` : find `<char>` occurence after cursor in current line
 - [ ] `F<char>` : find `<char>` occurence before cursor in current line
 - [ ] `t<char>` : find `<char>` occurence after cursor in current line + cursor
@@ -175,16 +183,19 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [x] Add menu bar icon to display current mode.
 - [x] Add `.` repetition functionality
 - [x] Add delay variable
+- [x] Add mode in mode status in the menu bar using hs.menubar
+- [ ] Fix configurarion reload bug (Sometimes it has to be clicked more than
+    once for it to be responsive.)
 - [ ] Create installation script
+- [ ] Ability for user tho change stuff like, Apps that they want included in
+    VIM mode, change Normal mode key and other options.
 - [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`
 - [ ] Add leader key functionality.
-- [ ] Add mode in mode status in the menu bar using hs.menubar
 - [ ] Add real `cw`, `dw`, etc. functionalities
 - [ ] Complete documentation on how to install and use.
 - [ ] Add Shift + `key` to scroll faster than normal scrolling speed.
 - [ ] Disable all hotkeys when spotlight is beign used.
 - [ ] Add macro recordings
-- [ ] Add window tiling like in i3wm. Moving and resizing.
 - [ ] Add options in menu to let user chose keybinds for specific operations
     like (i.e Normal Mode keybind = '**choose keybind**')
 

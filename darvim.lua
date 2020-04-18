@@ -169,6 +169,7 @@ normalMode = hs.hotkey.bind({}, 'Escape',
 function()
     normal:enter() 
     --hs.alert.closeAll()
+    visual:exit()
     setBarIcon('NORMAL')
     --hs.alert.show(normalNotification, alertStyle)
 end)
