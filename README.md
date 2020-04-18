@@ -75,6 +75,8 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  
  * `Esc` : Enter Normal Mode
  * `i` : Enter Insert Mode (VIM keybinds stop working)
+ * `u` : Undo
+ * `Ctrl + r` : Redo
  * `s` : Invert screen colors
 
 &nbsp; 

@@ -267,6 +267,14 @@ normalPDF:bind({}, 's',
 --In the Shortcuts tab, select Accessibility on the left, then select ”Invert colours” on the right.
 
 
+--NORMALPDF: UNDO --> 'u'
+function undo() hs.eventtap.keyStroke({'cmd'}, 'z') end
+normalPDF:bind({''}, 'u', undo, nil, undo)
+
+
+--NORMALPDF: REDO --> 'ctrl + r'
+function redo() hs.eventtap.keyStroke({'shift', 'cmd'}, 'z') end
+normalPDF:bind({'ctrl'}, 'r', redo, nil, redo)
 
 
 ---------------------------------------------------------------------
