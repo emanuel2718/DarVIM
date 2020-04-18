@@ -22,6 +22,8 @@ local normalPDF = hs.hotkey.modal.new()
 local visual = hs.hotkey.modal.new()
 
 
+--TODO: have this on another separate file and should provide thorough
+--instructions on how to add more applications and a decent list of examples.
 --List of supported Applications
 --The user could add or remove applications as desired.
 local APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki', 'Xcode'}
@@ -74,13 +76,14 @@ function contains(APP, name)
     return false
 end
 
+--Sets the current mode in the menu bar.
 function setBarIcon(state)
     if state == 'VISUAL' then
-        barIcon:setTitle('V')
+        barIcon:setTitle('[ V ]')
     elseif state == 'INSERT' then
-        barIcon:setTitle('I')
+        barIcon:setTitle('[ I ]')
     elseif state == 'NORMAL' then
-        barIcon:setTitle('N')
+        barIcon:setTitle('[ N ]')
     else
         barIcon:setTitle('')
     end
@@ -106,6 +109,8 @@ end
 
 
 
+--Main logic of the program. Watch to see if we are on an application that we
+--want VIM keybinds on or not.
 function applicationWatcher(name, event, app)
 
     --If we are readign a PDF
