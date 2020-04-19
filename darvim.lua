@@ -490,12 +490,25 @@ normal:bind({'ctrl'}, 'd',
         hs.eventtap.keyStroke({''}, 'delete', delay)
         lastOperation('ctrl', 'd')
         wholeLineYanked = true
-    end)
+  end)
+
+
+
+--NORMAL: DELETE UNITIL END OF LINE --> 'Shift + d'
+normal:bind({'shift'}, 'd',
+  function()
+    hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+    hs.eventtap.keyStroke({'fn'}, 'delete', delay)
+    lastOperation('shift', 'd')
+    wholeLineYanked = false
+  end)
+
 
 
 --TODO: How to set the next operation to be 'cw' isntead of 'c'. 2 element array of keys?
 --TODO: Same goes for 'cc'
---NORMAL: CHANGE WORD --> 'c'
+--NORMAL: CHANGE WORD OR CHANGE WHOLE LINE--> 'cw' or 'cc'
 normal:bind({}, 'c',
     function()
         normal:exit()
@@ -524,27 +537,17 @@ normal:bind({}, 'c',
 
 
 --NORMAL: CHANGE WORD --> 'ctrl + d'
-normal:bind({'ctrl'}, 'c',
-    function()
-        normal:exit()
-        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
-        hs.eventtap.keyStroke({''}, 'delete', delay)
-        setBarIcon('INSERT')
-        lastOperation('ctrl', 'c')
-        wholeLineYanked = false
-    end)
+--normal:bind({'ctrl'}, 'c',
+--    function()
+--        normal:exit()
+--        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+--        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+--        hs.eventtap.keyStroke({''}, 'delete', delay)
+--        setBarIcon('INSERT')
+--        lastOperation('ctrl', 'c')
+--        wholeLineYanked = false
+--    end)
 
-
---NORMAL: DELETE UNITIL END OF LINE --> 'Shift + d'
-normal:bind({'shift'}, 'd',
-    function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
-        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-        hs.eventtap.keyStroke({'fn'}, 'delete', delay)
-        lastOperation('shift', 'd')
-        wholeLineYanked = false
-    end)
 
 
 --NORMAL: DELETE UNITIL END OF LINE + INSERT MODE --> 'Shift + c'
@@ -574,16 +577,29 @@ normal:bind({'ctrl'}, 'R',
     end)
 
 
-normal:bind({}, 'Y',
+
+--NORMAL: YANK WHOLE LINE --> 'yy'
+normal:bind({}, 'y',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
-        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-        wholeLineYanked = false
+        listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+            char = event:getCharacters()
+            listener:stop()
+            if char == 'y' then
+              hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+              hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+              hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+              wholeLineYanked = false
+            end
+            return normal:enter()
+        end)
+        listener:start()
+
+
+
     end)
 
 
---NORMAL: YANK WHOLE LINE --> 'Shift + y'
+--NORMAL: YANK FROM CURSOR TO EOL --> 'Shift + y'
 normal:bind({'shift'}, 'y',
     function()
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
@@ -732,7 +748,7 @@ visual:bind({}, 'l', visualRIGHT, nil, visualRIGHT)
 
 
 --VISUAL: MOVE TO END OF WORD --> 'e'
-function visualEndOfWord() 
+function visualEndOfWord()
     hs.eventtap.keyStroke({'shift', 'alt'}, 'right', delay)
     hs.eventtap.keyStroke({'shift'}, 'Left', delay)
 end
@@ -740,22 +756,31 @@ visual:bind({}, 'E', visualEndOfWord, nil, visualEndOfWord)
 
 
 --VISUAL: MOVE TO NEXT WORD --> 'w'
-function visualNextWord() 
+function visualNextWord()
     hs.eventtap.keyStroke({'shift', 'alt'}, 'right', delay)
 end
 
 visual:bind({}, 'W', visualNextWord, nil, visualNextWord)
 
 
---VISUAL: YANK AND TAKE US TO NORMAL MODE --> 'y'
+--VISUAL: YANK AND TAKE US TO NORMAL MODE --> 'yy'
 visual:bind({}, 'Y',
-    function()
-        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-        hs.eventtap.keyStroke({}, 'Right', delay)
-        visual:exit()
-        normal:enter()
-        setBarIcon('NORMAL')
-    end)
+  function()
+      listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+          char = event:getCharacters()
+          listener:stop()
+          if char == 'y' then
+            hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+            hs.eventtap.keyStroke({}, 'Right', delay)
+            visual:exit()
+            setBarIcon('NORMAL')
+          end
+          return normal:enter()
+      end)
+      listener:start()
+
+
+  end)
 
 
 

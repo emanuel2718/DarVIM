@@ -114,8 +114,8 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `C` : Change from cursor to end of line
  * `u` : Undo
  * `Ctrl + r` : Redo
- * `y` : Yank (Works like `yy`) [**Temporary**]
- * `Y` : Yank whole line
+ * `yy` : Yank whole line
+ * `Y` : Yank from cursor until EOL
  * `p` : Paste
  * `P` : Paste above current cursor line.
  * `/` : Search
@@ -156,7 +156,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 # TODO LIST:
 - [ ] `<key>` : Bind unusable Normal mode characters. One of those could be
     mapped by the user to be their `<leader` key.
-- [ ] `yy` : yank whole line
 - [ ] `dd` : Delete whole line
 - [ ] `gg` : Move to top of page
 - [ ] `z` : Center cursor (ctrl + z)
