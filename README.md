@@ -109,9 +109,9 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `d` : Delete next word (works like `dw`) [**Temporary**]
  * `D` : Delete to end of line
  * `Ctrl + d` : Works like `dd`  [**Temporary**]
- * `c` : Works like `cw`--> [**Temporary**]
- * `C` : Change to end of line
- * `Ctrl + c` : Change next word (works like `cw`) [**Temporary**]
+ * `cw` : Change word
+ * `cc` : Change whole line
+ * `C` : Change from cursor to end of line
  * `u` : Undo
  * `Ctrl + r` : Redo
  * `y` : Yank (Works like `yy`) [**Temporary**]
@@ -156,16 +156,14 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 # TODO LIST:
 - [ ] `<key>` : Bind unusable Normal mode characters. One of those could be
     mapped by the user to be their `<leader` key.
+- [ ] `yy` : yank whole line
+- [ ] `dd` : Delete whole line
+- [ ] `gg` : Move to top of page
 - [ ] `z` : Center cursor (ctrl + z)
 - [ ] `Ctrl + u` : Page up
 - [ ] `Ctrl + d` : Page down
 - [ ] `Ctrl + +` : Zoom in
 - [ ] `Ctrl + -` : Zoom out
-- [ ] `yy` : yank whole line
-- [ ] `dd` : Delete whole line
-- [ ] `cw` : Change word
-- [ ] `cc` : Change whole line
-- [ ] `gg` : Move to top of page
 - [ ] `f<char>` : find `<char>` occurence after cursor in current line
 - [ ] `F<char>` : find `<char>` occurence before cursor in current line
 - [ ] `t<char>` : find `<char>` occurence after cursor in current line + cursor
@@ -186,6 +184,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [x] Add `.` repetition functionality
 - [x] Add delay variable
 - [x] Add mode in mode status in the menu bar using hs.menubar
+- [x] Add real `cw`, `dw`, etc. functionalities
 - [ ] `r<char>` handle missing keymap cases (i.e `r<+>`)
 - [ ] `r<char>` handle modifiers (i.e `shift + g`)
 - [ ] Missing `.` functionality when using `r<char>`
@@ -196,7 +195,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
     VIM mode, change Normal mode key and other options.
 - [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`
 - [ ] Add leader key functionality.
-- [ ] Add real `cw`, `dw`, etc. functionalities
 - [ ] Complete documentation on how to install and use.
 - [ ] Add Shift + `key` to scroll faster than normal scrolling speed.
 - [ ] Disable all hotkeys when spotlight is beign used.

@@ -472,13 +472,13 @@ function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', delay) end
 
 --NORMAL: DELETE WORD --> 'd'
 normal:bind({}, 'd',
-    function()
-        hs.eventtap.keyStroke({'shift', 'option'}, 'Right', delay)
-        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-        hs.eventtap.keyStroke({''}, 'delete', delay)
-        lastOperation('', 'd')
-        wholeLineYanked = false
-    end)
+function()
+    hs.eventtap.keyStroke({'shift', 'option'}, 'Right', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+    hs.eventtap.keyStroke({''}, 'delete', delay)
+    lastOperation('', 'd')
+    wholeLineYanked = false
+end)
 
 
 --NORMAL: DELETE WHOLE LINE --> 'Ctrl + d'
@@ -493,16 +493,33 @@ normal:bind({'ctrl'}, 'd',
     end)
 
 
+--TODO: How to set the next operation to be 'cw' isntead of 'c'. 2 element array of keys?
+--TODO: Same goes for 'cc'
 --NORMAL: CHANGE WORD --> 'c'
 normal:bind({}, 'c',
     function()
         normal:exit()
-        jumpNextWord()
-        --TODO: implement copy to clipboard
-        hs.eventtap.keyStroke({'option'}, 'delete', delay)
-        setBarIcon('INSERT')
-        lastOperation('', 'c')
-        wholeLineYanked = false
+        listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+            char = event:getCharacters()
+            listener:stop()
+            if char == 'w' then
+                hs.eventtap.keyStroke({'option'}, 'right', 200)
+                hs.eventtap.keyStroke({'option'}, 'delete', 200)
+                setBarIcon('INSERT')
+                lastOperation('', 'c')
+                wholeLineYanked = false
+            elseif char == 'c' then
+                hs.eventtap.keyStroke({'cmd'}, 'Left', 200)
+                hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+                hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+                hs.eventtap.keyStroke({''}, 'delete', 200)
+                setBarIcon('INSERT')
+                lastOperation('shift', 'c')
+                wholeLineYanked = true
+            end
+            return true
+        end)
+        listener:start()
     end)
 
 
