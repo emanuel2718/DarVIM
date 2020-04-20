@@ -170,6 +170,8 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] `<prefix>i{` : in word
 - [ ] `<prefix>i{` : in word
 
+- [ ] `<prefix><times><target>` : Example: `d2w`
+
 &nbsp; 
 
 - [ ] `r<char>` handle missing keymap cases (i.e `r<+>`)
