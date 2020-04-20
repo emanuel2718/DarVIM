@@ -27,6 +27,9 @@ local replace = hs.hotkey.modal.new()
 
 --TODO: have this on another separate file and should provide thorough
 --instructions on how to add more applications and a decent list of examples.
+--TODO: Figure the name problem...Hammerspoon recognize apps from a different name
+-- than the one from system. Ex. Acrobat Reader vs. Acrobat Reader DC. Figure this out..
+
 --List of supported Applications
 --The user could add or remove applications as desired.
 local APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki', 'Xcode'}
@@ -605,9 +608,6 @@ normal:bind({}, 'y',
             return normal:enter()
         end)
         listener:start()
-
-
-
     end)
 
 

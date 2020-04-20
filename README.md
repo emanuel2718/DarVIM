@@ -153,8 +153,13 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 &nbsp; 
 
 # TODO LIST:
+- [ ] `Visual: gg` : Move to top of page with `gg`
+- [ ] `Ctrl + d` : Page down
+- [ ] `Ctrl + u` : Page up
+- [ ] `jk` : Make it possible for user to choose `jk` and variations as their Escape key
 - [ ] `<key>` : Bind unusable Normal mode characters. One of those could be
     mapped by the user to be their `<leader` key?
+- [ ] `?` : Search backwards
 - [ ] `zz` : Center cursor (ctrl + z)
 - [ ] `f<char>` : find `<char>` occurence after cursor in current line
 - [ ] `F<char>` : find `<char>` occurence before cursor in current line
@@ -162,6 +167,13 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
     before char
 - [ ] `T<char>` : find `<char>` occurence before cursor in current line + cursor
     before char
+- [ ] `^` : Move to first non-whitespace character in the line
+- [ ] `-` : Move to first non-whitespace character of previous line
+- [ ] `+` : Move to first non-whitespace character of next line
+- [ ] `(` : Move to previous sentence
+- [ ] `)` : Move to next sentence
+- [ ] `;` : Repeat last 'f', 'F', 't', or 'T' command
+- [ ] `,` : Reverse direction of last 'f', 'F', 't', or 'T' command
 - [ ] `<prefix>iw` : in word
 - [ ] `<prefix>i"` : in double quotes
 - [ ] `<prefix>i(` : in parenthesis
@@ -174,12 +186,13 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 &nbsp; 
 
+- [ ] Create table of contents
+- [ ] Create installation script
 - [ ] `r<char>` handle missing keymap cases (i.e `r<+>`)
 - [ ] `r<char>` handle modifiers (i.e `shift + g`)
 - [ ] Missing `.` functionality when using `r<char>`
 - [ ] Fix configurarion reload bug (Sometimes it has to be clicked more than
     once for it to be responsive.)
-- [ ] Create installation script
 - [ ] Ability for user tho change stuff like, Apps that they want included in
     VIM mode, change Normal mode key and other options.
 - [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`
