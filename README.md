@@ -157,11 +157,8 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] `<key>` : Bind unusable Normal mode characters. One of those could be
     mapped by the user to be their `<leader` key.
 - [ ] `dd` : Delete whole line
-- [ ] `z` : Center cursor (ctrl + z)
-- [ ] `Ctrl + u` : Page up
-- [ ] `Ctrl + d` : Page down
-- [ ] `Ctrl + +` : Zoom in
-- [ ] `Ctrl + -` : Zoom out
+- [ ] `dw` : Delete word
+- [ ] `zz` : Center cursor (ctrl + z)
 - [ ] `f<char>` : find `<char>` occurence after cursor in current line
 - [ ] `F<char>` : find `<char>` occurence before cursor in current line
 - [ ] `t<char>` : find `<char>` occurence after cursor in current line + cursor

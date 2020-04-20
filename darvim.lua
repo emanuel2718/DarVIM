@@ -867,7 +867,7 @@ visual:bind({}, 'd',
 
 
 --VISUAL: CHANGE HIGHLIGHTED CHARACTERS --> 'c'
-visual:bind({}, 'c', 
+visual:bind({}, 'c',
     function()
         visual:exit()
         hs.eventtap.keyStroke({''}, 'delete', delay)
