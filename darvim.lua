@@ -599,7 +599,8 @@ normal:bind({}, 'y',
               hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
               hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
               hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-              wholeLineYanked = false
+              hs.eventtap.keyStroke({}, 'right', delay)
+              wholeLineYanked = true
             end
             return normal:enter()
         end)
@@ -615,7 +616,7 @@ normal:bind({'shift'}, 'y',
     function()
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
         hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-        wholeLineYanked = true
+        wholeLineYanked = false
     end)
 
 
@@ -624,7 +625,7 @@ normal:bind({}, 'P',
     function()
         if wholeLineYanked then
             hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
-            hs.eventtap.keyStroke({}, 'Return', delay)
+            hs.eventtap.keyStroke({'shift'}, 'Return', delay)
             hs.eventtap.keyStroke({'cmd'}, 'v', delay)
             lastOperation('', 'p')
         else
@@ -638,7 +639,7 @@ normal:bind({}, 'P',
 normal:bind({'shift'}, 'P', nil,
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-        hs.eventtap.keyStroke({}, 'Return', delay)
+        hs.eventtap.keyStroke({'shift'}, 'Return', delay)
         hs.eventtap.keyStroke({}, 'Up', delay)
         hs.eventtap.keyStroke({'cmd'}, 'v', delay)
         lastOperation('shift', 'p')
