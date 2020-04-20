@@ -248,9 +248,19 @@ function scrollRIGHT() hs.eventtap.scrollWheel({-SPEED, 0}, {}) end
 normalPDF:bind({}, 'L', scrollRIGHT, nil, scrollRIGHT)
 
 
---NORMALPDF: GO TO TOP OF PAGE --> 'g'
-function goTOP() hs.eventtap.keyStroke({'cmd'}, 'Up') end
-normalPDF:bind({}, 'G', goTOP)
+--NORMALPDF: GO TO TOP OF PAGE --> 'gg'
+normalPDF:bind({}, 'g',
+    function()
+        listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+            char = event:getCharacters()
+            listener:stop()
+            if char == 'g' then
+                hs.eventtap.keyStroke({'cmd'}, 'Up', delay)
+            end
+            return false
+        end)
+        listener:start()
+end)
 
 
 --NORMALPDF: GO TO BOTTOM OF PAGE --> 'g'
@@ -328,10 +338,18 @@ function movePrevWord() hs.eventtap.keyStroke({'alt'}, 'left', delay) end
 normal:bind({}, 'B', movePrevWord, nil, movePrevWord)
 
 
---NORMAL: MOVE TO TOP OF PAGE --> 'g'
+--NORMAL: MOVE TO TOP OF PAGE --> 'gg'
 normal:bind({}, 'G',
     function()
-        hs.eventtap.keyStroke({'cmd'}, 'Up', delay)
+        listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+            char = event:getCharacters()
+            listener:stop()
+            if char == 'g' then
+                hs.eventtap.keyStroke({'cmd'}, 'Up', delay)
+            end
+            return false
+        end)
+        listener:start()
     end)
 
 

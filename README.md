@@ -68,7 +68,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `j` : Scroll Down
  * `k` : Scroll Up
  * `l` : Scroll Right
- * `g`   : Scroll Top of PDF
+ * `gg`   : Scroll Top of PDF
  * `G` : Scroll Bottom of PDF
  * `Ctrl + f` : Scroll to next page
  * `Ctrl + b` : Scroll to previous page
@@ -88,7 +88,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `j` : Move Down
  * `k` : Move Up
  * `l` : Move Right
- * `g` : Move to top of page [**Temporary**]
+ * `gg` : Move to top of the page
 
 
  * `G` : Move to bottom of page
@@ -157,7 +157,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] `<key>` : Bind unusable Normal mode characters. One of those could be
     mapped by the user to be their `<leader` key.
 - [ ] `dd` : Delete whole line
-- [ ] `gg` : Move to top of page
 - [ ] `z` : Center cursor (ctrl + z)
 - [ ] `Ctrl + u` : Page up
 - [ ] `Ctrl + d` : Page down
