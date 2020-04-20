@@ -488,28 +488,33 @@ function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', delay) end
 --For 'dw' we have 'C', do I want both? Do I have something that does 'dd'?
 
 
---NORMAL: DELETE WORD --> 'd'
+--TODO: Last operation command it's not working here.
+--Becuase when it comes back to repeat the operation it will find itself with the ifelse's
+
+--NORMAL: DELETE WORD OR DELETE WHOLE LINE --> 'dw' or 'dd'
 normal:bind({}, 'd',
-function()
-    hs.eventtap.keyStroke({'shift', 'option'}, 'Right', delay)
-    hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-    hs.eventtap.keyStroke({''}, 'delete', delay)
-    lastOperation('', 'd')
-    wholeLineYanked = false
+  function()
+      listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+          char = event:getCharacters()
+          listener:stop()
+          if char == 'w' then
+              hs.eventtap.keyStroke({'shift', 'option'}, 'Right', delay)
+              hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+              hs.eventtap.keyStroke({''}, 'delete', delay)
+              lastOperation('', 'd')
+              wholeLineYanked = false
+          elseif char == 'd' then
+              hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+              hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+              hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+              hs.eventtap.keyStroke({''}, 'delete', delay)
+              lastOperation('ctrl', 'd')
+              wholeLineYanked = true
+          end
+          return true
+      end)
+      listener:start()
 end)
-
-
---NORMAL: DELETE WHOLE LINE --> 'Ctrl + d'
-normal:bind({'ctrl'}, 'd',
-    function()
-        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
-        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-        hs.eventtap.keyStroke({''}, 'delete', delay)
-        lastOperation('ctrl', 'd')
-        wholeLineYanked = true
-  end)
-
 
 
 --NORMAL: DELETE UNITIL END OF LINE --> 'Shift + d'
@@ -553,18 +558,6 @@ normal:bind({}, 'c',
         listener:start()
     end)
 
-
---NORMAL: CHANGE WORD --> 'ctrl + d'
---normal:bind({'ctrl'}, 'c',
---    function()
---        normal:exit()
---        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
---        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
---        hs.eventtap.keyStroke({''}, 'delete', delay)
---        setBarIcon('INSERT')
---        lastOperation('ctrl', 'c')
---        wholeLineYanked = false
---    end)
 
 
 
@@ -846,7 +839,7 @@ visual:bind({'shift'}, '4',
 
 
 --VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'x'
-visual:bind({}, 'x', 
+visual:bind({}, 'x',
     function()
         visual:exit()
         normal:enter()
@@ -856,7 +849,7 @@ visual:bind({}, 'x',
     end)
 
 --VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'd'
-visual:bind({}, 'd', 
+visual:bind({}, 'd',
     function()
         visual:exit()
         normal:enter()

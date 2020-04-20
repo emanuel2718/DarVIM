@@ -105,10 +105,9 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `s` : Delete single character in front of cursor + Insert Mode
  * `S` : Substitutes entire line/Delete line + Insert Mode
  * `r<char>` : Replace single character at cursor
- * `r` : Delete character + insert mode [**Temporary**]
- * `d` : Delete next word (works like `dw`) [**Temporary**]
+ * `dw` : Delete next word
+ * `dd` : Delete whole line
  * `D` : Delete to end of line
- * `Ctrl + d` : Works like `dd`  [**Temporary**]
  * `cw` : Change word
  * `cc` : Change whole line
  * `C` : Change from cursor to end of line
@@ -155,9 +154,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 # TODO LIST:
 - [ ] `<key>` : Bind unusable Normal mode characters. One of those could be
-    mapped by the user to be their `<leader` key.
-- [ ] `dd` : Delete whole line
-- [ ] `dw` : Delete word
+    mapped by the user to be their `<leader` key?
 - [ ] `zz` : Center cursor (ctrl + z)
 - [ ] `f<char>` : find `<char>` occurence after cursor in current line
 - [ ] `F<char>` : find `<char>` occurence before cursor in current line
@@ -175,11 +172,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 &nbsp; 
 
-- [x] Add menu bar icon to display current mode.
-- [x] Add `.` repetition functionality
-- [x] Add delay variable
-- [x] Add mode in mode status in the menu bar using hs.menubar
-- [x] Add real `cw`, `dw`, etc. functionalities
 - [ ] `r<char>` handle missing keymap cases (i.e `r<+>`)
 - [ ] `r<char>` handle modifiers (i.e `shift + g`)
 - [ ] Missing `.` functionality when using `r<char>`
@@ -191,7 +183,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`
 - [ ] Add leader key functionality.
 - [ ] Complete documentation on how to install and use.
-- [ ] Add Shift + `key` to scroll faster than normal scrolling speed.
 - [ ] Disable all hotkeys when spotlight is beign used.
 - [ ] Add macro recordings
 - [ ] Add options in menu to let user chose keybinds for specific operations
