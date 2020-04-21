@@ -646,13 +646,12 @@ normal:bind({'shift'}, 'P', nil,
     end)
 
 
+--TODO: Figure out how to get out of search bar if we don't have Escape to do so
 --NORMAL: Search --> '/'
 normal:bind({}, '/',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'F', delay)
         normal:exit()
-        hs.alert.closeAll()
-        hs.alert.show(insertNotification, alertStyle)
         setBarIcon('INSERT')
     end)
 
