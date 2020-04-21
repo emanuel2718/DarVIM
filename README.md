@@ -70,20 +70,20 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `l` : Scroll Right
  * `gg`   : Scroll Top of PDF
  * `G` : Scroll Bottom of PDF
- * `Ctrl + f` : Scroll to next page
- * `Ctrl + b` : Scroll to previous page
+ * `C-f` : Scroll to next page
+ * `C-b` : Scroll to previous page
  
  * `Esc` : Enter Normal Mode
  * `i` : Enter Insert Mode (VIM keybinds stop working)
  * `u` : Undo
- * `Ctrl + r` : Redo
+ * `C-r` : Redo
  * `s` : Invert screen colors
 
 &nbsp; 
 
 ### Normal Mode:
- * `Ctrl + y` : Scroll Up
- * `Ctrl + e` : Scroll Down
+ * `C-y` : Scroll Up
+ * `C-e` : Scroll Down
  * `h` : Move Left
  * `j` : Move Down
  * `k` : Move Up
@@ -112,7 +112,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `cc` : Change whole line
  * `C` : Change from cursor to end of line
  * `u` : Undo
- * `Ctrl + r` : Redo
+ * `C-r` : Redo
  * `yy` : Yank whole line
  * `Y` : Yank from cursor until EOL
  * `p` : Paste
@@ -154,8 +154,8 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 # TODO LIST:
 - [ ] `Visual: gg` : Move to top of page with `gg`
-- [ ] `Ctrl + d` : Page down
-- [ ] `Ctrl + u` : Page up
+- [ ] `C-d` : Page down
+- [ ] `C-trl + u` : Page up
 - [ ] `jk` : Make it possible for user to choose `jk` and variations as their Escape key
 - [ ] `<key>` : Bind unusable Normal mode characters. One of those could be
     mapped by the user to be their `<leader` key?
