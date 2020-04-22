@@ -174,6 +174,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] `)` : Move to next sentence
 - [ ] `;` : Repeat last 'f', 'F', 't', or 'T' command
 - [ ] `,` : Reverse direction of last 'f', 'F', 't', or 'T' command
+- [ ] `<operator><motion><text-object>` :
 - [ ] `<prefix>iw` : in word
 - [ ] `<prefix>i"` : in double quotes
 - [ ] `<prefix>i(` : in parenthesis
