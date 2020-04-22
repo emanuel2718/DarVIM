@@ -32,7 +32,8 @@ local replace = hs.hotkey.modal.new()
 
 --List of supported Applications
 --The user could add or remove applications as desired.
-local APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki', 'Xcode'}
+local APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki',
+			  'Xcode', 'Messages'}
 local PDF = {'Preview', 'Acrobat Reader'}
 
 
@@ -178,7 +179,7 @@ end
 --NORMAL: ENABLE NORMAL MODE --> 'Escape'
 normalMode = hs.hotkey.bind({}, 'Escape',
 function()
-    normal:enter() 
+    normal:enter()
     --hs.alert.closeAll()
     visual:exit()
     setBarIcon('NORMAL')
@@ -188,7 +189,7 @@ end)
 --NORMAL: ENABLE NORMAL MODE IN PDF'S --> 'Escape'
 normalModePDF = hs.hotkey.bind({}, 'Escape',
 function()
-    normalPDF:enter() 
+    normalPDF:enter()
     setBarIcon('NORMAL')
     --hs.alert.closeAll()
     --hs.alert.show(normalNotification, alertStyle)
@@ -205,7 +206,7 @@ normal:bind({}, 'v',
     end)
 
 --NORMAL: ENTER INSERT MODE --> 'n'
-normal:bind({}, 'I',
+normal:bind({}, 'i',
     function()
         normal:exit()
         --hs.alert.closeAll()
@@ -223,7 +224,7 @@ normal:bind({}, 'I',
 
 
 --NORMAL PDF: ENABLE INSERT MODE --> 'i'
-normalPDF:bind({}, 'I',
+normalPDF:bind({}, 'i',
     function()
         normalPDF:exit()
         setBarIcon('INSERT')
@@ -763,7 +764,7 @@ function visualEndOfWord()
     hs.eventtap.keyStroke({'shift', 'alt'}, 'right', delay)
     hs.eventtap.keyStroke({'shift'}, 'Left', delay)
 end
-visual:bind({}, 'E', visualEndOfWord, nil, visualEndOfWord)
+visual:bind({}, 'e', visualEndOfWord, nil, visualEndOfWord)
 
 
 --VISUAL: MOVE TO NEXT WORD --> 'w'
@@ -771,26 +772,17 @@ function visualNextWord()
     hs.eventtap.keyStroke({'shift', 'alt'}, 'right', delay)
 end
 
-visual:bind({}, 'W', visualNextWord, nil, visualNextWord)
+visual:bind({}, 'w', visualNextWord, nil, visualNextWord)
 
 
---VISUAL: YANK AND TAKE US TO NORMAL MODE --> 'yy'
-visual:bind({}, 'Y',
+--VISUAL: YANK AND TAKE US TO NORMAL MODE --> 'y'
+visual:bind({}, 'y',
   function()
-      listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-          char = event:getCharacters()
-          listener:stop()
-          if char == 'y' then
-            hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-            hs.eventtap.keyStroke({}, 'Right', delay)
-            visual:exit()
-            setBarIcon('NORMAL')
-          end
-          return normal:enter()
-      end)
-      listener:start()
-
-
+	  hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+	  hs.eventtap.keyStroke({}, 'Right', delay)
+	  visual:exit()
+	  normal:enter()
+	  setBarIcon('NORMAL')
   end)
 
 
@@ -809,10 +801,18 @@ visual:bind({'shift'}, 'h',
     end)
 
 
---VISUAL: HIGHLIGHT FROM CURSOR UNTIL BEGINNING OF FILE --> 'g'
+--VISUAL: HIGHLIGHT FROM CURSOR UNTIL BEGINNING OF FILE --> 'gg'
 visual:bind({}, 'g',
-    function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', delay)
+	function()
+	  listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+		  char = event:getCharacters()
+		  listener:stop()
+		  if char == 'g' then
+			hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', delay)
+		  end
+		  return false
+	end)
+	listener:start()
     end)
 
 
