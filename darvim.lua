@@ -703,11 +703,6 @@ normal:bind({'shift'}, 'v',
     end)
 
 
---NORMAL: Bind: Placebo key
-normal:bind({}, 'Q',
-    function()
-end)
-
 
 --NORMAL: REPEAT LAST COMMAND
 normal:bind({}, '.', 
@@ -732,7 +727,27 @@ hs.hotkey.bind({'shift', 'option', 'cmd'}, 'r',
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'r', delay)
         hs.alert.show('Configuration reloaded', alertStyle)
         hs.application.launchOrFocus(focusedWindow)
-    end)
+	end)
+
+--Placebo keys for now until they get bind to a operation:
+normal:bind({}, 't', function() end)
+normal:bind({}, 'q', function() end)
+normal:bind({}, 'f', function() end) --TODO: needs to be asssigned asap
+normal:bind({}, ';', function() end)
+normal:bind({}, 'z', function() end)
+normal:bind({}, 'm', function() end)
+normal:bind({}, '0', function() end)
+normal:bind({}, '1', function() end)
+normal:bind({}, '2', function() end)
+normal:bind({}, '3', function() end)
+normal:bind({}, '4', function() end)
+normal:bind({}, '5', function() end)
+normal:bind({}, '6', function() end)
+normal:bind({}, '7', function() end)
+normal:bind({}, '8', function() end)
+normal:bind({}, '9', function() end)
+
+
 
 ---------------------------------------------------------------------
 --                          VISUAL MODE                            --

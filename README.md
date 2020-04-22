@@ -140,7 +140,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `H` : Highlight from cursor to beginning of file
 
 
- * `g` : Highlight from cursor to beginning of file
+ * `gg` : Highlight from cursor to beginning of file
  * `y` : Yank selected text block
  * `G` : Highlight from cursor to end of file
  * `L` : Highlight from cursor to end of file
@@ -153,7 +153,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 &nbsp; 
 
 # TODO LIST:
-- [ ] `Visual: gg` : Move to top of page with `gg`
 - [ ] `C-d` : Page down
 - [ ] `C-trl + u` : Page up
 - [ ] `jk` : Make it possible for user to choose `jk` and variations as their Escape key
@@ -174,7 +173,8 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] `)` : Move to next sentence
 - [ ] `;` : Repeat last 'f', 'F', 't', or 'T' command
 - [ ] `,` : Reverse direction of last 'f', 'F', 't', or 'T' command
-- [ ] `<operator><motion><text-object>` :
+- [ ] `<operator><motion><text-object>` 
+:
 - [ ] `<prefix>iw` : in word
 - [ ] `<prefix>i"` : in double quotes
 - [ ] `<prefix>i(` : in parenthesis
