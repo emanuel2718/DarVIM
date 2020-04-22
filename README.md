@@ -105,6 +105,9 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `s` : Delete single character in front of cursor + Insert Mode
  * `S` : Substitutes entire line/Delete line + Insert Mode
  * `r<char>` : Replace single character at cursor
+ * `f<char>` : find `<char>` occurence after cursor
+ * `;` : Repeat last 'f', 'F', 't', or 'T' command
+ * `,` : Reverse direction of last 'f', 'F', 't', or 'T' command
  * `dw` : Delete next word
  * `dd` : Delete whole line
  * `D` : Delete to end of line
@@ -156,11 +159,8 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] `C-d` : Page down
 - [ ] `C-trl + u` : Page up
 - [ ] `jk` : Make it possible for user to choose `jk` and variations as their Escape key
-- [ ] `<key>` : Bind unusable Normal mode characters. One of those could be
-    mapped by the user to be their `<leader` key?
 - [ ] `?` : Search backwards
 - [ ] `zz` : Center cursor (ctrl + z)
-- [ ] `f<char>` : find `<char>` occurence after cursor in current line
 - [ ] `F<char>` : find `<char>` occurence before cursor in current line
 - [ ] `t<char>` : find `<char>` occurence after cursor in current line + cursor
     before char
@@ -171,8 +171,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] `+` : Move to first non-whitespace character of next line
 - [ ] `(` : Move to previous sentence
 - [ ] `)` : Move to next sentence
-- [ ] `;` : Repeat last 'f', 'F', 't', or 'T' command
-- [ ] `,` : Reverse direction of last 'f', 'F', 't', or 'T' command
 - [ ] `<operator><motion><text-object>` 
 :
 - [ ] `<prefix>iw` : in word
@@ -187,6 +185,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 &nbsp; 
 
+- [ ] ERROR HANDLING
 - [ ] Fix configurarion reload bug (Sometimes it has to be clicked more than
     once for it to be responsive.)
 - [ ] Create table of contents
