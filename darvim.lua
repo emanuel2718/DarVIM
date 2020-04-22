@@ -7,6 +7,9 @@
 --Scrolling speed
 local SPEED = 3
 
+--Return keycode map
+local RETURN = 36
+
 --Key press delay in ms.
 local delay = 1
 
@@ -33,7 +36,7 @@ local replace = hs.hotkey.modal.new()
 --List of supported Applications
 --The user could add or remove applications as desired.
 local APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki',
-			  'Xcode', 'Messages'}
+			  'Xcode'}
 local PDF = {'Preview', 'Acrobat Reader'}
 
 
@@ -62,11 +65,14 @@ local visualNotification = 'VISUAL'
 local keys = {}
 local mods = {}
 
+
 --In charge of keeping track if a whole line was yanked or a portion (i.e word)
 --When this is true; paste will open a new line (above or below) and paste line
 --When this is false; paste will paste in place
 local wholeLineYanked = false
 
+local findChar = false
+local searchMode = false
 
 function init()
     appsWatcher = hs.application.watcher.new(applicationWatcher)
@@ -110,7 +116,8 @@ end
 --Saves the last modifiers and/or key used by the user.
 function lastOperation(mod, command)
     keys[0] = command
-    mods[0] = mod
+    --mods[0] = mod
+	mods = mod
 end
 
 
@@ -176,6 +183,8 @@ end
 ---------------------------------------------------------------------
 
 
+--TODO: if we are in a mode other than normal...make 'Esacape' behave like Escape
+--		but if we are in normal...'Escape' must behave like 'Shift + Escape'
 --NORMAL: ENABLE NORMAL MODE --> 'Escape'
 normalMode = hs.hotkey.bind({}, 'Escape',
 function()
@@ -205,7 +214,7 @@ normal:bind({}, 'v',
         --hs.alert.show(visualNotification, alertStyle)
     end)
 
---NORMAL: ENTER INSERT MODE --> 'n'
+--NORMAL: ENTER INSERT MODE --> 'i'
 normal:bind({}, 'i',
     function()
         normal:exit()
@@ -420,7 +429,7 @@ normal:bind({'shift'}, 'O', nil,
         hs.eventtap.keyStroke({}, 'Up', delay)
         normal:exit()
         setBarIcon('INSERT')
-        lastOperation('shift', 'o')
+        lastOperation({'shift'}, 'o')
     end)
 
 
@@ -431,14 +440,14 @@ normal:bind({}, 'O', nil,
         hs.eventtap.keyStroke({'shift'}, 'Return', delay)
         normal:exit()
         setBarIcon('INSERT')
-        lastOperation('', 'o')
+        lastOperation({}, 'o')
     end)
 
 
 --NORMAL: DELETE CHARACTER IN FRONT OF CURSOR --> 'x'
 function deleteNextChar()
     hs.eventtap.keyStroke({}, 'forwarddelete', delay)
-    lastOperation('', 'x')
+    lastOperation({}, 'x')
 end
 normal:bind({}, 'x', deleteNextChar, nil, deleteNextChar)
 
@@ -449,7 +458,7 @@ normal:bind({}, 's',
         hs.eventtap.keyStroke({}, 'forwarddelete', delay)
         normal:exit()
         setBarIcon('INSERT')
-        lastOperation('', 's')
+        lastOperation({}, 's')
     end)
 
 --NORMAL: SUBSTITUTE ENTIRE LINE-DELTES LINE + INSERT MODE --> 'Shift + s'
@@ -460,7 +469,7 @@ normal:bind({'shift'}, 's',
         hs.eventtap.keyStroke({'cmd'}, 'c', delay)
         hs.eventtap.keyStroke({'fn'}, 'delete', delay)
         setBarIcon('INSERT')
-        lastOperation('shift', 's')
+        lastOperation({'shift'}, 's')
         wholeLineYanked = true
     end)
 
@@ -505,14 +514,14 @@ normal:bind({}, 'd',
               hs.eventtap.keyStroke({'shift', 'option'}, 'Right', delay)
               hs.eventtap.keyStroke({'cmd'}, 'c', delay)
               hs.eventtap.keyStroke({''}, 'delete', delay)
-              lastOperation('', 'd')
+              lastOperation({}, 'd')
               wholeLineYanked = false
           elseif char == 'd' then
               hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
               hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
               hs.eventtap.keyStroke({'cmd'}, 'c', delay)
               hs.eventtap.keyStroke({''}, 'delete', delay)
-              lastOperation('ctrl', 'd')
+              lastOperation({'ctrl'}, 'd')
               wholeLineYanked = true
           end
           return true
@@ -527,7 +536,7 @@ normal:bind({'shift'}, 'd',
     hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
     hs.eventtap.keyStroke({'cmd'}, 'c', delay)
     hs.eventtap.keyStroke({'fn'}, 'delete', delay)
-    lastOperation('shift', 'd')
+    lastOperation({'shift'}, 'd')
     wholeLineYanked = false
   end)
 
@@ -546,7 +555,7 @@ normal:bind({}, 'c',
                 hs.eventtap.keyStroke({'option'}, 'right', 200)
                 hs.eventtap.keyStroke({'option'}, 'delete', 200)
                 setBarIcon('INSERT')
-                lastOperation('', 'c')
+                lastOperation({}, 'c')
                 wholeLineYanked = false
             elseif char == 'c' then
                 hs.eventtap.keyStroke({'cmd'}, 'Left', 200)
@@ -554,7 +563,7 @@ normal:bind({}, 'c',
                 hs.eventtap.keyStroke({'cmd'}, 'c', delay)
                 hs.eventtap.keyStroke({''}, 'delete', 200)
                 setBarIcon('INSERT')
-                lastOperation('shift', 'c')
+                lastOperation({'shift'}, 'c')
                 wholeLineYanked = true
             end
             return true
@@ -573,7 +582,7 @@ normal:bind({'shift'}, 'C',
         hs.eventtap.keyStroke({'cmd'}, 'c', delay)
         hs.eventtap.keyStroke({'fn'}, 'delete', delay)
         setBarIcon('INSERT')
-        lastOperation('shift', 'c')
+        lastOperation({'shift'}, 'c')
         wholeLineYanked = false
     end)
 
@@ -628,10 +637,10 @@ normal:bind({}, 'P',
             hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
             hs.eventtap.keyStroke({'shift'}, 'Return', delay)
             hs.eventtap.keyStroke({'cmd'}, 'v', delay)
-            lastOperation('', 'p')
+            lastOperation({}, 'p')
         else
             hs.eventtap.keyStroke({'cmd'}, 'v', delay)
-            lastOperation('', 'p')
+            lastOperation({}, 'p')
         end
     end)
 
@@ -643,31 +652,46 @@ normal:bind({'shift'}, 'P', nil,
         hs.eventtap.keyStroke({'shift'}, 'Return', delay)
         hs.eventtap.keyStroke({}, 'Up', delay)
         hs.eventtap.keyStroke({'cmd'}, 'v', delay)
-        lastOperation('shift', 'p')
+        lastOperation({'shift'}, 'p')
     end)
 
 
---TODO: Figure out how to get out of search bar if we don't have Escape to do so
 --NORMAL: Search --> '/'
 normal:bind({}, '/',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'F', delay)
         normal:exit()
         setBarIcon('INSERT')
-    end)
+		findChar = false --Override 'f<char>'
+		searchMode = true
+        listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+            char = event:getKeyCode()
+			if char == RETURN then
+			  listener:stop()
+			  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+			  return normal:enter()
+			end
+		end)
+		listener:start()
+	end)
+
 
 
 --NORMAL: SEARCH FOWARD --> 'n'
 normal:bind({}, 'n',
-    function()
-        hs.eventtap.keyStroke({'cmd'}, 'G', delay)
+	function()
+		if not findChar then
+			hs.eventtap.keyStroke({'cmd'}, 'G', delay)
+		end
     end)
 
 
 --NORMAL: SEARCH BACKWARDS --> 'n'
 normal:bind({'shift'}, 'n',
-    function()
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'G', delay)
+	function()
+		if not findChar then
+			hs.eventtap.keyStroke({'shift', 'cmd'}, 'G', delay)
+		end
     end)
 
 
@@ -676,7 +700,7 @@ normal:bind({'shift'}, '.',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
         hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', delay)
-        lastOperation('shift', '.')
+        lastOperation({'shift'}, '.')
     end)
 
 
@@ -685,7 +709,7 @@ normal:bind({'shift'}, ',',
     function()
         hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
         hs.eventtap.keyStroke({'shift'}, 'Tab', delay)
-        lastOperation('shift', ',')
+        lastOperation({'shift'}, ',')
     end)
 
 
@@ -705,15 +729,16 @@ normal:bind({'shift'}, 'v',
 
 
 --NORMAL: REPEAT LAST COMMAND
-normal:bind({}, '.', 
+normal:bind({}, '.',
     function()
         if keys[0] ~= nil then
-            hs.eventtap.keyStroke({mods[0]}, keys[0], delay)
-            hs.eventtap.keyStroke({}, 'Escape', delay) --To deal with cases that put us in Insert
+			hs.eventtap.keyStroke(mods, keys[0], delay)
+		  --To deal with cases that put us in Insert
+            hs.eventtap.keyStroke({}, 'Escape', delay)
         end
     end, nil,
     function()
-        hs.eventtap.keyStroke({mods[0]}, keys[0], delay)
+        hs.eventtap.keyStroke(mods, keys[0], delay)
         hs.eventtap.keyStroke({}, 'Escape', delay)
     end)
 
@@ -729,11 +754,68 @@ hs.hotkey.bind({'shift', 'option', 'cmd'}, 'r',
         hs.application.launchOrFocus(focusedWindow)
 	end)
 
+
+
+--NORMAL: FIND NEXT OCCURRENCE OF <CHARACTER> in file --> 'f<char>'
+normal:bind({}, 'f',
+	function()
+	  normal:exit()
+	  listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+		  char = event:getCharacters()
+		  listener:stop()
+		  hs.eventtap.keyStroke({'cmd'}, 'f', delay)
+		  hs.eventtap.keyStroke({}, char, delay)
+		  hs.eventtap.keyStroke({'cmd'}, 'g', delay)
+		  hs.timer.doAfter(0.6,
+			  function()
+				  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+			  end)
+		  findChar = true
+		  return normal:enter()
+	  end)
+	  listener:start()
+	end)
+
+
+--NORMAL: FIND PREVIOUS OCCURRENCE OF <CHARACTER> in file --> 'F<char>'
+--normal:bind({'shift'}, 'f',
+--	function()
+--	  normal:exit()
+--	  listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+--		  char = event:getCharacters()
+--		  listener:stop()
+--		  hs.eventtap.keyStroke({'cmd'}, 'f', delay)
+--		  hs.eventtap.keyStroke({}, char, delay)
+--		  hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
+--		  hs.timer.doAfter(0.6,
+--		 function()
+--			 hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+--		  end)
+--		  --lastOperation({'shift', 'cmd'}, 'g')
+--		  findChar = true
+--		  --lastFind({'shift', 'cmd'}, 'g')
+--		  return normal:enter()
+--	  end)
+--	  listener:start()
+--end)
+
+normal:bind({}, ';',
+  function()
+		if findChar then
+			hs.eventtap.keyStroke({'cmd'}, 'g', delay)
+		end
+	end)
+
+normal:bind({}, ',',
+	function()
+		if findChar then
+			hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
+	end
+end)
+
 --Placebo keys for now until they get bind to a operation:
 normal:bind({}, 't', function() end)
 normal:bind({}, 'q', function() end)
-normal:bind({}, 'f', function() end) --TODO: needs to be asssigned asap
-normal:bind({}, ';', function() end)
 normal:bind({}, 'z', function() end)
 normal:bind({}, 'm', function() end)
 normal:bind({}, '0', function() end)
@@ -860,7 +942,7 @@ visual:bind({}, 'x',
         normal:enter()
         deleteNextChar()
         setBarIcon('NORMAL')
-        lastOperation('', 'x')
+        lastOperation({}, 'x')
     end)
 
 --VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'd'
@@ -870,7 +952,7 @@ visual:bind({}, 'd',
         normal:enter()
         hs.eventtap.keyStroke({''}, 'delete', delay)
         setBarIcon('NORMAL')
-        lastOperation('', 'd')
+        lastOperation({}, 'd')
     end)
 
 
@@ -880,7 +962,7 @@ visual:bind({}, 'c',
         visual:exit()
         hs.eventtap.keyStroke({''}, 'delete', delay)
         setBarIcon('INSERT')
-        lastOperation('', 'c')
+        lastOperation({}, 'c')
     end)
 
 
@@ -891,7 +973,7 @@ visual:bind({'shift'}, '.',
         hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', delay)
         visual:exit()
         normal:enter()
-        lastOperation('shift', '.')
+        lastOperation({'shift'}, '.')
     end)
 
 --VISUAL: INDENT BACKWARDS --> '<'
@@ -901,7 +983,7 @@ visual:bind({'shift'}, ',',
         hs.eventtap.keyStroke({'shift'}, 'Tab', delay)
         visual:exit()
         normal:enter()
-        lastOperation('shift', ',')
+        lastOperation({'shift'}, ',')
     end)
 
 
