@@ -186,13 +186,13 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 &nbsp; 
 
+- [ ] Fix configurarion reload bug (Sometimes it has to be clicked more than
+    once for it to be responsive.)
 - [ ] Create table of contents
 - [ ] Create installation script
 - [ ] `r<char>` handle missing keymap cases (i.e `r<+>`)
 - [ ] `r<char>` handle modifiers (i.e `shift + g`)
 - [ ] Missing `.` functionality when using `r<char>`
-- [ ] Fix configurarion reload bug (Sometimes it has to be clicked more than
-    once for it to be responsive.)
 - [ ] Ability for user tho change stuff like, Apps that they want included in
     VIM mode, change Normal mode key and other options.
 - [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`
