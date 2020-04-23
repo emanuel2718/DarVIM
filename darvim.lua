@@ -749,12 +749,15 @@ normal:bind({}, '.',
 --RELOADS HAMMERSPOON CONFIGURATION
 hs.hotkey.bind({'shift', 'option', 'cmd'}, 'r',
     function()
+		hs.alert.show('Configuration Realoaded', alertStyle)
         focusedWindow = hs.window.frontmostWindow():application():name()
-        hammerspoonWindow = hs.window.get('Hammerspoon Console')
         hs.application.launchOrFocus('Hammerspoon')
-        hs.eventtap.keyStroke({'shift', 'cmd'}, 'r', delay)
-        hs.alert.show('Configuration reloaded', alertStyle)
-        hs.application.launchOrFocus(focusedWindow)
+		hs.timer.doAfter(0.5,
+			function()
+				hs.application.launchOrFocus(focusedWindow)
+				hs.application.get('Hammerspoon'):hide()
+			end)
+		hs.eventtap.keyStroke({'shift', 'cmd'}, 'r')
 	end)
 
 

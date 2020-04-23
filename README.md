@@ -187,8 +187,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 - [ ] ERROR HANDLING
 - [ ] Move listeners to a separate function to avoid repetition
-- [ ] Fix configurarion reload bug (Sometimes it has to be clicked more than
-    once for it to be responsive.)
 - [ ] Create table of contents
 - [ ] Create installation script
 - [ ] `r<char>` handle missing keymap cases (i.e `r<+>`)
