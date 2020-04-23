@@ -14,6 +14,9 @@ local RETURN = 36
 local delay = 1
 
 local barIcon = hs.menubar.new()
+local normalIcon = '[ N ]'
+local insertIcon = '[ I ]'
+local visualIcon = '[ V ]'
 
 
 --Normal Mode
@@ -92,11 +95,11 @@ end
 --Sets the current mode in the menu bar.
 function setBarIcon(state)
     if state == 'VISUAL' then
-        barIcon:setTitle('[ V ]')
+        barIcon:setTitle(visualIcon)
     elseif state == 'INSERT' then
-        barIcon:setTitle('[ I ]')
+        barIcon:setTitle(insertIcon)
     elseif state == 'NORMAL' then
-        barIcon:setTitle('[ N ]')
+        barIcon:setTitle(normalIcon)
     else
         barIcon:setTitle('')
     end
@@ -183,26 +186,28 @@ end
 ---------------------------------------------------------------------
 
 
---TODO: if we are in a mode other than normal...make 'Esacape' behave like Escape
---		but if we are in normal...'Escape' must behave like 'Shift + Escape'
 --NORMAL: ENABLE NORMAL MODE --> 'Escape'
 normalMode = hs.hotkey.bind({}, 'Escape',
-function()
-    normal:enter()
-    --hs.alert.closeAll()
-    visual:exit()
-    setBarIcon('NORMAL')
-    --hs.alert.show(normalNotification, alertStyle)
-end)
+	function()
+		if barIcon:title() == normalIcon then
+			hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+			hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+		end
+		normal:enter()
+		visual:exit()
+		setBarIcon('NORMAL')
+	end)
 
 --NORMAL: ENABLE NORMAL MODE IN PDF'S --> 'Escape'
 normalModePDF = hs.hotkey.bind({}, 'Escape',
-function()
-    normalPDF:enter()
-    setBarIcon('NORMAL')
-    --hs.alert.closeAll()
-    --hs.alert.show(normalNotification, alertStyle)
-end)
+	function()
+		if barIcon:title() == normalIcon then
+		  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+		  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+		end
+		normalPDF:enter()
+		setBarIcon('NORMAL')
+	end)
 
 --NORMAL: ENABLE VISUAL MODE --> 'v'
 normal:bind({}, 'v',
@@ -210,8 +215,6 @@ normal:bind({}, 'v',
         setBarIcon('VISUAL')
         normal:exit()
         visual:enter()
-        --hs.alert.closeAll()
-        --hs.alert.show(visualNotification, alertStyle)
     end)
 
 --NORMAL: ENTER INSERT MODE --> 'i'
@@ -849,6 +852,7 @@ visual:bind({}, 'j', visualDOWN, nil, visualDOWN)
 --VISUAL: MOVE LEFT --> 'h'
 function visualLEFT() hs.eventtap.keyStroke('shift', 'Left', delay) end
 visual:bind({}, 'h', visualLEFT, nil, visualLEFT)
+
 
 
 --VISUAL: MOVE DOWN --> 'l'
