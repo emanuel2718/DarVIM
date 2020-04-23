@@ -185,7 +185,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 &nbsp; 
 
-- [ ] Fix `f<char>` bug
 - [ ] ERROR HANDLING
 - [ ] Move listeners to a separate function to avoid repetition
 - [ ] Fix configurarion reload bug (Sometimes it has to be clicked more than

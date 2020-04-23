@@ -766,13 +766,10 @@ normal:bind({}, 'f',
 	  listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
 		  char = event:getCharacters()
 		  listener:stop()
-		  hs.eventtap.keyStroke({'cmd'}, 'f', delay)
-		  hs.eventtap.keyStroke({}, char, delay)
-		  hs.eventtap.keyStroke({'cmd'}, 'g', delay)
-		  hs.timer.doAfter(0.6,
-			  function()
-				  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
-			  end)
+		  hs.eventtap.keyStroke({'cmd'}, 'f')
+		  hs.eventtap.keyStroke({}, char)
+		  hs.eventtap.keyStroke({'cmd'}, 'g')
+		  hs.eventtap.keyStroke({'shift'}, 'Escape')
 		  findChar = true
 		  return normal:enter()
 	  end)
@@ -781,26 +778,21 @@ normal:bind({}, 'f',
 
 
 --NORMAL: FIND PREVIOUS OCCURRENCE OF <CHARACTER> in file --> 'F<char>'
---normal:bind({'shift'}, 'f',
---	function()
---	  normal:exit()
---	  listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
---		  char = event:getCharacters()
---		  listener:stop()
---		  hs.eventtap.keyStroke({'cmd'}, 'f', delay)
---		  hs.eventtap.keyStroke({}, char, delay)
---		  hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
---		  hs.timer.doAfter(0.6,
---		 function()
---			 hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
---		  end)
---		  --lastOperation({'shift', 'cmd'}, 'g')
---		  findChar = true
---		  --lastFind({'shift', 'cmd'}, 'g')
---		  return normal:enter()
---	  end)
---	  listener:start()
---end)
+normal:bind({'shift'}, 'f',
+	function()
+	  normal:exit()
+	  listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+		  char = event:getCharacters()
+		  listener:stop()
+		  hs.eventtap.keyStroke({'cmd'}, 'f')
+		  hs.eventtap.keyStroke({}, char)
+		  hs.eventtap.keyStroke({'shift', 'cmd'}, 'g')
+		  hs.eventtap.keyStroke({'shift'}, 'Escape')
+		  findChar = true
+		  return normal:enter()
+	  end)
+	  listener:start()
+end)
 
 normal:bind({}, ';',
   function()
