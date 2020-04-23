@@ -106,8 +106,8 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `S` : Substitutes entire line/Delete line + Insert Mode
  * `r<char>` : Replace single character at cursor
  * `f<char>` : find `<char>` occurence after cursor
- * `;` : Repeat last 'f', 'F', 't', or 'T' command
- * `,` : Reverse direction of last 'f', 'F', 't', or 'T' command
+ * `;` : Repeat last `f`, `F`, `t`, or `T` command
+ * `,` : Reverse direction of last `f`, `F`, `t`, or `T` command
  * `dw` : Delete next word
  * `dd` : Delete whole line
  * `D` : Delete to end of line
