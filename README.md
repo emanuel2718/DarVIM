@@ -107,8 +107,10 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `s` : Delete single character in front of cursor + Insert Mode
  * `S` : Substitutes entire line/Delete line + Insert Mode
  * `r<char>` : Replace single character at cursor
- * `F<char>` : find `<char>` occurence before cursor
- * `f<char>` : find `<char>` occurence after cursor
+ * `F<char>` : Find `<char>` occurence before cursor
+ * `f<char>` : Find `<char>` occurence after cursor
+ * `T<char>` : reverse `t<char>`
+ * `t<char>` : Same as `f<char>` but move to just one before found char
  * `;` : Repeat last `f`, `F`, `t`, or `T` command
  * `,` : Reverse direction of last `f`, `F`, `t`, or `T` command
  * `dw` : Delete next word
@@ -162,11 +164,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] `jk` : Make it possible for user to choose `jk` and variations as their Escape key
 - [ ] `?` : Search backwards
 - [ ] `zz` : Center cursor (ctrl + z)
-- [ ] `F<char>` : find `<char>` occurence before cursor in current line
-- [ ] `t<char>` : find `<char>` occurence after cursor in current line + cursor
-    before char
-- [ ] `T<char>` : find `<char>` occurence before cursor in current line + cursor
-    before char
 - [ ] `^` : Move to first non-whitespace character in the line
 - [ ] `-` : Move to first non-whitespace character of previous line
 - [ ] `+` : Move to first non-whitespace character of next line

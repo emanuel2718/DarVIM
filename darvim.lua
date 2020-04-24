@@ -765,7 +765,7 @@ hs.hotkey.bind({'shift', 'option', 'cmd'}, 'r',
 
 
 
---NORMAL: FIND NEXT OCCURRENCE OF <CHARACTER> in file --> 'f<char>'
+--NORMAL: FIND NEXT OCCURRENCE OF <CHARACTER> PUT US BEFORE CHARACTER --> 'f<char>'
 normal:bind({}, 'f',
 	function()
 	  normal:exit()
@@ -787,7 +787,7 @@ normal:bind({}, 'f',
 	end)
 
 
---NORMAL: FIND PREVIOUS OCCURRENCE OF <CHARACTER> in file --> 'F<char>'
+--NORMAL: REVERSE 'f<char>' --> 'F<char>'
 normal:bind({'shift'}, 'f',
 	function()
 	  normal:exit()
@@ -806,6 +806,51 @@ normal:bind({'shift'}, 'f',
 		  return normal:enter()
 	  end)
 	  listener:start()
+end)
+
+
+--NORMAL: SAME AS 'f' BUT MOVES TO JUST BEFORE FOUND CHARACTER-> 't<char>'
+normal:bind({}, 't',
+  function()
+	normal:exit()
+	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+		char = event:getCharacters()
+		listener:stop()
+		hs.eventtap.keyStroke({'cmd'}, 'f')
+		hs.eventtap.keyStrokes(char)
+		hs.timer.doAfter(0.5,
+			function()
+				hs.eventtap.keyStroke({'cmd'}, 'g', delay)
+				hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+				hs.eventtap.keyStroke({}, 'left', delay)
+				hs.eventtap.keyStroke({}, 'left', delay)
+			end)
+		findChar = true
+		return normal:enter()
+	end)
+	listener:start()
+end)
+
+
+--NORMAL: REVERSE 't<char>' --> 'T<char>'
+normal:bind({'shift'}, 't',
+  function()
+	normal:exit()
+	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+		char = event:getCharacters()
+		listener:stop()
+		hs.eventtap.keyStroke({'cmd'}, 'f')
+		hs.eventtap.keyStrokes(char)
+		hs.timer.doAfter(0.5,
+			function()
+				hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
+				hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+				hs.eventtap.keyStroke({}, 'right', delay)
+			end)
+		findChar = true
+		return normal:enter()
+	end)
+	listener:start()
 end)
 
 --NORMAL: REPEAT LAST FIND COMMAND FORWARD
@@ -850,7 +895,6 @@ normal:bind({'ctrl'}, 'f',
 
 
 --Placebo keys for now until they get bind to a operation:
-normal:bind({}, 't', function() end)
 normal:bind({}, 'q', function() end)
 normal:bind({}, 'z', function() end)
 normal:bind({}, 'm', function() end)
