@@ -773,9 +773,12 @@ normal:bind({}, 'f',
 		  char = event:getCharacters()
 		  listener:stop()
 		  hs.eventtap.keyStroke({'cmd'}, 'f')
-		  hs.eventtap.keyStroke({}, char)
-		  hs.eventtap.keyStroke({'cmd'}, 'g')
-		  hs.eventtap.keyStroke({'shift'}, 'Escape')
+		  hs.eventtap.keyStrokes(char)
+		  hs.timer.doAfter(0.5,
+			  function()
+				  hs.eventtap.keyStroke({'cmd'}, 'g')
+				  hs.eventtap.keyStroke({'shift'}, 'Escape')
+			  end)
 		  findChar = true
 		  return normal:enter()
 	  end)
@@ -791,9 +794,12 @@ normal:bind({'shift'}, 'f',
 		  char = event:getCharacters()
 		  listener:stop()
 		  hs.eventtap.keyStroke({'cmd'}, 'f')
-		  hs.eventtap.keyStroke({}, char)
-		  hs.eventtap.keyStroke({'shift', 'cmd'}, 'g')
-		  hs.eventtap.keyStroke({'shift'}, 'Escape')
+		  hs.eventtap.keyStrokes(char)
+		  hs.timer.doAfter(0.5,
+			  function()
+				  hs.eventtap.keyStroke({'shift', 'cmd'}, 'g')
+				  hs.eventtap.keyStroke({'shift'}, 'Escape')
+			  end)
 		  findChar = true
 		  return normal:enter()
 	  end)

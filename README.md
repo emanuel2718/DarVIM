@@ -107,6 +107,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `s` : Delete single character in front of cursor + Insert Mode
  * `S` : Substitutes entire line/Delete line + Insert Mode
  * `r<char>` : Replace single character at cursor
+ * `F<char>` : find `<char>` occurence before cursor
  * `f<char>` : find `<char>` occurence after cursor
  * `;` : Repeat last `f`, `F`, `t`, or `T` command
  * `,` : Reverse direction of last `f`, `F`, `t`, or `T` command
