@@ -755,7 +755,7 @@ hs.hotkey.bind({'shift', 'option', 'cmd'}, 'r',
 		hs.alert.show('Configuration Realoaded', alertStyle)
         focusedWindow = hs.window.frontmostWindow():application():name()
         hs.application.launchOrFocus('Hammerspoon')
-		hs.timer.doAfter(0.5,
+		hs.timer.doAfter(1.0,
 			function()
 				hs.application.launchOrFocus(focusedWindow)
 				hs.application.get('Hammerspoon'):hide()
@@ -776,8 +776,9 @@ normal:bind({}, 'f',
 		  hs.eventtap.keyStrokes(char)
 		  hs.timer.doAfter(0.5,
 			  function()
-				  hs.eventtap.keyStroke({'cmd'}, 'g')
-				  hs.eventtap.keyStroke({'shift'}, 'Escape')
+				  hs.eventtap.keyStroke({'cmd'}, 'g', delay)
+				  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+				  hs.eventtap.keyStroke({}, 'left', delay)
 			  end)
 		  findChar = true
 		  return normal:enter()
@@ -797,8 +798,9 @@ normal:bind({'shift'}, 'f',
 		  hs.eventtap.keyStrokes(char)
 		  hs.timer.doAfter(0.5,
 			  function()
-				  hs.eventtap.keyStroke({'shift', 'cmd'}, 'g')
-				  hs.eventtap.keyStroke({'shift'}, 'Escape')
+				  hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
+				  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+				  hs.eventtap.keyStroke({}, 'left', delay)
 			  end)
 		  findChar = true
 		  return normal:enter()
