@@ -119,7 +119,6 @@ end
 --Saves the last modifiers and/or key used by the user.
 function lastOperation(mod, command)
     keys[0] = command
-    --mods[0] = mod
 	mods = mod
 end
 
@@ -291,7 +290,7 @@ normalPDF:bind({'ctrl'}, 'F', nextPAGE, nil, nextPAGE)
 
 --NORMALPDF: SCROLL ONE PAGE BACKWARD --> 'ctrl + b'
 function previousPAGE() hs.eventtap.keyStroke({}, 'Left', delay) end
-normalPDF:bind({'ctrl'}, 'B', previousPAGE, nil, previousPAGE)
+normalPDF:bind({'ctrl'}, 'b', previousPAGE, nil, previousPAGE)
 
 
 --NORMALPDF: INVERT DISPLAY COLORS --> 't'
@@ -801,19 +800,46 @@ normal:bind({'shift'}, 'f',
 	  listener:start()
 end)
 
+--NORMAL: REPEAT LAST FIND COMMAND FORWARD
 normal:bind({}, ';',
-  function()
+	function()
 		if findChar then
 			hs.eventtap.keyStroke({'cmd'}, 'g', delay)
 		end
 	end)
 
+
+--NORMAL: REPEAT LAST FIND COMMAND BACKWARDS
 normal:bind({}, ',',
 	function()
 		if findChar then
 			hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
 	end
 end)
+
+
+--NORMAL: MOVE BACK UP ONE SCREEN --> 'ctrl + b'
+normal:bind({'ctrl'}, 'b',
+	function()
+		hs.eventtap.keyStroke({}, 'pageup')
+	end, nil,
+	function()
+		hs.eventtap.keyStroke({}, 'pageup')
+	end)
+
+
+--NORMAL: MOVE FORWARD DOWN ONE SCREEN --> 'ctrl + f'
+normal:bind({'ctrl'}, 'f',
+	function()
+		hs.eventtap.keyStroke({}, 'pagedown')
+		--hs.eventtap.event.newMouseEvent(hs.eventtap.middleClick(
+		--						{hs.window.focusedWindow():size().w,
+		--						 hs.window.focusedWindow():size().h}))
+	end, nil,
+	function()
+		hs.eventtap.keyStroke({}, 'pagedown')
+	end)
+
 
 --Placebo keys for now until they get bind to a operation:
 normal:bind({}, 't', function() end)

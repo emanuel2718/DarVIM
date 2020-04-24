@@ -89,6 +89,8 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `k` : Move Up
  * `l` : Move Right
  * `gg` : Move to top of the page
+ * `C-b` : Move backwards up one page :: *Broken*
+ * `C-f` : Move forwdard down one page :: *Broken*
 
 
  * `G` : Move to bottom of page
@@ -156,8 +158,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 &nbsp; 
 
 # TODO LIST:
-- [ ] `C-d` : Page down
-- [ ] `C-trl + u` : Page up
 - [ ] `jk` : Make it possible for user to choose `jk` and variations as their Escape key
 - [ ] `?` : Search backwards
 - [ ] `zz` : Center cursor (ctrl + z)
@@ -189,6 +189,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] Move listeners to a separate function to avoid repetition
 - [ ] Create table of contents
 - [ ] Create installation script
+- [ ] Fix `ctrl + b` and `ctrl + f` scrolling bug
 - [ ] Missing `.` functionality when using `r<char>`
 - [ ] Ability for user tho change stuff like, Apps that they want included in
     VIM mode, change Normal mode key and other options.
