@@ -894,6 +894,36 @@ normal:bind({'ctrl'}, 'f',
 	end)
 
 
+--NORMAL: MOVE TO FIRST NON-WHITE CHAR IN THE LINE --> '^'
+normal:bind({'shift'}, '6',
+	function()
+		hs.eventtap.keyStroke({'cmd'}, 'left')
+	end)
+
+
+--NORMAL: MOVE TO FIRST NON-WHITE CHAR IN THE PREVIOUS LINE --> '-'
+normal:bind({}, '-',
+	function()
+		hs.eventtap.keyStroke({'cmd'}, 'left', delay)
+		hs.eventtap.keyStroke({}, 'up', delay)
+	end, nil,
+	function()
+		hs.eventtap.keyStroke({'cmd'}, 'left', delay)
+		hs.eventtap.keyStroke({}, 'up', delay)
+	end)
+
+
+--NORMAL: MOVE TO FIRST NON-WHITE CHAR IN THE NEXT LINE --> '+'
+normal:bind({'shift'}, '=',
+  function()
+	hs.eventtap.keyStroke({'cmd'}, 'left', delay)
+	hs.eventtap.keyStroke({}, 'down', delay)
+  end, nil,
+  function()
+	hs.eventtap.keyStroke({'cmd'}, 'left', delay)
+	hs.eventtap.keyStroke({}, 'down', delay)
+end)
+
 --Placebo keys for now until they get bind to a operation:
 normal:bind({}, 'q', function() end)
 normal:bind({}, 'z', function() end)

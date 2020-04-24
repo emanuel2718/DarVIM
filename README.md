@@ -133,6 +133,12 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `i` : Enter Insert Mode
  * `v` : Enter Visual Mode
  * `V` : Enter Visual mode and highlight whole line
+ * `^` : Move to first non-whitespace character in the line (Having trouble in
+   some apps i.e Notes)
+ * `-` : Move to first non-whitespace character of previous line (Having trouble
+   in some apps i.e Notes)
+ * `+` : Move to first non-whitespace character of next line (Having trouble
+   in some apps i.e Notes)
  
 &nbsp; 
 
@@ -164,9 +170,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] `jk` : Make it possible for user to choose `jk` and variations as their Escape key
 - [ ] `?` : Search backwards
 - [ ] `zz` : Center cursor (ctrl + z)
-- [ ] `^` : Move to first non-whitespace character in the line
-- [ ] `-` : Move to first non-whitespace character of previous line
-- [ ] `+` : Move to first non-whitespace character of next line
 - [ ] `(` : Move to previous sentence
 - [ ] `)` : Move to next sentence
 - [ ] `<operator><motion><text-object>` 
