@@ -484,8 +484,12 @@ normal:bind({}, 'r',
         listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
             char = event:getCharacters()
             listener:stop()
-            hs.eventtap.keyStroke({}, 'forwarddelete', 200)
-            hs.eventtap.keyStroke({}, char, 200)
+            hs.eventtap.keyStroke({}, 'forwarddelete', delay)
+			if char == string.upper(char) then
+			    hs.eventtap.keyStroke({'shift'}, char)
+			else
+				hs.eventtap.keyStrokes(char)
+			end
             return normal:enter()
         end)
         listener:start()

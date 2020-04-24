@@ -189,8 +189,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] Move listeners to a separate function to avoid repetition
 - [ ] Create table of contents
 - [ ] Create installation script
-- [ ] `r<char>` handle missing keymap cases (i.e `r<+>`)
-- [ ] `r<char>` handle modifiers (i.e `shift + g`)
 - [ ] Missing `.` functionality when using `r<char>`
 - [ ] Ability for user tho change stuff like, Apps that they want included in
     VIM mode, change Normal mode key and other options.
