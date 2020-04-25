@@ -140,10 +140,13 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `+` : Move to first non-whitespace character of next line (Having trouble
    in some apps i.e Notes)
  
- * `:` : Enter Ex mode. Currently available commands:
-- [x] `wq` -> Save and Quit file
-- [x] `w`  -> Save file
-- [x] `q`  -> Quit file
+ * `:` : Enter Ex mode
+
+
+ * Currently available Ex mode commands:
+	- [x] `wq` -> Save and Quit file
+	- [x] `w`  -> Save file
+	- [x] `q`  -> Quit file
  
 &nbsp; 
 
