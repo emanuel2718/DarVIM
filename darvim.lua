@@ -14,6 +14,12 @@ local ESCAPE = 53
 --Key press delay in ms.
 local delay = 1
 
+--Screen resolution information
+local screenResolution = hs.screen.mainScreen():currentMode().desc:match('(.+)@')
+local screenWidht = screenResolution:match('(.+)x')
+local screenHeight = screenResolution:match('x(.+)')
+
+
 --Change this value to false if Light mode is desired
 local isDarkMode = true
 
@@ -38,7 +44,7 @@ local replace = hs.hotkey.modal.new()
 local exMode = hs.chooser.new(function() end)
 --Ex Mode bar customiztion
 
-exMode:rows(0):width(40):bgDark(isDarkMode)
+exMode:rows(0):width(50):bgDark(isDarkMode)
 exMode:placeholderText(':')
 
 --TODO: have this on another separate file and should provide thorough
@@ -943,7 +949,7 @@ end)
 normal:bind({'shift'}, ';',
   function()
 	normal:exit()
-	exMode:show()
+	exMode:show(hs.geometry.point(0, screenHeight * 0.85))
 	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
 		char = event:getKeyCode()
 		if char == ESCAPE then
@@ -951,7 +957,7 @@ normal:bind({'shift'}, ';',
 		  listener:stop()
 		  return normal:enter()
 
-		elseif char == RETURN then
+		elseif char == RETURN and exMode:isVisible() then
 		  command = exMode:query()
 		  if command == 'wq' then
 			hs.eventtap.keyStroke({'cmd'}, 's', delay)
