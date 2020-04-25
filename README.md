@@ -140,6 +140,11 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `+` : Move to first non-whitespace character of next line (Having trouble
    in some apps i.e Notes)
  
+ * `:` : Enter Ex mode. Currently available commands:
+- [x] `wq` -> Save and Quit file
+- [x] `w`  -> Save file
+- [x] `q`  -> Quit file
+ 
 &nbsp; 
 
 ### Visual Mode:
@@ -186,7 +191,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 &nbsp; 
 
-- [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`. Use hs.chooser()
 - [ ] ERROR HANDLING
 - [ ] Move listeners to a separate function to avoid repetition
 - [ ] Create table of contents

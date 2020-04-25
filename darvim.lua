@@ -9,9 +9,13 @@ local SPEED = 3
 
 --Return keycode map
 local RETURN = 36
+local ESCAPE = 53
 
 --Key press delay in ms.
 local delay = 1
+
+--Change this value to false if Light mode is desired
+local isDarkMode = true
 
 local barIcon = hs.menubar.new()
 local normalIcon = '[ N ]'
@@ -30,6 +34,12 @@ local visual = hs.hotkey.modal.new()
 local replace = hs.hotkey.modal.new()
 
 
+--Will be used to enter ex mode when ':' is typed
+local exMode = hs.chooser.new(function() end)
+--Ex Mode bar customiztion
+
+exMode:rows(0):width(40):bgDark(isDarkMode)
+exMode:placeholderText(':')
 
 --TODO: have this on another separate file and should provide thorough
 --instructions on how to add more applications and a decent list of examples.
@@ -477,6 +487,7 @@ normal:bind({'shift'}, 's',
 
 
 --NORMAL: REPLACE CHARACTER IN FRONT OF CURSOR--> 'r'
+
 normal:bind({}, 'r',
     function()
         normal:exit()
@@ -923,6 +934,55 @@ normal:bind({'shift'}, '=',
 	hs.eventtap.keyStroke({'cmd'}, 'left', delay)
 	hs.eventtap.keyStroke({}, 'down', delay)
 end)
+
+
+--NORMAL: ENTER EX MODE --> ':'
+--Possible choices: 'q'  > Quit file
+--				    'w'  > Save file
+--                  'wq' > Save and Quit
+normal:bind({'shift'}, ';',
+  function()
+	normal:exit()
+	exMode:show()
+	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+		char = event:getKeyCode()
+		if char == ESCAPE then
+		  exMode:cancel()
+		  listener:stop()
+		  return normal:enter()
+
+		elseif char == RETURN then
+		  command = exMode:query()
+		  if command == 'wq' then
+			hs.eventtap.keyStroke({'cmd'}, 's', delay)
+			exMode:cancel()
+			listener:stop()
+			return hs.eventtap.keyStroke({'cmd'}, 'q', delay)
+
+		  elseif command == 'w' then
+			hs.eventtap.keyStroke({'cmd'}, 's', delay)
+			exMode:cancel()
+			listener:stop()
+			hs.alert.show('File Saved', alertStyle)
+			return normal:enter()
+
+		  elseif command == 'q' then
+			exMode:cancel()
+			listener:stop()
+			normal:enter()
+			return hs.eventtap.keyStroke({'cmd'}, 'q', delay)
+		  else
+			exMode:cancel()
+			listener:stop()
+			hs.alert.show('Command not found', alertStyle)
+			return normal:enter()
+		  end
+
+		end
+	end)
+	listener:start()
+
+  end)
 
 --Placebo keys for now until they get bind to a operation:
 normal:bind({}, 'q', function() end)
