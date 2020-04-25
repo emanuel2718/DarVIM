@@ -139,6 +139,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
    in some apps i.e Notes)
  * `+` : Move to first non-whitespace character of next line (Having trouble
    in some apps i.e Notes)
+ * `zz` : Center cursor position in the middle of the screen
  
  * `:` : Enter Ex mode
 
@@ -177,7 +178,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 # TODO LIST:
 - [ ] `jk` : Make it possible for user to choose `jk` and variations as their Escape key
 - [ ] `?` : Search backwards
-- [ ] `zz` : Center cursor (ctrl + z)
 - [ ] `(` : Move to previous sentence
 - [ ] `)` : Move to next sentence
 - [ ] `<operator><motion><text-object>` 

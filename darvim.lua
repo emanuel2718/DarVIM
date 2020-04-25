@@ -1001,9 +1001,24 @@ normal:bind({'shift'}, ';',
 	listener:start()
   end)
 
+--NORMAL: CENTER CURSOR POSITION IN THE MIDDLE OF THE SCREEN --> 'zz'
+normal:bind({}, 'z',
+  function()
+	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+		char = event:getCharacters()
+		listener:stop()
+		if char == 'z' then
+		  hs.eventtap.keyStroke({'ctrl'}, 'l')
+		end
+		return
+	end)
+	listener:start()
+  end)
+
+
+
 --Placebo keys for now until they get bind to a operation:
 normal:bind({}, 'q', function() end)
-normal:bind({}, 'z', function() end)
 normal:bind({}, 'm', function() end)
 normal:bind({}, '0', function() end)
 normal:bind({}, '1', function() end)
