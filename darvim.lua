@@ -784,12 +784,12 @@ hs.hotkey.bind({'shift', 'option', 'cmd'}, 'r',
 	hs.alert.show('Configuration Realoaded', alertStyle)
 	focusedWindow = hs.window.frontmostWindow():application():name()
 	hs.application.launchOrFocus('Hammerspoon')
-	hs.timer.doAfter(1.0,
+	hs.timer.doAfter(3.0,
 	  function()
-		hs.application.launchOrFocus(focusedWindow)
-		hs.application.get('Hammerspoon'):hide()
+		hs.reload()
+		--hs.application.launchOrFocus(focusedWindow)
+		--hs.application.get('Hammerspoon'):hide()
 	  end)
-	hs.eventtap.keyStroke({'shift', 'cmd'}, 'r')
   end)
 
 
