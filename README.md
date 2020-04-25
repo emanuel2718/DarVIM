@@ -186,15 +186,16 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 &nbsp; 
 
+- [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`. Use hs.chooser()
 - [ ] ERROR HANDLING
 - [ ] Move listeners to a separate function to avoid repetition
 - [ ] Create table of contents
 - [ ] Create installation script
+- [ ] Fix last operation. For example with:  `c<word>`
 - [ ] Fix `ctrl + b` and `ctrl + f` scrolling bug
 - [ ] Missing `.` functionality when using `r<char>`
 - [ ] Ability for user tho change stuff like, Apps that they want included in
     VIM mode, change Normal mode key and other options.
-- [ ] Add ex mode; thus be able to quit document using `:q` and `:wq`
 - [ ] Add leader key functionality.
 - [ ] Complete documentation on how to install and use.
 - [ ] Disable all hotkeys when spotlight is beign used.
