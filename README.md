@@ -176,6 +176,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 &nbsp; 
 
 # TODO LIST:
+- [ ] `Escape` : Refactor Escape key. Ex. escModeAndKey[0] = {'ctrl'}, escModeAndKey[1] = '['
 - [ ] `jk` : Make it possible for user to choose `jk` and variations as their Escape key
 - [ ] `?` : Search backwards
 - [ ] `(` : Move to previous sentence
