@@ -2,64 +2,90 @@
 -- Project : DarVIM
 
 
---TODO: Add variable that let the user decide: Mode alerts ON/OFF
-
---Scrolling speed
-local SPEED = 3
-
---Return keycode map
-local RETURN = 36
-local ESCAPE = 53
+--Scrolling speed in PDF apps
+local SPEED = 4
 
 --Key press delay in ms.
 local delay = 1
 
+--Keycode map:
+local RETURN = 36
+local ESCAPE = 53
+
 --Screen resolution information
 local screenResolution = hs.screen.mainScreen():currentMode().desc:match('(.+)@')
-local screenWidht = screenResolution:match('(.+)x')
+local screenWidth = screenResolution:match('(.+)x')
 local screenHeight = screenResolution:match('x(.+)')
 
+--Darkmode variable for Ex mode bar:
+--local isDarkMode = false --> Light Mode
+local isDarkMode = true --> Dark Mode
 
---Change this value to false if Light mode is desired
-local isDarkMode = true
 
+--Current VIM status menubar icon indicator.
 local barIcon = hs.menubar.new()
 local normalIcon = '[ N ]'
 local insertIcon = '[ I ]'
 local visualIcon = '[ V ]'
+--Mode's notification identifier
+local normalNotification = 'NORMAL'
+local insertNotification = 'INSERT'
+local visualNotification = 'VISUAL'
+
+--Sets the current mode in the menu bar.
+function setBarIcon(state)
+  if state == 'VISUAL' then
+	barIcon:setTitle(visualIcon)
+  elseif state == 'INSERT' then
+	barIcon:setTitle(insertIcon)
+  elseif state == 'NORMAL' then
+	barIcon:setTitle(normalIcon)
+  else
+	barIcon:setTitle('')
+  end
+end
+
+--function barIconClicked()
+--    setBarIcon(hs.caffeinate.toggle('CLICKED'))
+--end
+--
+--if barIcon then
+--    barIcon:setClickCallback(barIconClicked)
+--    setBarIcon(hs.caffeinate.get('CLICKED'))
+--end
 
 
---Normal Mode
+--------------------MODES--------------------
+--Normal Mode --> Typing apps
 local normal = hs.hotkey.modal.new()
+--Normal Mode --> PDF apps
 local normalPDF = hs.hotkey.modal.new()
-
-
---Visual Mode
+--Visual Mode --> Anywhere
 local visual = hs.hotkey.modal.new()
-
+--Replace Mode --> Typing apps
 local replace = hs.hotkey.modal.new()
-
-
---Will be used to enter ex mode when ':' is typed
+--Ex Mode --> Typing apps
 local exMode = hs.chooser.new(function() end)
---Ex Mode bar customiztion
 
+--Ex Mode bar customiztion
 exMode:rows(0):width(50):bgDark(isDarkMode)
 exMode:placeholderText(':')
+---------------------------------------------
 
 --TODO: have this on another separate file and should provide thorough
 --instructions on how to add more applications and a decent list of examples.
 --TODO: Figure the name problem...Hammerspoon recognize apps from a different name
 -- than the one from system. Ex. Acrobat Reader vs. Acrobat Reader DC. Figure this out..
 
---List of supported Applications
---The user could add or remove applications as desired.
+--List of Applications VIM mode is desired
+--Append to the end of the relevant list the name of the app you want VIM suppot on.
 local APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki',
-			  'Xcode'}
+			  'Xcode', 'Mail'}
 local PDF = {'Preview', 'Acrobat Reader'}
 
 
--- If you have the dock showing at all time and in the bottom, having
+--Notifications styling --> hs.alert.show()
+--If you have the dock showing at all time and in the bottom, having
 -- notification on the bottom might be an issue. To change their placement:
 --      Center of screen: atScreenEdge=0
 --      Top of screen: atScreenEdge=1
@@ -76,29 +102,24 @@ local alertStyle = {
 
 
 
---Mode's notification text
-local normalNotification = 'NORMAL'
-local insertNotification = 'INSERT'
-local visualNotification = 'VISUAL'
-
-local keys = {}
-local mods = {}
-
 
 --In charge of keeping track if a whole line was yanked or a portion (i.e word)
---When this is true; paste will open a new line (above or below) and paste line
---When this is false; paste will paste in place
-local wholeLineYanked = false
+--	@isWholeLineYanked = true; paste will open a new line (above or below) and paste line
+--	@isWholeLineYanked = false; paste will paste in place
+local isWholeLineYanked = false
 
+--@findChar = true --> ';' and ',' will search forward and backwards for the
+-- character beign searched in Normal mode
+--@findChar = false --> ';' and ',' will do nothing
 local findChar = false
-local searchMode = false
 
+--Initialize application watcher.
 function init()
     appsWatcher = hs.application.watcher.new(applicationWatcher)
     appsWatcher:start()
 end
 
---Checks if the currently focused applications is in the list of supported apps
+--Checks if the currently focused application is in the list of VIM supported apps
 function contains(APP, name)
     for i, app in ipairs(APP) do
         if APP[i] == name then
@@ -108,91 +129,87 @@ function contains(APP, name)
     return false
 end
 
---Sets the current mode in the menu bar.
-function setBarIcon(state)
-    if state == 'VISUAL' then
-        barIcon:setTitle(visualIcon)
-    elseif state == 'INSERT' then
-        barIcon:setTitle(insertIcon)
-    elseif state == 'NORMAL' then
-        barIcon:setTitle(normalIcon)
-    else
-        barIcon:setTitle('')
-    end
-end
 
---function barIconClicked()
---    setBarIcon(hs.caffeinate.toggle('CLICKED'))
---end
---
---if barIcon then
---    barIcon:setClickCallback(barIconClicked)
---    setBarIcon(hs.caffeinate.get('CLICKED'))
---end
+--Last operation key string
+local keys = {}
+--Last operation modifier table
+local mods = {}
 
 
-
---Saves the last modifiers and/or key used by the user.
+--Saves the last modifiers and/or key used by the user so that it can be repeated
+-- with the '.' command
+-- If the last operation was 'Shift + p' then it will be saved in the as:
+-- @mods = {'shift'} --> If there was no modifier: @mods = {} empty table
+-- @keys[0] = 'p'
 function lastOperation(mod, command)
-    keys[0] = command
-	mods = mod
+  keys[0] = command
+  mods = mod
 end
-
-
 
 
 --Main logic of the program. Watch to see if we are on an application that we
 --want VIM keybinds on or not.
+--There are three possible states:
+
+-- VIM mode apps: here all VIM keybinds are activated. Everytime
+--				  a VIM mode app is launched of focused Normal mode gets activated.
+-- PDF mode apps: here only VIM scrolling keybinds are activated.
+--                 Plus insert mode keybind.
+-- Every other app: No VIM keybinds
 function applicationWatcher(name, event, app)
-
-    --If we are readign a PDF
-    if contains(PDF, name) then
-        --If the is begin focused
-        if event == hs.application.watcher.activated then
-            normalMode:disable()
-            normalModePDF:enable()
-            normalPDF:enter()
-            setBarIcon('NORMAL')
-        end
-        --We lost focus of the PDF window
-        if event == hs.application.watcher.deactivated then
-            --If the focused window is one where we don't want VIM keybinds
-            --restriction (i.e Terminal)
-            if not contains(APPS, hs.window.frontmostWindow():application():name()) then
-                normalModePDF:disable()
-                setBarIcon('')
-            end
-            normalPDF:exit()
-            visual:exit()
-        end
+  --If the focus application is a PDF reader and it's on the @PDF list
+  if contains(PDF, name) then
+    --Focused on the PDF app --> Enter PDF Normal Mode
+	if event == hs.application.watcher.activated then
+	  normalMode:disable()
+      normalModePDF:enable()
+      normalPDF:enter()
+      setBarIcon('NORMAL')
     end
-
-    --For apps like Slack, Discord, Notes, etc.
-    --We dont want scrolling features like in Preview. We want 'hjkl' to behave
-    --like arrows to edit text.
-    if contains(APPS, name) and not(contains(PDF, name)) then
-        if event == hs.application.watcher.activated then
-            normalModePDF:disable()
-            normalMode:enable()
-            normal:enter()
-            setBarIcon('NORMAL')
-        end
-        if event == hs.application.watcher.deactivated then
-            if not contains(APPS, hs.window.frontmostWindow():application():name()) then
-                normalModePDF:disable()
-                normalMode:disable()
-                setBarIcon('')
-            end
-            normal:exit()
-            visual:exit()
-        end
-    --end
-    elseif not contains(APPS, hs.window.frontmostWindow():application():name()) then
-        --TODO: This is throwing nil values.
+    --Focus is list from the PDF app --> Get out of Normal Mode
+    if event == hs.application.watcher.deactivated then
+	  --If the next focused window is one where we don't want VIM keybinds
+      --restriction (i.e Terminal, Web Browser)
+      if not contains(APPS, hs.window.frontmostWindow():application():name()) then
         normalModePDF:disable()
+        setBarIcon('')
+      end
+      normalPDF:exit()
+      visual:exit()
+    end
+  end
+
+  --If the currently focused application is one that VIM keybinds are desired
+  --More formally; if the application is on the @APPS list
+  --For apps like Slack, Discord, Notes, etc.
+  --We dont want scrolling features like in Preview. We want 'hjkl' to behave
+  --like arrows to edit text.
+  if contains(APPS, name) and not(contains(PDF, name)) then
+	--VIM keybind application focused --> Enter Normal Mode
+    if event == hs.application.watcher.activated then
+      normalModePDF:disable()
+      normalMode:enable()
+      normal:enter()
+      setBarIcon('NORMAL')
+    end
+	--VIM keybind application focus lost --> Leave Normal Mode
+    if event == hs.application.watcher.deactivated then
+	  if not contains(APPS, hs.window.frontmostWindow():application():name()) then
+		normalModePDF:disable()
         normalMode:disable()
         setBarIcon('')
-    end
+      end
+      normal:exit()
+      visual:exit()
+	end
+
+  --Curently focused app is one where VIM support is not desired
+  elseif not contains(APPS, hs.window.frontmostWindow():application():name()) then
+    --TODO: This is throwing nil values.
+    normalModePDF:disable()
+    normalMode:disable()
+    setBarIcon('')
+  end
 end
 
 
@@ -488,7 +505,7 @@ normal:bind({'shift'}, 's',
         hs.eventtap.keyStroke({'fn'}, 'delete', delay)
         setBarIcon('INSERT')
         lastOperation({'shift'}, 's')
-        wholeLineYanked = true
+        isWholeLineYanked = true
     end)
 
 
@@ -538,14 +555,14 @@ normal:bind({}, 'd',
               hs.eventtap.keyStroke({'cmd'}, 'c', delay)
               hs.eventtap.keyStroke({''}, 'delete', delay)
               lastOperation({}, 'd')
-              wholeLineYanked = false
+              isWholeLineYanked = false
           elseif char == 'd' then
               hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
               hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
               hs.eventtap.keyStroke({'cmd'}, 'c', delay)
               hs.eventtap.keyStroke({''}, 'delete', delay)
               lastOperation({'ctrl'}, 'd')
-              wholeLineYanked = true
+              isWholeLineYanked = true
           end
           return true
       end)
@@ -560,7 +577,7 @@ normal:bind({'shift'}, 'd',
     hs.eventtap.keyStroke({'cmd'}, 'c', delay)
     hs.eventtap.keyStroke({'fn'}, 'delete', delay)
     lastOperation({'shift'}, 'd')
-    wholeLineYanked = false
+    isWholeLineYanked = false
   end)
 
 
@@ -579,7 +596,7 @@ normal:bind({}, 'c',
                 hs.eventtap.keyStroke({'option'}, 'delete', 200)
                 setBarIcon('INSERT')
                 lastOperation({}, 'c')
-                wholeLineYanked = false
+                isWholeLineYanked = false
             elseif char == 'c' then
                 hs.eventtap.keyStroke({'cmd'}, 'Left', 200)
                 hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
@@ -587,7 +604,7 @@ normal:bind({}, 'c',
                 hs.eventtap.keyStroke({''}, 'delete', 200)
                 setBarIcon('INSERT')
                 lastOperation({'shift'}, 'c')
-                wholeLineYanked = true
+                isWholeLineYanked = true
             end
             return true
         end)
@@ -606,7 +623,7 @@ normal:bind({'shift'}, 'C',
         hs.eventtap.keyStroke({'fn'}, 'delete', delay)
         setBarIcon('INSERT')
         lastOperation({'shift'}, 'c')
-        wholeLineYanked = false
+        isWholeLineYanked = false
     end)
 
 
@@ -636,7 +653,7 @@ normal:bind({}, 'y',
               hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
               hs.eventtap.keyStroke({'cmd'}, 'c', delay)
               hs.eventtap.keyStroke({}, 'right', delay)
-              wholeLineYanked = true
+              isWholeLineYanked = true
             end
             return normal:enter()
         end)
@@ -649,14 +666,14 @@ normal:bind({'shift'}, 'y',
     function()
         hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
         hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-        wholeLineYanked = false
+        isWholeLineYanked = false
     end)
 
 
 --NORMAL: PASTE BELOW CURRENT CURSOR LINE --> 'p'
 normal:bind({}, 'P',
     function()
-        if wholeLineYanked then
+        if isWholeLineYanked then
             hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
             hs.eventtap.keyStroke({'shift'}, 'Return', delay)
             hs.eventtap.keyStroke({'cmd'}, 'v', delay)
@@ -686,7 +703,7 @@ normal:bind({}, '/',
         normal:exit()
         setBarIcon('INSERT')
 		findChar = false --Override 'f<char>'
-		searchMode = true
+		--searchMode = true
         listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
             char = event:getKeyCode()
 			if char == RETURN then

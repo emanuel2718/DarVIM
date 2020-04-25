@@ -181,7 +181,6 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] `(` : Move to previous sentence
 - [ ] `)` : Move to next sentence
 - [ ] `<operator><motion><text-object>` 
-:
 - [ ] `<prefix>iw` : in word
 - [ ] `<prefix>i"` : in double quotes
 - [ ] `<prefix>i(` : in parenthesis
