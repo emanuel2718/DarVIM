@@ -20,21 +20,18 @@ If you find something is not working like it's supposed to, refer to the
 # Index
 
 * [Installation](#installation)
-	- [Step 1: Install Hammerspoon](#step-1:-install-hammerspoon)
-	- [Step 2: Install DarVIM](#step-2:-install-darvim)
-	- [Step 3: Reload Hammerspoon Configuration](#step-3:-reload-hammerspoon-configuration)
-* [How to use](#hot-to-use)
+* [How to use](#how-to-use)
 * [Supported Keybinds](#supported-keybinds)
-	- [Normal mode in PDF's](#normal-mode-in-pdf's)
-	- [Normal mode](#normal-mode)
-	- [Visual mode](#visual-mode)
+	- [Normal Mode in PDF app](#normal-mode-in-pdf-app)
+	- [Normal Mode](#normal-mode)
+	- [Visual Mode](#visual-mode)
 * [Customization](#customization)
 	- [Increase scrolling speed with hjkl in PDF mode](#increase-scrolling-speed-speed-with-hjkl-in-PDF-mode)
-	- [Add text-editing application to have Vim keybinds support](#add-text--editing-application-to-have-vim-keybinds-support)
+	- [Add text-editing application to have Vim keybinds support](#add-text-editing-application-to-have-vim-keybinds-support)
 	- [Add PDF application to have Vim keybinds support](#add-pdf-application-to-have-vim-keybinds-support)
-	- [Toogle Ex mode bar from Dark/Light mode](#toogle-ex-mode-bar-from-dark/light-mode)
+	- [Toogle Ex mode bar from Dark mode and Light mode](#toogle-ex-mode-bar-from-dark-mode-and-light-mode)
 	- [Customize mode indicators in menu bar](#customize-mode-indicators-in-menu-bar)
-	- [Application where you don't want Escape to work like the system Escape](#application-where-you-don't-want-escape-to-work-like-the-system-escape)
+	- [Application where you don't want Escape to work like the system Escape](#application-where-you-dont-want-escape-to-work-like-the-system-escape)
 * [Troubleshoot](#troubleshoot)
 * [Things todo](#things-todo)
 * [Credits](#credits)
@@ -141,7 +138,7 @@ To save or quit a file simply type `:` to enter Ex mode.
 
 # Supported Keybinds
 
-### Normal Mode in PDF's
+### Normal Mode in PDF app
  * `h` : Scroll Left
  * `j` : Scroll Down
  * `k` : Scroll Up
@@ -262,7 +259,7 @@ Open the file --> Make the change --> Save the file --> Reload Hammerspoon Confi
 
 
 
-##### Increase scrolling speed with `hjkl` in PDF mode
+##### Increase scrolling speed with hjkl in PDF mode
 
 ```lua
 -- By default, the scrolling speed is set to 4. Increase or decrease as you like
@@ -271,7 +268,7 @@ local SPEED = 5 -- Increase
 ```
 
 
-##### Add text-editing application to have Vim keybinds support
+##### Add text editing application to have Vim keybinds support
 
 ```lua
 -- Text-editing application is any application you want complete VIM keybinds
@@ -300,7 +297,7 @@ local PDF = {'Preview', 'Acrobat Reader'}
 
 
 
-##### Toogle Ex mode bar from Dark/Light mode
+##### Toogle Ex mode bar from Dark mode and Light mode
 ```lua
 local isDarkMode = true --> Dark Mode
 local isDarkMode = false --> Light Mode
@@ -321,7 +318,7 @@ local visualIcon = 'V'
 ```
 
 
-##### Application where you don't want Escape to work like the system Escape
+##### Application where you dont want Escape to work like the system Escape
 ```lua
 -- There are some text-editing applications like Slack and Discord where if you
 --  press Escape it takes you out of the input box. If you want to change that
