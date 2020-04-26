@@ -199,6 +199,8 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 &nbsp; 
 
 - [ ] ERROR HANDLING
+- [ ] Fix `t` and `f`. Gonna type the next letter if there are no search
+      function (i.e Anki)
 - [ ] Move listeners to a separate function to avoid repetition
 - [ ] Create table of contents
 - [ ] Add more apps by default and test different names and add them as a comment.
