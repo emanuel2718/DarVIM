@@ -2,24 +2,62 @@
 DarVIM
 </h1>
 
-Pseudo-VIM keybinds ONLY on the apps you decide you want VIM keybinds.
+Vim system keybinds for macOS using [Hammerspoon](http://www.hammerspoon.org/),
+but only on the applications want Vim keybinds on. This is perfect
+for applications like Xcode, Notes, Microsoft Word and OneNote where Vim support is
+almost non-existent  or it's a pain to get it to work *\*cough cough\** Xcode.
 
 
-# Installation:
+This is a work in progress. Right now, not all Vim operators and motions
+are available. The goal of this project is to, eventually, have support for all
+operators and motions from native VIM.
 
-### Step 1: Install Hammerspoon:
 
-##### Manual Installation:
+If you find something is not working like it's supposed to, refer to the
+[Troubleshoot](#troubleshoot) section and it will probrably be solved.
+
+
+# Index
+
+* [Installation](#installation)
+	- [Step 1: Install Hammerspoon](#step-1:-install-hammerspoon)
+	- [Step 2: Install DarVIM](#step-2:-install-darvim)
+	- [Step 3: Reload Hammerspoon Configuration](#step-3:-reload-hammerspoon-configuration)
+* [How to use](#hot-to-use)
+* [Supported Keybinds](#supported-keybinds)
+	- [Normal mode in PDF's](#normal-mode-in-pdf's)
+	- [Normal mode](#normal-mode)
+	- [Visual mode](#visual-mode)
+* [Customization](#customization)
+	- [Increase scrolling speed with hjkl in PDF mode](#increase-scrolling-speed-speed-with-hjkl-in-PDF-mode)
+	- [Add text-editing application to have Vim keybinds support](#add-text--editing-application-to-have-vim-keybinds-support)
+	- [Add PDF application to have Vim keybinds support](#add-pdf-application-to-have-vim-keybinds-support)
+	- [Toogle Ex mode bar from Dark/Light mode](#toogle-ex-mode-bar-from-dark/light-mode)
+	- [Customize mode indicators in menu bar](#customize-mode-indicators-in-menu-bar)
+	- [Application where you don't want Escape to work like the system Escape](#application-where-you-don't-want-escape-to-work-like-the-system-escape)
+* [Troubleshoot](#troubleshoot)
+* [Things todo](#things-todo)
+* [Credits](#credits)
+
+
+
+# Installation
+
+### Step 1: Install Hammerspoon
+
+##### Manual Installation
  * Download the [latest release](https://github.com/Hammerspoon/hammerspoon/releases/latest)
  * Drag `Hammerspoon.app` from your `Downloads` folder to `Applications`
 
-##### Homebrew installation:
+##### Homebrew installation
   * `brew cask install hammerspoon`
 
-### Step 2: Install DarVIM:
+&nbsp; 
+
+### Step 2: Install DarVIM
 
 &nbsp; 
-##### CASE 1: If you already have an `init.lua` file:
+##### CASE 1: If you already have an `init.lua` file
 
 1. `git clone https://github.com/emanuel2718/DarVIM.git`
 
@@ -30,8 +68,7 @@ Pseudo-VIM keybinds ONLY on the apps you decide you want VIM keybinds.
 
 &nbsp; 
 
-##### CASE 2: If you DON'T already have an `init.lua` file then on a Terminal window:
-
+##### CASE 2: If you DON'T already have an `init.lua` file then on a Terminal window
 
 
 1. `git clone https://github.com/emanuel2718/DarVIM.git`
@@ -44,7 +81,7 @@ Pseudo-VIM keybinds ONLY on the apps you decide you want VIM keybinds.
 
 &nbsp; 
 
-### Step 3: Reaload Hammerspoon configuration:
+### Step 3: Reaload Hammerspoon Configuration
 Open Hammerspoon application either with a Spotlight search or by Right
 clicking Hammerspoon application in Finder and selecting `Open`.
 Then, press `Shift + Cmd + R` to reaload Hammerspoon configuration.
@@ -52,22 +89,59 @@ At this point VIM keybinds should be enabled while using Preview.
 
 TLDR: `Open` Hammerspoon appllication and press `shift + cmd + r`.
 
-# How to use:
-If something is not working like it is supposed to, open
-spotlight and reload the Hammerspoon configuration with `shift + cmd + r`
+
+&nbsp; 
 
 
-**TODO:** Explain what keybinds ara available in which apps.
 
-**TODO:** Get official movement descriptions from:
-https://hea-www.harvard.edu/~fine/Tech/vi.html
+# How to use
+
+Basically this program divides applications into three possible states:
+
+
+	- Normal Mode apps (Vim keybinds)
+		- Text editing apps like Notes, Xcode, Word etc.
+	- Normal Mode PDF apps (Vim keybinds)
+		- PDF apps like Preview
+	- Non-Vim keybinds apps
+		- Any app you don't want Vim keybindings on.
+		
+Everytime you switch into a Vim-supported appllication, it will default into
+Normal mode. So in order to start typing, simply tap `i` to enter Insert mode.
+
+There are not system notifications when you switch into a mode as it tends to
+get annoying really quick. As a workaround, everytime a Vim-supported
+application is beign focused/used the current mode will be displayed
+on the menu bar as a single letter in  brackets as show below.
+
+
+	- [ N ] : Normal Mode
+	- [ I ] : Insert Mode
+	- [ V ] : Visual Mode
+		
+		
+This can be changed, refer to
+the [Configuration](#configuration) section to learn how to change this.)
+
+
+The default keybind to enter Normal mode is `Esc` itself. If we are in any
+mode other than Normal mode, when we press `Esc` it will put us in Normal
+mode. Press `Esc` again and it will work as the system `Escape` so you don't
+loose it's native system function.
+
+
+Unfortunately, if you are reading this there is not support for binding `Esc`
+as `ctrl + [` or `jk`, which I know are some famous rebindings of the `Esc`
+key on Vim. Work is beign done to implement this.
+
+To save or quit a file simply type `:` to enter Ex mode.
 
 
 &nbsp; 
 
-# Supported Keybinds:
+# Supported Keybinds
 
-### Normal Mode in PDF's:
+### Normal Mode in PDF's
  * `h` : Scroll Left
  * `j` : Scroll Down
  * `k` : Scroll Up
@@ -85,7 +159,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 
 &nbsp; 
 
-### Normal Mode:
+### Normal Mode
  * `C-y` : Scroll Up
  * `C-e` : Scroll Down
  * `h` : Move Left
@@ -155,7 +229,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  
 &nbsp; 
 
-### Visual Mode:
+### Visual Mode
  * `h` : Highlight Left
  * `j` : Highlight Down
  * `k` : Highlight Up
@@ -176,10 +250,122 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
  * `>` : Indent
  * `<` : Unindent
  
+ 
+&nbsp; 
+
+# Customization
+
+All the following customization variables are found inside the `darvim.lua`
+file.
+
+Open the file --> Make the change --> Save the file --> Reload Hammerspoon Config
+
+
+
+##### Increase scrolling speed with `hjkl` in PDF mode
+
+```lua
+-- By default, the scrolling speed is set to 4. Increase or decrease as you like
+-- by changing the integer value of the @SPEED variable
+local SPEED = 5 -- Increase
+```
+
+
+##### Add text-editing application to have Vim keybinds support
+
+```lua
+-- Text-editing application is any application you want complete VIM keybinds
+-- support. Not just scrolling support like in PDF applications.
+
+-- Hypothetical original list:
+local APPS = {'Notes'}
+
+-- If we want to add Vim support to the 'Mail' application, simply add the
+--  application name into the @APPS list on darvim.lua
+local APPS = {'Notes', 'Mail'}
+-- Keep appending to the list as desired. See documentation above the variable inside
+--  darvim.lua for more information about application names. Examples included.
+```
+
+##### Add PDF application to have Vim keybinds support
+
+```lua
+-- Hypothetical original list:
+local PDF = {'Preview'}
+
+-- In order to add Vim keybinds to Acrobat Reader, simply add the exact name
+--  into the list
+local PDF = {'Preview', 'Acrobat Reader'}
+```
+
+
+
+##### Toogle Ex mode bar from Dark/Light mode
+```lua
+local isDarkMode = true --> Dark Mode
+local isDarkMode = false --> Light Mode
+```
+
+##### Customize mode indicators in menu bar
+```lua
+-- Customize here the menu bar mode indicator icons
+local normalIcon = '[ N ]'
+local insertIcon = '[ I ]'
+local visualIcon = '[ V ]'
+
+
+--Possible change: Single letters without brackets
+local normalIcon = 'N'
+local insertIcon = 'I'
+local visualIcon = 'V'
+```
+
+
+##### Application where you don't want Escape to work like the system Escape
+```lua
+-- There are some text-editing applications like Slack and Discord where if you
+--  press Escape it takes you out of the input box. If you want to change that
+--  behaviour, add the name of the application into the following list.
+-- Note that it must also be present in the @APPS or @PDF list.
+
+-- Hypothetical original list:
+local appsWithEscapeSupport = {'Anki'}
+
+-- Add the application name to the list.
+local appsWithEscapeSupport = {'Anki', 'Slack', 'Discord'}
+```
+
+
+**Important:** After any changes, the Hammerspoon configuration must be reloaded for the changes 
+to take place.
+
 
 &nbsp; 
 
-# TODO LIST:
+
+# Troubleshoot
+As this is a work in progress there will be times that things start to behave
+strangely (i.e VIM modes in an app we don't want). But everything is fixed right
+away by simply opening spotlight and searching for: 'Hammerspoon' (Sometimes 1
+search might not suffice, search again and the Hammerspoon Console will pop up).
+
+
+Once inside the Hammerspoon application, press `shift + cmd + r` to reaload the
+hammerspoon configuration and go back keep Viming away. Or, if you have the menu
+bar icon enabled, simply click on the Hammerspoon icon on the menu bar and click 'Reload Config' 
+
+
+Work is beign done to implement a single global keybind to reload the
+configuration. Thus there will be no need to open the Hammerspoon console and
+manually reloading the configuration.
+
+
+TL;DR: If something goes wrong, open Hammerspoon and once inside press `shift + cmd + r` and
+everything should work now.
+
+&nbsp; 
+
+# Things todo
 - [ ] `Escape` : Refactor Escape key. Ex. escModeAndKey[0] = {'ctrl'}, escModeAndKey[1] = '['
 - [ ] `jk` : Make it possible for user to choose `jk` and variations as their Escape key
 - [ ] `?` : Search backwards
@@ -218,7 +404,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
     like (i.e Normal Mode keybind = '**choose keybind**')
 
 
-# Credits:
+# Credits
 This project couldn't have been possible without [Hammerspoon](https://github.com/Hammerspoon/hammerspoon), which is a powerful OSX automation tool.
 
 Visit their [Website](http://www.hammerspoon.org/) for more imformation.

@@ -22,11 +22,15 @@ local screenHeight = screenResolution:match('x(.+)')
 local isDarkMode = true --> Dark Mode
 
 
--- Current VIM status menubar icon indicator.
+-- Current VIM status menubar icon indicator
 local barIcon = hs.menubar.new()
+
+-- Customize here the menu bar mode indicator icons
 local normalIcon = '[ N ]'
 local insertIcon = '[ I ]'
 local visualIcon = '[ V ]'
+
+
 -- Mode's notification identifier
 local normalNotification = 'NORMAL'
 local insertNotification = 'INSERT'
@@ -88,7 +92,8 @@ local APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki',
 -- on this list and on the @APPS list above
 local appsWithEscapeSupport = {'Anki', 'Slack', 'Discord'}
 
--- PDF readers that VIM support is desired on. Add the name of the application here.
+-- PDF readers that VIM support is desired on.
+-- Add the name of the application to the following list to include VIM support on that app.
 local PDF = {'Preview', 'Acrobat Reader'}
 
 
