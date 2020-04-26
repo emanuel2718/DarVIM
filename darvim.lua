@@ -81,7 +81,7 @@ exMode:placeholderText(':')
 -- List of Applications VIM mode is desired
 -- Append to the end of the relevant list the name of the app you want VIM suppot on.
 local APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki',
-			  'Xcode', 'Mail'}
+			  'Xcode', 'Mail', 'Microsoft Word', 'Microsoft OneNote'}
 
 -- If there are applications that receives 'Escape' as the key to get you out of the
 -- current text box and VIM support is desired. Put the application name
@@ -987,10 +987,10 @@ normal:bind({'shift'}, ';',
 		  return hs.eventtap.keyStroke({'cmd'}, 'q', delay)
 
 		elseif command == 'w' then
-		  hs.eventtap.keyStroke({'cmd'}, 's', delay)
 		  exMode:cancel()
 		  listener:stop()
 		  hs.alert.show('File Saved', alertStyle)
+		  hs.eventtap.keyStroke({'cmd'}, 's')
 		  return normal:enter()
 
 		elseif command == 'q' then
