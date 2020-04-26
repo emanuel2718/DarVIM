@@ -50,9 +50,13 @@ clicking Hammerspoon application in Finder and selecting `Open`.
 Then, press `Shift + Cmd + R` to reaload Hammerspoon configuration.
 At this point VIM keybinds should be enabled while using Preview.
 
-TLDR: `Open` Hammerspoon appllication and press `Shift + Cmd + R`.
+TLDR: `Open` Hammerspoon appllication and press `shift + cmd + r`.
 
 # How to use:
+If something is not working like it is supposed to, open
+spotlight and reload the Hammerspoon configuration with `shift + cmd + r`
+
+
 **TODO:** Explain what keybinds ara available in which apps.
 
 **TODO:** Get official movement descriptions from:
@@ -197,6 +201,7 @@ https://hea-www.harvard.edu/~fine/Tech/vi.html
 - [ ] ERROR HANDLING
 - [ ] Move listeners to a separate function to avoid repetition
 - [ ] Create table of contents
+- [ ] Add more apps by default and test different names and add them as a comment.
 - [ ] Create installation script
 - [ ] Fix last operation. For example with:  `c<word>`
 - [ ] Fix `ctrl + b` and `ctrl + f` scrolling bug
