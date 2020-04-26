@@ -26,7 +26,7 @@ If you find something is not working like it's supposed to, refer to the
 	- [Normal Mode](#normal-mode)
 	- [Visual Mode](#visual-mode)
 * [Customization](#customization)
-	- [Increase scrolling speed with hjkl in PDF mode](#increase-scrolling-speed-speed-with-hjkl-in-PDF-mode)
+	- [Increase scrolling speed with hjkl in PDF mode](#increase-scrolling-speed-with-hjkl-in-PDF-mode)
 	- [Add text-editing application to have Vim keybinds support](#add-text-editing-application-to-have-vim-keybinds-support)
 	- [Add PDF application to have Vim keybinds support](#add-pdf-application-to-have-vim-keybinds-support)
 	- [Toogle Ex mode bar from Dark mode and Light mode](#toogle-ex-mode-bar-from-dark-mode-and-light-mode)
