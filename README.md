@@ -131,7 +131,12 @@ Unfortunately, if you are reading this there is not support for binding `Esc`
 as `ctrl + [` or `jk`, which I know are some famous rebindings of the `Esc`
 key on Vim. Work is beign done to implement this.
 
-To save or quit a file simply type `:` to enter Ex mode.
+To save or quit a file simply type `:` to enter Ex mode. And type any of the
+following:
+
+	- wq --> Save & Quit
+	- w  --> Save file
+	- q  --> Quit file
 
 
 &nbsp; 
