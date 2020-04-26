@@ -259,7 +259,7 @@ Open the file --> Make the change --> Save the file --> Reload Hammerspoon Confi
 
 
 
-##### Increase scrolling speed with hjkl in PDF mode
+#### Increase scrolling speed with hjkl in PDF mode
 
 ```lua
 -- By default, the scrolling speed is set to 4. Increase or decrease as you like
@@ -268,7 +268,7 @@ local SPEED = 5 -- Increase
 ```
 
 
-##### Add text editing application to have Vim keybinds support
+#### Add text editing application to have Vim keybinds support
 
 ```lua
 -- Text-editing application is any application you want complete VIM keybinds
@@ -284,7 +284,7 @@ local APPS = {'Notes', 'Mail'}
 --  darvim.lua for more information about application names. Examples included.
 ```
 
-##### Add PDF application to have Vim keybinds support
+#### Add PDF application to have Vim keybinds support
 
 ```lua
 -- Hypothetical original list:
@@ -297,13 +297,13 @@ local PDF = {'Preview', 'Acrobat Reader'}
 
 
 
-##### Toogle Ex mode bar from Dark mode and Light mode
+#### Toogle Ex mode bar from Dark mode and Light mode
 ```lua
 local isDarkMode = true --> Dark Mode
 local isDarkMode = false --> Light Mode
 ```
 
-##### Customize mode indicators in menu bar
+#### Customize mode indicators in menu bar
 ```lua
 -- Customize here the menu bar mode indicator icons
 local normalIcon = '[ N ]'
@@ -318,7 +318,7 @@ local visualIcon = 'V'
 ```
 
 
-##### Application where you dont want Escape to work like the system Escape
+#### Application where you dont want Escape to work like the system Escape
 ```lua
 -- There are some text-editing applications like Slack and Discord where if you
 --  press Escape it takes you out of the input box. If you want to change that
