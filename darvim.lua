@@ -410,7 +410,11 @@ normal:bind({'shift'}, 'G',
 
 
 -- NORMAL: MOVE TO NEXT WORD --> 'w'
-function moveNextWord() hs.eventtap.keyStroke({'alt'}, 'right', delay) end
+function moveNextWord()
+  hs.eventtap.keyStroke({'alt'}, 'right', delay)
+  hs.eventtap.keyStroke({'alt'}, 'right', delay)
+  hs.eventtap.keyStroke({'alt'}, 'left', delay)
+end
 normal:bind({}, 'w', moveNextWord, nil, moveNextWord)
 
 
@@ -1078,6 +1082,8 @@ visual:bind({}, 'e', visualEndOfWord, nil, visualEndOfWord)
 -- VISUAL: MOVE TO NEXT WORD --> 'w'
 function visualNextWord()
   hs.eventtap.keyStroke({'shift', 'alt'}, 'right', delay)
+  hs.eventtap.keyStroke({'shift', 'alt'}, 'right', delay)
+  hs.eventtap.keyStroke({'shift', 'alt'}, 'left', delay)
 end
 
 visual:bind({}, 'w', visualNextWord, nil, visualNextWord)
