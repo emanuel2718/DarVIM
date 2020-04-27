@@ -77,7 +77,7 @@ local APPS = {'Xcode', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki',
 -- If there are applications that receives 'Escape' as the key to get you out of the
 -- current text box and VIM support is desired. Put the application name
 -- on this list and on the @APPS list above
-local appsWithEscapeSupport = {'Anki', 'Slack', 'Discord'}
+local appsWithEscapeSupport = {'Xcode', 'Anki', 'Slack', 'Discord'}
 
 -- PDF readers that VIM support is desired on.
 -- Add the name of the application to the following list to include VIM support on that app.
@@ -521,8 +521,13 @@ normal:bind({}, 'r',
 	  char = event:getCharacters()
 	  listener:stop()
 	  hs.eventtap.keyStroke({}, 'forwarddelete', delay)
-	  if char == string.upper(char) then
+	  -- Check if character is a number
+	  if tonumber(char) ~= nil then
+		hs.eventtap.keyStroke({}, char)
+	  -- Check if character is alphanumeric; Want to weed out charcters like '$'
+	  elseif string.match(char, '[^%w]') == nil and char == string.upper(char) then
 		hs.eventtap.keyStroke({'shift'}, char)
+	  -- Character must be a symbol like '$'
 	  else
 		hs.eventtap.keyStrokes(char)
 	  end
