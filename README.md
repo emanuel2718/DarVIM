@@ -169,12 +169,6 @@ following:
  * `k` : Move Up
  * `l` : Move Right
  * `gg` : Move to top of the page
- 
- :: Need to click with mouse once in desired location
- * `C-b` : Move backwards up one page :: *Broken*
- * `C-f` : Move forwdard down one page :: *Broken*
-
-
  * `G` : Move to bottom of page
  * `b` : Move to previous word
  * `w` : Move to next word
@@ -230,6 +224,11 @@ following:
 	- [x] `wq` -> Save and Quit file
 	- [x] `w`  -> Save file
 	- [x] `q`  -> Quit file
+	
+	
+ :: Need to click with mouse once in desired location
+ * `C-b` : Move backwards up one page :: *Broken*
+ * `C-f` : Move forwdard down one page :: *Broken*
  
 &nbsp; 
 
@@ -238,6 +237,7 @@ following:
  * `j` : Highlight Down
  * `k` : Highlight Up
  * `l` : Highlight Right
+ * `b` : Highlight to beginning of word
  * `e` : Highlight to end of word
  * `w` : Highlight to next of word
  * `0` : Highlight from cursor to beginning of line

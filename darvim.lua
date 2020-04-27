@@ -1060,6 +1060,13 @@ function visualRIGHT() hs.eventtap.keyStroke('shift', 'Right', delay) end
 visual:bind({}, 'l', visualRIGHT, nil, visualRIGHT)
 
 
+-- VISUAL: MOVE TO BEGINNING OF WORD --> 'b'
+function visualBeginningOfWord()
+  hs.eventtap.keyStroke({'shift', 'alt'}, 'left', delay)
+end
+visual:bind({}, 'b', visualBeginningOfWord, nil, visualBeginningOfWord)
+
+
 -- VISUAL: MOVE TO END OF WORD --> 'e'
 function visualEndOfWord()
   hs.eventtap.keyStroke({'shift', 'alt'}, 'right', delay)
