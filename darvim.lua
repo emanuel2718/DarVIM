@@ -429,7 +429,7 @@ normal:bind({}, 'e', moveEndOfWord, nil, moveEndOfWord)
 -- NORMAL: MOVE TO END OF LINE --> '$'
 normal:bind({'shift'}, '4',
   function()
-	hs.eventtap.keyStroke({'ctrl'}, 'e', delay)
+	hs.eventtap.keyStroke({'cmd'}, 'right', delay)
   end)
 
 
