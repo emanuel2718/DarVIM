@@ -39,13 +39,13 @@ local visualNotification = 'VISUAL'
 -- Sets the current mode in the menu bar.
 function setBarIcon(state)
   if state == 'VISUAL' then
-	barIcon:setTitle(visualIcon)
+    barIcon:setTitle(visualIcon)
   elseif state == 'INSERT' then
-	barIcon:setTitle(insertIcon)
+    barIcon:setTitle(insertIcon)
   elseif state == 'NORMAL' then
-	barIcon:setTitle(normalIcon)
+    barIcon:setTitle(normalIcon)
   else
-	barIcon:setTitle('')
+    barIcon:setTitle('')
   end
 end
 
@@ -123,9 +123,9 @@ end
 -- Checks if the currently focused application is in the list of VIM supported apps
 function contains(APP, name)
   for i, app in ipairs(APP) do
-	if APP[i] == name then
-	  return true
-	end
+    if APP[i] == name then
+      return true
+    end
   end
   return false
 end
@@ -161,15 +161,15 @@ function applicationWatcher(name, event, app)
   -- If the focus application is a PDF reader and it's on the @PDF list
   if contains(PDF, name) then
     -- Focused on the PDF app --> Enter PDF Normal Mode
-	if event == hs.application.watcher.activated then
-	  normalMode:disable()
+    if event == hs.application.watcher.activated then
+      normalMode:disable()
       normalModePDF:enable()
       normalPDF:enter()
       setBarIcon(normalNotification)
     end
     -- Focus is list from the PDF app --> Get out of Normal Mode
     if event == hs.application.watcher.deactivated then
-	  -- If the next focused window is one where we don't want VIM keybinds
+      -- If the next focused window is one where we don't want VIM keybinds
       --   restriction (i.e Terminal, Web Browser)
       if not contains(APPS, hs.window.frontmostWindow():application():name()) then
         normalModePDF:disable()
@@ -177,8 +177,8 @@ function applicationWatcher(name, event, app)
       end
       normalPDF:exit()
       visual:exit()
+      end
     end
-  end
 
   -- If the currently focused application is one that VIM keybinds are desired
   -- More formally; if the application is on the @APPS list
@@ -186,27 +186,26 @@ function applicationWatcher(name, event, app)
   -- We dont want scrolling features like in Preview. We want 'hjkl' to behave
   --   like arrows to edit text.
   if contains(APPS, name) and not(contains(PDF, name)) then
-	-- VIM keybind application focused --> Enter Normal Mode
+    -- VIM keybind application focused --> Enter Normal Mode
     if event == hs.application.watcher.activated then
       normalModePDF:disable()
       normalMode:enable()
       normal:enter()
       setBarIcon(normalNotification)
     end
-	-- VIM keybind application focus lost --> Leave Normal Mode
+    -- VIM keybind application focus lost --> Leave Normal Mode
     if event == hs.application.watcher.deactivated then
-	  if not contains(APPS, hs.window.frontmostWindow():application():name()) then
-		normalModePDF:disable()
+      if not contains(APPS, hs.window.frontmostWindow():application():name()) then
+        normalModePDF:disable()
         normalMode:disable()
         setBarIcon('')
       end
       normal:exit()
       visual:exit()
-	end
+    end
 
   -- Curently focused app is one where VIM support is not desired
   elseif not contains(APPS, hs.window.frontmostWindow():application():name()) then
-    --TODO: This is throwing nil values.
     normalModePDF:disable()
     normalMode:disable()
     setBarIcon('')
@@ -222,40 +221,40 @@ end
 -- NORMAL: ENABLE NORMAL MODE --> 'Escape'
 normalMode = hs.hotkey.bind({}, 'Escape',
   function()
-	focusedWindow = hs.window.frontmostWindow():application():name()
-	normal:enter()
-	visual:exit()
-	setBarIcon(normalNotification)
-	if barIcon:title() == normalIcon and not contains(appsWithEscapeSupport, focusedWindow) then
-	  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
-	  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
-	end
+    focusedWindow = hs.window.frontmostWindow():application():name()
+    normal:enter()
+    visual:exit()
+    setBarIcon(normalNotification)
+    if barIcon:title() == normalIcon and not contains(appsWithEscapeSupport, focusedWindow) then
+      hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+      hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+    end
   end)
 
 -- NORMAL: ENABLE NORMAL MODE IN PDF'S --> 'Escape'
 normalModePDF = hs.hotkey.bind({}, 'Escape',
   function()
-	if barIcon:title() == normalIcon then
-	  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
-	  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
-	end
-	normalPDF:enter()
-	setBarIcon(normalNotification)
+    if barIcon:title() == normalIcon then
+      hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+      hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+    end
+    normalPDF:enter()
+    setBarIcon(normalNotification)
   end)
 
 -- NORMAL: ENABLE VISUAL MODE --> 'v'
 normal:bind({}, 'v',
   function()
-	setBarIcon(visualNotification)
-	normal:exit()
-	visual:enter()
+    setBarIcon(visualNotification)
+    normal:exit()
+    visual:enter()
   end)
 
 -- NORMAL: ENTER INSERT MODE --> 'i'
 normal:bind({}, 'i',
   function()
-	normal:exit()
-	setBarIcon(insertNotification)
+    normal:exit()
+    setBarIcon(insertNotification)
   end)
 
 
@@ -270,8 +269,8 @@ normal:bind({}, 'i',
 -- NORMAL PDF: ENABLE INSERT MODE --> 'i'
 normalPDF:bind({}, 'i',
   function()
-	normalPDF:exit()
-	setBarIcon(insertNotification)
+    normalPDF:exit()
+    setBarIcon(insertNotification)
   end)
 
 
@@ -298,15 +297,15 @@ normalPDF:bind({}, 'L', scrollRIGHT, nil, scrollRIGHT)
 -- NORMALPDF: GO TO TOP OF PAGE --> 'gg'
 normalPDF:bind({}, 'g',
   function()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getCharacters()
-	  listener:stop()
-	  if char == 'g' then
-		hs.eventtap.keyStroke({'cmd'}, 'Up', delay)
-	  end
-	  return false
-	end)
-	listener:start()
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      if char == 'g' then
+        hs.eventtap.keyStroke({'cmd'}, 'Up', delay)
+      end
+      return false
+  end)
+    listener:start()
   end)
 
 
@@ -332,7 +331,7 @@ normalPDF:bind({'ctrl'}, 'b', previousPAGE, nil, previousPAGE)
 -- NORMALPDF: INVERT DISPLAY COLORS --> 't'
 normalPDF:bind({}, 's',
   function()
-	hs.eventtap.keyStroke({'ctrl', 'option', 'cmd'}, '8')
+    hs.eventtap.keyStroke({'ctrl', 'option', 'cmd'}, '8')
   end)
 
 
@@ -390,22 +389,22 @@ normal:bind({}, 'B', movePrevWord, nil, movePrevWord)
 -- NORMAL: MOVE TO TOP OF PAGE --> 'gg'
 normal:bind({}, 'G',
   function()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getCharacters()
-	  listener:stop()
-	  if char == 'g' then
-		hs.eventtap.keyStroke({'cmd'}, 'Up', delay)
-	  end
-	  return false
-	end)
-	listener:start()
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      if char == 'g' then
+        hs.eventtap.keyStroke({'cmd'}, 'Up', delay)
+      end
+      return false
+    end)
+    listener:start()
   end)
 
 
 -- NORMAL: MOVE TO BOTTOM OF PAGE --> 'Shift + g'
 normal:bind({'shift'}, 'G',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'Down', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'Down', delay)
   end)
 
 
@@ -429,57 +428,57 @@ normal:bind({}, 'e', moveEndOfWord, nil, moveEndOfWord)
 -- NORMAL: MOVE TO END OF LINE --> '$'
 normal:bind({'shift'}, '4',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'right', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'right', delay)
   end)
 
 
 -- NORMAL: MOVE CURSOR ONE SPACE FOWARD + INSERT MODE --> 'a'
 normal:bind({}, 'A',
   function()
-	normal:exit()
-	hs.eventtap.keyStroke({}, 'Right', delay)
-	setBarIcon(insertNotification)
+    normal:exit()
+    hs.eventtap.keyStroke({}, 'Right', delay)
+    setBarIcon(insertNotification)
   end)
 
 
 -- NORMAL: MOVE TO END OF LINE + INSERT MODE --> 'Shift + a'
 normal:bind({'shift'}, 'A',
   function()
-	normal:exit()
-	hs.eventtap.keyStroke({'cmd'}, 'right', delay)
-	setBarIcon(insertNotification)
+    normal:exit()
+    hs.eventtap.keyStroke({'cmd'}, 'right', delay)
+    setBarIcon(insertNotification)
   end)
 
 
 -- NORMAL: MOVE TO BEGINNING OF LINE + INSERT MODE --> 'Shift + i'
 normal:bind({'shift'}, 'I',
   function()
-	normal:exit()
-	hs.eventtap.keyStroke({'cmd'}, 'left', delay)
-	setBarIcon(insertNotification)
+    normal:exit()
+    hs.eventtap.keyStroke({'cmd'}, 'left', delay)
+    setBarIcon(insertNotification)
   end)
 
 
 -- NORMAL: OPEN A NEW LINE ABOVE CURRENT CURSOR LINE + INSERT MODE --> 'o'
 normal:bind({'shift'}, 'O', nil,
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-	hs.eventtap.keyStroke({'shift'}, 'Return', delay)
-	hs.eventtap.keyStroke({}, 'Up', delay)
-	normal:exit()
-	setBarIcon(insertNotification)
-	lastOperation({'shift'}, 'o')
+    hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+    hs.eventtap.keyStroke({'shift'}, 'Return', delay)
+    hs.eventtap.keyStroke({}, 'Up', delay)
+    normal:exit()
+    setBarIcon(insertNotification)
+    lastOperation({'shift'}, 'o')
   end)
 
 
 -- NORMAL: OPEN A NEW LINE BELOW CURRENT CURSOR LINE + INSERT MODE --> 'Shift + o'
 normal:bind({}, 'O', nil,
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
-	hs.eventtap.keyStroke({'shift'}, 'Return', delay)
-	normal:exit()
-	setBarIcon(insertNotification)
-	lastOperation({}, 'o')
+    hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
+    hs.eventtap.keyStroke({'shift'}, 'Return', delay)
+    normal:exit()
+    setBarIcon(insertNotification)
+    lastOperation({}, 'o')
   end)
 
 
@@ -494,46 +493,46 @@ normal:bind({}, 'x', deleteNextChar, nil, deleteNextChar)
 -- NORMAL: DELETE CHARACTER IN FRONT OF CURSOR + INSERT MODE--> 's'
 normal:bind({}, 's',
   function()
-	hs.eventtap.keyStroke({}, 'forwarddelete', delay)
-	normal:exit()
-	setBarIcon(insertNotification)
-	lastOperation({}, 's')
+    hs.eventtap.keyStroke({}, 'forwarddelete', delay)
+    normal:exit()
+    setBarIcon(insertNotification)
+    lastOperation({}, 's')
   end)
 
 -- NORMAL: SUBSTITUTE ENTIRE LINE-DELTES LINE + INSERT MODE --> 'Shift + s'
 normal:bind({'shift'}, 's',
   function()
-	normal:exit()
-	hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
-	hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-	hs.eventtap.keyStroke({'fn'}, 'delete', delay)
-	setBarIcon(insertNotification)
-	lastOperation({'shift'}, 's')
-	isWholeLineYanked = true
+    normal:exit()
+    hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+    hs.eventtap.keyStroke({'fn'}, 'delete', delay)
+    setBarIcon(insertNotification)
+    lastOperation({'shift'}, 's')
+    isWholeLineYanked = true
   end)
 
 
 -- NORMAL: REPLACE CHARACTER IN FRONT OF CURSOR--> 'r'
 normal:bind({}, 'r',
   function()
-	normal:exit()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getCharacters()
-	  listener:stop()
-	  hs.eventtap.keyStroke({}, 'forwarddelete', delay)
-	  -- Check if character is a number
-	  if tonumber(char) ~= nil then
-		hs.eventtap.keyStroke({}, char)
-	  -- Check if character is alphanumeric; Want to weed out charcters like '$'
-	  elseif string.match(char, '[^%w]') == nil and char == string.upper(char) then
-		hs.eventtap.keyStroke({'shift'}, char)
-	  -- Character must be a symbol like '$'
-	  else
-		hs.eventtap.keyStrokes(char)
-	  end
-	  return normal:enter()
-	end)
-	listener:start()
+    normal:exit()
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      hs.eventtap.keyStroke({}, 'forwarddelete', delay)
+      -- Check if character is a number
+      if tonumber(char) ~= nil then
+        hs.eventtap.keyStroke({}, char)
+      -- Check if character is alphanumeric; Want to weed out charcters like '$'
+      elseif string.match(char, '[^%w]') == nil and char == string.upper(char) then
+        hs.eventtap.keyStroke({'shift'}, char)
+      -- Character must be a symbol like '$'
+      else
+        hs.eventtap.keyStrokes(char)
+      end
+      return normal:enter()
+    end)
+    listener:start()
   end)
 
 
@@ -553,26 +552,26 @@ function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', delay) end
 -- NORMAL: DELETE WORD OR DELETE WHOLE LINE --> 'dw' or 'dd'
 normal:bind({}, 'd',
   function()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getCharacters()
-	  listener:stop()
-	  if char == 'w' then
-		hs.eventtap.keyStroke({'shift', 'option'}, 'Right', delay)
-		hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-		hs.eventtap.keyStroke({''}, 'delete', delay)
-		lastOperation({}, 'd')
-		isWholeLineYanked = false
-	  elseif char == 'd' then
-		hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-		hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
-		hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-		hs.eventtap.keyStroke({''}, 'delete', delay)
-		lastOperation({'ctrl'}, 'd')
-		isWholeLineYanked = true
-	  end
-	  return true
-	end)
-	listener:start()
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      if char == 'w' then
+        hs.eventtap.keyStroke({'shift', 'option'}, 'Right', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+        hs.eventtap.keyStroke({''}, 'delete', delay)
+        lastOperation({}, 'd')
+        isWholeLineYanked = false
+      elseif char == 'd' then
+        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+        hs.eventtap.keyStroke({''}, 'delete', delay)
+        lastOperation({'ctrl'}, 'd')
+        isWholeLineYanked = true
+      end
+      return true
+    end)
+    listener:start()
   end)
 
 
@@ -593,28 +592,28 @@ normal:bind({'shift'}, 'd',
 -- NORMAL: CHANGE WORD OR CHANGE WHOLE LINE--> 'cw' or 'cc'
 normal:bind({}, 'c',
   function()
-	normal:exit()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getCharacters()
-	  listener:stop()
-	  if char == 'w' then
-		hs.eventtap.keyStroke({'option'}, 'right', 200)
-		hs.eventtap.keyStroke({'option'}, 'delete', 200)
-		setBarIcon(insertNotification)
-		lastOperation({}, 'c')
-		isWholeLineYanked = false
-	  elseif char == 'c' then
-		hs.eventtap.keyStroke({'cmd'}, 'Left', 200)
-		hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
-		hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-		hs.eventtap.keyStroke({''}, 'delete', 200)
-		setBarIcon(insertNotification)
-		lastOperation({'shift'}, 'c')
-		isWholeLineYanked = true
-	  end
-	  return true
-	end)
-	listener:start()
+    normal:exit()
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      if char == 'w' then
+        hs.eventtap.keyStroke({'option'}, 'right', 200)
+        hs.eventtap.keyStroke({'option'}, 'delete', 200)
+        setBarIcon(insertNotification)
+        lastOperation({}, 'c')
+        isWholeLineYanked = false
+      elseif char == 'c' then
+        hs.eventtap.keyStroke({'cmd'}, 'Left', 200)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+        hs.eventtap.keyStroke({''}, 'delete', 200)
+        setBarIcon(insertNotification)
+        lastOperation({'shift'}, 'c')
+        isWholeLineYanked = true
+      end
+      return true
+    end)
+    listener:start()
   end)
 
 
@@ -623,27 +622,27 @@ normal:bind({}, 'c',
 -- NORMAL: DELETE UNITIL END OF LINE + INSERT MODE --> 'Shift + c'
 normal:bind({'shift'}, 'C',
   function()
-	normal:exit()
-	hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
-	hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-	hs.eventtap.keyStroke({'fn'}, 'delete', delay)
-	setBarIcon(insertNotification)
-	lastOperation({'shift'}, 'c')
-	isWholeLineYanked = false
+    normal:exit()
+    hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+    hs.eventtap.keyStroke({'fn'}, 'delete', delay)
+    setBarIcon(insertNotification)
+    lastOperation({'shift'}, 'c')
+    isWholeLineYanked = false
   end)
 
 
 -- NORMAL: UNDO --> 'u'
 normal:bind({}, 'U',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'Z', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'Z', delay)
   end)
 
 
 -- NORMAL: REDO --> 'Ctrl + r'
 normal:bind({'ctrl'}, 'R',
   function()
-	hs.eventtap.keyStroke({'shift', 'cmd'}, 'Z', delay)
+    hs.eventtap.keyStroke({'shift', 'cmd'}, 'Z', delay)
   end)
 
 
@@ -651,73 +650,73 @@ normal:bind({'ctrl'}, 'R',
 -- NORMAL: YANK WHOLE LINE --> 'yy'
 normal:bind({}, 'y',
   function()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getCharacters()
-	  listener:stop()
-	  if char == 'y' then
-		hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-		hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
-		hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-		hs.eventtap.keyStroke({}, 'right', delay)
-		isWholeLineYanked = true
-	  end
-	  return normal:enter()
-	end)
-	listener:start()
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      if char == 'y' then
+        hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+        hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+        hs.eventtap.keyStroke({}, 'right', delay)
+        isWholeLineYanked = true
+      end
+      return normal:enter()
+    end)
+    listener:start()
   end)
 
 
 -- NORMAL: YANK FROM CURSOR TO EOL --> 'Shift + y'
 normal:bind({'shift'}, 'y',
   function()
-	hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
-	hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-	isWholeLineYanked = false
+    hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+    isWholeLineYanked = false
   end)
 
 
 -- NORMAL: PASTE BELOW CURRENT CURSOR LINE --> 'p'
 normal:bind({}, 'P',
   function()
-	if isWholeLineYanked then
-	  hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
-	  hs.eventtap.keyStroke({'shift'}, 'Return', delay)
-	  hs.eventtap.keyStroke({'cmd'}, 'v', delay)
-	  lastOperation({}, 'p')
-	else
-	  hs.eventtap.keyStroke({'cmd'}, 'v', delay)
-	  lastOperation({}, 'p')
-	end
+    if isWholeLineYanked then
+      hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
+      hs.eventtap.keyStroke({'shift'}, 'Return', delay)
+      hs.eventtap.keyStroke({'cmd'}, 'v', delay)
+      lastOperation({}, 'p')
+    else
+      hs.eventtap.keyStroke({'cmd'}, 'v', delay)
+      lastOperation({}, 'p')
+    end
   end)
 
 
 -- NORMAL: PASTE ABOVE CURRENT CURSOR LINE --> 'Shift + p'
 normal:bind({'shift'}, 'P', nil,
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-	hs.eventtap.keyStroke({'shift'}, 'Return', delay)
-	hs.eventtap.keyStroke({}, 'Up', delay)
-	hs.eventtap.keyStroke({'cmd'}, 'v', delay)
-	lastOperation({'shift'}, 'p')
+    hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+    hs.eventtap.keyStroke({'shift'}, 'Return', delay)
+    hs.eventtap.keyStroke({}, 'Up', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'v', delay)
+    lastOperation({'shift'}, 'p')
   end)
 
 
 -- NORMAL: Search --> '/'
 normal:bind({}, '/',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'F', delay)
-	normal:exit()
-	setBarIcon(insertNotification)
-	findChar = false --Override 'f<char>'
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getKeyCode()
-	  if char == RETURN then
-		listener:stop()
-		hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
-		return normal:enter()
-	  end
-	end)
-	listener:start()
+    hs.eventtap.keyStroke({'cmd'}, 'F', delay)
+    normal:exit()
+    setBarIcon(insertNotification)
+    findChar = false --Override 'f<char>'
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getKeyCode()
+      if char == RETURN then
+        listener:stop()
+        hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+        return normal:enter()
+      end
+    end)
+    listener:start()
   end)
 
 
@@ -725,36 +724,36 @@ normal:bind({}, '/',
 -- NORMAL: SEARCH FOWARD --> 'n'
 normal:bind({}, 'n',
   function()
-	if not findChar then
-	  hs.eventtap.keyStroke({'cmd'}, 'G', delay)
-	end
+    if not findChar then
+      hs.eventtap.keyStroke({'cmd'}, 'G', delay)
+    end
   end)
 
 
 -- NORMAL: SEARCH BACKWARDS --> 'n'
 normal:bind({'shift'}, 'n',
   function()
-	if not findChar then
-	  hs.eventtap.keyStroke({'shift', 'cmd'}, 'G', delay)
-	end
+    if not findChar then
+      hs.eventtap.keyStroke({'shift', 'cmd'}, 'G', delay)
+    end
   end)
 
 
 -- NORMAL: INDENT FOWARD --> '>'
 normal:bind({'shift'}, '.',
   function()
-	--hs.eventtap.keyStroke({'cmd'}, 'Left', 500)
-	hs.eventtap.keyStroke({}, 'tab')
-	lastOperation({'shift'}, '.')
+    --hs.eventtap.keyStroke({'cmd'}, 'Left', 500)
+    hs.eventtap.keyStroke({}, 'tab')
+    lastOperation({'shift'}, '.')
   end)
 
 
 -- NORMAL: INDENT BACKWARDS --> '<'
 normal:bind({'shift'}, ',',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
-	hs.eventtap.keyStroke({'shift'}, 'Tab', delay)
-	lastOperation({'shift'}, ',')
+    hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
+    hs.eventtap.keyStroke({'shift'}, 'Tab', delay)
+    lastOperation({'shift'}, ',')
   end)
 
 
@@ -762,11 +761,11 @@ normal:bind({'shift'}, ',',
 -- NORMAL: HIGHLIGHT COMPLETE LINE + VISUAL --> 'v'
 normal:bind({'shift'}, 'v',
   function()
-	normal:exit()
-	visual:enter()
-	hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-	hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
-	setBarIcon(visualNotification)
+    normal:exit()
+    visual:enter()
+    hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+    hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+    setBarIcon(visualNotification)
   end)
 
 
@@ -774,192 +773,178 @@ normal:bind({'shift'}, 'v',
 -- NORMAL: REPEAT LAST COMMAND
 normal:bind({}, '.',
   function()
-	if keys[0] ~= nil then
-	  hs.eventtap.keyStroke(mods, keys[0], delay)
-	  -- To deal with cases that put us in Insert
-	  hs.eventtap.keyStroke({}, 'Escape', delay)
-	end
+    if keys[0] ~= nil then
+      hs.eventtap.keyStroke(mods, keys[0], delay)
+      -- To deal with cases that put us in Insert
+      hs.eventtap.keyStroke({}, 'Escape', delay)
+    end
   end, nil,
   function()
-	hs.eventtap.keyStroke(mods, keys[0], delay)
-	hs.eventtap.keyStroke({}, 'Escape', delay)
+    hs.eventtap.keyStroke(mods, keys[0], delay)
+    hs.eventtap.keyStroke({}, 'Escape', delay)
   end)
 
-
--- RELOADS HAMMERSPOON CONFIGURATION
---hs.hotkey.bind({'shift', 'option', 'cmd'}, 'r',
---  function()
---	hs.alert.show('Configuration Realoaded', alertStyle)
---	focusedWindow = hs.window.frontmostWindow():application():name()
---	hs.application.launchOrFocus('Hammerspoon')
---	hs.timer.doAfter(3.0,
---	  function()
---		hs.reload()
---		--hs.application.launchOrFocus(focusedWindow)
---		--hs.application.get('Hammerspoon'):hide()
---	  end)
---  end)
 
 
 
 -- NORMAL: FIND NEXT OCCURRENCE OF <CHARACTER> PUT US BEFORE CHARACTER --> 'f<char>'
 normal:bind({}, 'f',
   function()
-	normal:exit()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getCharacters()
-	  listener:stop()
-	  hs.eventtap.keyStroke({'cmd'}, 'f')
-	  hs.eventtap.keyStrokes(char)
-	  hs.timer.doAfter(0.5,
-		function()
-		  hs.eventtap.keyStroke({'cmd'}, 'g', delay)
-		  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
-		  hs.eventtap.keyStroke({}, 'left', delay)
-		end)
-	  findChar = true
-	  return normal:enter()
-	end)
-	listener:start()
+    normal:exit()
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      hs.eventtap.keyStroke({'cmd'}, 'f')
+      hs.eventtap.keyStrokes(char)
+      hs.timer.doAfter(0.5,
+        function()
+          hs.eventtap.keyStroke({'cmd'}, 'g', delay)
+          hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+          hs.eventtap.keyStroke({}, 'left', delay)
+        end)
+      findChar = true
+      return normal:enter()
+    end)
+    listener:start()
   end)
 
 
 -- NORMAL: REVERSE 'f<char>' --> 'F<char>'
 normal:bind({'shift'}, 'f',
   function()
-	normal:exit()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getCharacters()
-	  listener:stop()
-	  hs.eventtap.keyStroke({'cmd'}, 'f')
-	  hs.eventtap.keyStrokes(char)
-	  hs.timer.doAfter(0.5,
-		function()
-		  hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
-		  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
-		  hs.eventtap.keyStroke({}, 'left', delay)
-		end)
-	  findChar = true
-	  return normal:enter()
-	end)
-	listener:start()
+    normal:exit()
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      hs.eventtap.keyStroke({'cmd'}, 'f')
+      hs.eventtap.keyStrokes(char)
+      hs.timer.doAfter(0.5,
+        function()
+          hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
+          hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+          hs.eventtap.keyStroke({}, 'left', delay)
+        end)
+      findChar = true
+      return normal:enter()
+    end)
+    listener:start()
   end)
 
 
 -- NORMAL: SAME AS 'f' BUT MOVES TO JUST BEFORE FOUND CHARACTER-> 't<char>'
 normal:bind({}, 't',
   function()
-	normal:exit()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getCharacters()
-	  listener:stop()
-	  hs.eventtap.keyStroke({'cmd'}, 'f')
-	  hs.eventtap.keyStrokes(char)
-	  hs.timer.doAfter(0.5,
-		function()
-		  hs.eventtap.keyStroke({'cmd'}, 'g', delay)
-		  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
-		  hs.eventtap.keyStroke({}, 'left', delay)
-		  hs.eventtap.keyStroke({}, 'left', delay)
-		end)
-	  findChar = true
-	  return normal:enter()
-	end)
-	listener:start()
+    normal:exit()
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      hs.eventtap.keyStroke({'cmd'}, 'f')
+      hs.eventtap.keyStrokes(char)
+      hs.timer.doAfter(0.5,
+        function()
+          hs.eventtap.keyStroke({'cmd'}, 'g', delay)
+          hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+          hs.eventtap.keyStroke({}, 'left', delay)
+          hs.eventtap.keyStroke({}, 'left', delay)
+        end)
+      findChar = true
+      return normal:enter()
+    end)
+    listener:start()
   end)
 
 
 -- NORMAL: REVERSE 't<char>' --> 'T<char>'
 normal:bind({'shift'}, 't',
   function()
-	normal:exit()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getCharacters()
-	  listener:stop()
-	  hs.eventtap.keyStroke({'cmd'}, 'f')
-	  hs.eventtap.keyStrokes(char)
-	  hs.timer.doAfter(0.5,
-		function()
-		  hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
-		  hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
-		  hs.eventtap.keyStroke({}, 'right', delay)
-		end)
-	  findChar = true
-	  return normal:enter()
-	end)
-	listener:start()
+    normal:exit()
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      hs.eventtap.keyStroke({'cmd'}, 'f')
+      hs.eventtap.keyStrokes(char)
+      hs.timer.doAfter(0.5,
+        function()
+          hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
+          hs.eventtap.keyStroke({'shift'}, 'Escape', delay)
+          hs.eventtap.keyStroke({}, 'right', delay)
+        end)
+      findChar = true
+      return normal:enter()
+    end)
+    listener:start()
   end)
 
 
 -- NORMAL: REPEAT LAST FIND COMMAND FORWARD
 normal:bind({}, ';',
   function()
-	if findChar then
-	  hs.eventtap.keyStroke({'cmd'}, 'g', delay)
-	end
+    if findChar then
+      hs.eventtap.keyStroke({'cmd'}, 'g', delay)
+    end
   end)
 
 
 -- NORMAL: REPEAT LAST FIND COMMAND BACKWARDS
 normal:bind({}, ',',
   function()
-	if findChar then
-	  hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
-	end
+    if findChar then
+      hs.eventtap.keyStroke({'shift', 'cmd'}, 'g', delay)
+    end
   end)
 
 
 -- NORMAL: MOVE BACK UP ONE SCREEN --> 'ctrl + b'
 normal:bind({'ctrl'}, 'b',
   function()
-	hs.eventtap.keyStroke({}, 'pageup')
+    hs.eventtap.keyStroke({}, 'pageup')
   end, nil,
   function()
-	hs.eventtap.keyStroke({}, 'pageup')
+    hs.eventtap.keyStroke({}, 'pageup')
   end)
 
 
 -- NORMAL: MOVE FORWARD DOWN ONE SCREEN --> 'ctrl + f'
 normal:bind({'ctrl'}, 'f',
   function()
-	hs.eventtap.keyStroke({}, 'pagedown')
-	--hs.eventtap.event.newMouseEvent(hs.eventtap.middleClick(
-	--						{hs.window.focusedWindow():size().w,
-	--						 hs.window.focusedWindow():size().h}))
+    hs.eventtap.keyStroke({}, 'pagedown')
+    --hs.eventtap.event.newMouseEvent(hs.eventtap.middleClick(
+    --						{hs.window.focusedWindow():size().w,
+    --						 hs.window.focusedWindow():size().h}))
   end, nil,
   function()
-	hs.eventtap.keyStroke({}, 'pagedown')
+    hs.eventtap.keyStroke({}, 'pagedown')
   end)
 
 
 -- NORMAL: MOVE TO FIRST NON-WHITE CHAR IN THE LINE --> '^'
 normal:bind({'shift'}, '6',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'left')
+    hs.eventtap.keyStroke({'cmd'}, 'left')
   end)
 
 
 -- NORMAL: MOVE TO FIRST NON-WHITE CHAR IN THE PREVIOUS LINE --> '-'
 normal:bind({}, '-',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'left', delay)
-	hs.eventtap.keyStroke({}, 'up', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'left', delay)
+    hs.eventtap.keyStroke({}, 'up', delay)
   end, nil,
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'left', delay)
-	hs.eventtap.keyStroke({}, 'up', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'left', delay)
+    hs.eventtap.keyStroke({}, 'up', delay)
   end)
 
 
 -- NORMAL: MOVE TO FIRST NON-WHITE CHAR IN THE NEXT LINE --> '+'
 normal:bind({'shift'}, '=',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'left', delay)
-	hs.eventtap.keyStroke({}, 'down', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'left', delay)
+    hs.eventtap.keyStroke({}, 'down', delay)
   end, nil,
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'left', delay)
-	hs.eventtap.keyStroke({}, 'down', delay)
+    hs.eventtap.keyStroke({'cmd'}, 'left', delay)
+    hs.eventtap.keyStroke({}, 'down', delay)
 end)
 
 
@@ -969,58 +954,58 @@ end)
 --                   'wq' > Save and Quit
 normal:bind({'shift'}, ';',
   function()
-	normal:exit()
-	exMode:show(hs.geometry.point(0, screenHeight * 0.85))
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getKeyCode()
-	  if char == ESCAPE then
-		exMode:cancel()
-		listener:stop()
-		return normal:enter()
+    normal:exit()
+    exMode:show(hs.geometry.point(0, screenHeight * 0.85))
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getKeyCode()
+      if char == ESCAPE then
+        exMode:cancel()
+        listener:stop()
+        return normal:enter()
 
-	  elseif char == RETURN and exMode:isVisible() then
-		command = exMode:query()
-		if command == 'wq' then
-		  hs.eventtap.keyStroke({'cmd'}, 's', delay)
-		  exMode:cancel()
-		  listener:stop()
-		  return hs.eventtap.keyStroke({'cmd'}, 'q', delay)
+      elseif char == RETURN and exMode:isVisible() then
+        command = exMode:query()
+        if command == 'wq' then
+          hs.eventtap.keyStroke({'cmd'}, 's', delay)
+          exMode:cancel()
+          listener:stop()
+          return hs.eventtap.keyStroke({'cmd'}, 'q', delay)
 
-		elseif command == 'w' then
-		  exMode:cancel()
-		  listener:stop()
-		  hs.alert.show('File Saved', alertStyle)
-		  hs.eventtap.keyStroke({'cmd'}, 's')
-		  return normal:enter()
+        elseif command == 'w' then
+          exMode:cancel()
+          listener:stop()
+          hs.alert.show('File Saved', alertStyle)
+          hs.eventtap.keyStroke({'cmd'}, 's')
+          return normal:enter()
 
-		elseif command == 'q' then
-		  exMode:cancel()
-		  listener:stop()
-		  normal:enter()
-		  return hs.eventtap.keyStroke({'cmd'}, 'q', delay)
-		else
-		  exMode:cancel()
-		  listener:stop()
-		  hs.alert.show('Command not found', alertStyle)
-		  return normal:enter()
-		end
-	  end
-	end)
-	listener:start()
+        elseif command == 'q' then
+          exMode:cancel()
+          listener:stop()
+          normal:enter()
+          return hs.eventtap.keyStroke({'cmd'}, 'q', delay)
+        else
+          exMode:cancel()
+          listener:stop()
+          hs.alert.show('Command not found', alertStyle)
+          return normal:enter()
+        end
+      end
+    end)
+    listener:start()
   end)
 
 -- NORMAL: CENTER CURSOR POSITION IN THE MIDDLE OF THE SCREEN --> 'zz'
 normal:bind({}, 'z',
   function()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-		char = event:getCharacters()
-		listener:stop()
-		if char == 'z' then
-		  hs.eventtap.keyStroke({'ctrl'}, 'l')
-		end
-		return
-	end)
-	listener:start()
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      if char == 'z' then
+        hs.eventtap.keyStroke({'ctrl'}, 'l')
+      end
+      return
+    end)
+    listener:start()
   end)
 
 
@@ -1095,11 +1080,11 @@ visual:bind({}, 'w', visualNextWord, nil, visualNextWord)
 -- VISUAL: YANK AND TAKE US TO NORMAL MODE --> 'y'
 visual:bind({}, 'y',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'c', delay)
-	hs.eventtap.keyStroke({}, 'Right', delay)
-	visual:exit()
-	normal:enter()
-	setBarIcon(normalNotification)
+    hs.eventtap.keyStroke({'cmd'}, 'c', delay)
+    hs.eventtap.keyStroke({}, 'Right', delay)
+    visual:exit()
+    normal:enter()
+    setBarIcon(normalNotification)
   end)
 
 
@@ -1107,27 +1092,27 @@ visual:bind({}, 'y',
 -- VISUAL: HIGHLIGHT FROM CURSOR UNTIL BEGINNING OF LINE --> '0'
 visual:bind({}, '0',
   function()
-	hs.eventtap.keyStroke({'shift', 'cmd'}, 'Left', delay)
+    hs.eventtap.keyStroke({'shift', 'cmd'}, 'Left', delay)
   end)
 
 
 -- VISUAL: HIGHLIGHT FROM CURSOR UNTIL BEGINNING OF FILE --> 'Shift + h'
 visual:bind({'shift'}, 'h',
   function()
-	hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', delay)
+    hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', delay)
   end)
 
 
 -- VISUAL: HIGHLIGHT FROM CURSOR UNTIL BEGINNING OF FILE --> 'gg'
 visual:bind({}, 'g',
   function()
-	listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
-	  char = event:getCharacters()
-	  listener:stop()
-	  if char == 'g' then
-		hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', delay)
-	  end
-	  return false
+    listener = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+      char = event:getCharacters()
+      listener:stop()
+      if char == 'g' then
+        hs.eventtap.keyStroke({'shift', 'cmd'}, 'Up', delay)
+      end
+      return false
   end)
   listener:start()
   end)
@@ -1136,21 +1121,21 @@ visual:bind({}, 'g',
 -- VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF FILE --> 'Shift + g'
 visual:bind({'shift'}, 'g',
   function()
-	hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', delay)
+    hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', delay)
   end)
 
 
 -- VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF FILE --> 'Shift + l'
 visual:bind({'shift'}, 'l',
   function()
-	hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', delay)
+    hs.eventtap.keyStroke({'shift', 'cmd'}, 'Down', delay)
   end)
 
 
 -- VISUAL: HIGHLIGHT FROM CURSOR UNTIL END OF Line --> '$'
 visual:bind({'shift'}, '4',
   function()
-	hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
+    hs.eventtap.keyStroke({'shift', 'cmd'}, 'Right', delay)
   end)
 
 
@@ -1158,52 +1143,52 @@ visual:bind({'shift'}, '4',
 -- VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'x'
 visual:bind({}, 'x',
   function()
-	visual:exit()
-	normal:enter()
-	deleteNextChar()
-	setBarIcon(normalNotification)
-	lastOperation({}, 'x')
+    visual:exit()
+    normal:enter()
+    deleteNextChar()
+    setBarIcon(normalNotification)
+    lastOperation({}, 'x')
   end)
 
 -- VISUAL: DELETE HIGHLIGHTED CHARACTERS --> 'd'
 visual:bind({}, 'd',
   function()
-	visual:exit()
-	normal:enter()
-	hs.eventtap.keyStroke({''}, 'delete', delay)
-	setBarIcon(normalNotification)
-	lastOperation({}, 'd')
+    visual:exit()
+    normal:enter()
+    hs.eventtap.keyStroke({''}, 'delete', delay)
+    setBarIcon(normalNotification)
+    lastOperation({}, 'd')
   end)
 
 
 -- VISUAL: CHANGE HIGHLIGHTED CHARACTERS --> 'c'
 visual:bind({}, 'c',
   function()
-	visual:exit()
-	hs.eventtap.keyStroke({''}, 'delete', delay)
-	setBarIcon(insertNotification)
-	lastOperation({}, 'c')
+    visual:exit()
+    hs.eventtap.keyStroke({''}, 'delete', delay)
+    setBarIcon(insertNotification)
+    lastOperation({}, 'c')
   end)
 
 
 -- VISUAL: INDENT FOWARD --> '>'
 visual:bind({'shift'}, '.',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-	hs.eventtap.keyStroke({}, 'Tab', delay)
-	visual:exit()
-	normal:enter()
-	lastOperation({'shift'}, '.')
+    hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
+    hs.eventtap.keyStroke({}, 'Tab', delay)
+    visual:exit()
+    normal:enter()
+    lastOperation({'shift'}, '.')
   end)
 
 -- VISUAL: INDENT BACKWARDS --> '<'
 visual:bind({'shift'}, ',',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
-	hs.eventtap.keyStroke({'shift'}, 'Tab', delay)
-	visual:exit()
-	normal:enter()
-	lastOperation({'shift'}, ',')
+    hs.eventtap.keyStroke({'cmd'}, 'Right', delay)
+    hs.eventtap.keyStroke({'shift'}, 'Tab', delay)
+    visual:exit()
+    normal:enter()
+    lastOperation({'shift'}, ',')
   end)
 
 
