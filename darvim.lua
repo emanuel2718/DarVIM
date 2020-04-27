@@ -18,8 +18,8 @@ local screenWidth = screenResolution:match('(.+)x')
 local screenHeight = screenResolution:match('x(.+)')
 
 -- Darkmode variable for Ex mode bar:
--- local isDarkMode = false --> Light Mode
 local isDarkMode = true --> Dark Mode
+-- local isDarkMode = false --> Light Mode
 
 
 -- Current VIM status menubar icon indicator
