@@ -49,15 +49,6 @@ function setBarIcon(state)
   end
 end
 
---function barIconClicked()
---    setBarIcon(hs.caffeinate.toggle('CLICKED'))
-
---end
---
---if barIcon then
---    barIcon:setClickCallback(barIconClicked)
---    setBarIcon(hs.caffeinate.get('CLICKED'))
---end
 
 
 --------------------MODES--------------------
@@ -77,15 +68,11 @@ exMode:rows(0):width(50):bgDark(isDarkMode)
 exMode:placeholderText(':')
 ---------------------------------------------
 
---TODO: have this on another separate file and should provide thorough
---instructions on how to add more applications and a decent list of examples.
---TODO: Figure the name problem...Hammerspoon recognize apps from a different name
--- than the one from system. Ex. Acrobat Reader vs. Acrobat Reader DC. Figure this out..
 
 -- List of Applications VIM mode is desired
 -- Append to the end of the relevant list the name of the app you want VIM suppot on.
-local APPS = {'Preview', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki',
-			  'Xcode', 'Mail', 'Microsoft Word', 'Microsoft OneNote'}
+local APPS = {'Xcode', 'Slack', 'Discord', 'Notes', 'Acrobat Reader', 'Anki',
+			  'Preview', 'Mail', 'Microsoft Word', 'Microsoft OneNote'}
 
 -- If there are applications that receives 'Escape' as the key to get you out of the
 -- current text box and VIM support is desired. Put the application name
@@ -129,8 +116,8 @@ local findChar = false
 
 -- Initialize application watcher.
 function init()
-    appsWatcher = hs.application.watcher.new(applicationWatcher)
-    appsWatcher:start()
+  appsWatcher = hs.application.watcher.new(applicationWatcher)
+  appsWatcher:start()
 end
 
 -- Checks if the currently focused application is in the list of VIM supported apps
@@ -430,6 +417,7 @@ normal:bind({}, 'w', moveNextWord, nil, moveNextWord)
 -- NORMAL: MOVE TO END OF WORD --> 'e'
 function moveEndOfWord()
   hs.eventtap.keyStroke({'alt'}, 'right', delay)
+  hs.eventtap.keyStroke({}, 'left', delay)
 end
 normal:bind({}, 'e', moveEndOfWord, nil, moveEndOfWord)
 
@@ -748,8 +736,8 @@ normal:bind({'shift'}, 'n',
 -- NORMAL: INDENT FOWARD --> '>'
 normal:bind({'shift'}, '.',
   function()
-	hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-	hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', delay)
+	--hs.eventtap.keyStroke({'cmd'}, 'Left', 500)
+	hs.eventtap.keyStroke({}, 'tab')
 	lastOperation({'shift'}, '.')
   end)
 
@@ -1186,7 +1174,7 @@ visual:bind({}, 'c',
 visual:bind({'shift'}, '.',
   function()
 	hs.eventtap.keyStroke({'cmd'}, 'Left', delay)
-	hs.eventtap.keyStroke({}, 'Tab', nil, 'Tab', delay)
+	hs.eventtap.keyStroke({}, 'Tab', delay)
 	visual:exit()
 	normal:enter()
 	lastOperation({'shift'}, '.')

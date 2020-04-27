@@ -103,11 +103,11 @@ Basically this program divides applications into three possible states:
 	- Non-Vim keybinds apps
 		- Any app you don't want Vim keybindings on.
 		
-Everytime you switch into a Vim-supported appllication, it will default into
+Every time you switch into a Vim-supported application, it will default into
 Normal mode. So in order to start typing, simply tap `i` to enter Insert mode.
 
 There are not system notifications when you switch into a mode as it tends to
-get annoying really quick. As a workaround, everytime a Vim-supported
+get annoying really quick. As a workaround, every time a Vim-supported
 application is beign focused/used the current mode will be displayed
 on the menu bar as a single letter in  brackets as show below.
 
@@ -118,7 +118,7 @@ on the menu bar as a single letter in  brackets as show below.
 		
 		
 This can be changed, refer to
-the [Configuration](#configuration) section to learn how to change this.)
+the [Customization](#customization) section to change this.)
 
 
 The default keybind to enter Normal mode is `Esc` itself. If we are in any
@@ -169,6 +169,8 @@ following:
  * `k` : Move Up
  * `l` : Move Right
  * `gg` : Move to top of the page
+ 
+ :: Need to click with mouse once in desired location
  * `C-b` : Move backwards up one page :: *Broken*
  * `C-f` : Move forwdard down one page :: *Broken*
 
