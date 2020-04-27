@@ -3,14 +3,30 @@ DarVIM
 </h1>
 
 Vim system keybinds for macOS using [Hammerspoon](http://www.hammerspoon.org/),
-but only on the applications want Vim keybinds on. This is perfect
-for applications like Xcode, Notes, Microsoft Word and OneNote where Vim support is
-almost non-existent  or it's a pain to get it to work *\*cough cough\** Xcode.
+but only on the applications you want Vim keybinds on.
+
+This project was born because I wanted to start using Xcode for iOS development but couldn't handle
+not having Vim keybinds and the fact that the support for such keybinds on Xcode it's almost
+not existent, served as the catalyst for this project.
 
 
-This is a work in progress. Right now, not all Vim operators and motions
+That being said, DarVIM is specifically tailored
+for Xcode but will work on any other app you add to the list of Vim supported
+apps (see
+[Add text-editing application to have Vim keybinds
+support](#add-text-editing-application-to-have-vim-keybinds-support) or 
+[Add PDF application to have Vim keybinds support](#add-pdf-application-to-have-vim-keybinds-support)
+to learn how to add such applications). 
+
+
+&nbsp; 
+
+**Warning:** This is a work in progress, not all Vim operators and motions
 are available. The goal of this project is to, eventually, have support for all
-operators and motions from native VIM.
+operators and motions from native Vim.
+Other applications will work like they are
+supposed to, but some of them (i.e OneNote) will not behave as intended 100% of
+the time.
 
 
 If you find something is not working like it's supposed to, refer to the
@@ -81,7 +97,7 @@ If you find something is not working like it's supposed to, refer to the
 ### Step 3: Reaload Hammerspoon Configuration
 Open Hammerspoon application either with a Spotlight search or by Right
 clicking Hammerspoon application in Finder and selecting `Open`.
-Then, press `Shift + Cmd + R` to reaload Hammerspoon configuration.
+Then, press `shift + cmd + r` to reaload Hammerspoon configuration.
 At this point VIM keybinds should be enabled while using Preview.
 
 TLDR: `Open` Hammerspoon appllication and press `shift + cmd + r`.
@@ -185,8 +201,8 @@ following:
  * `r<char>` : Replace single character at cursor
  * `F<char>` : Find `<char>` occurence before cursor
  * `f<char>` : Find `<char>` occurence after cursor
- * `T<char>` : reverse `t<char>`
- * `t<char>` : Same as `f<char>` but move to just one before found char
+ * `T<char>` : reverse `t<char>` :: Broken
+ * `t<char>` : Same as `f<char>` but move to just one before found char :: Broken
  * `;` : Repeat last `f`, `F`, `t`, or `T` command
  * `,` : Reverse direction of last `f`, `F`, `t`, or `T` command
  * `dw` : Delete next word
@@ -282,11 +298,10 @@ local SPEED = 5 -- Increase
 -- support. Not just scrolling support like in PDF applications.
 
 -- Hypothetical original list:
-local APPS = {'Notes'}
-
--- If we want to add Vim support to the 'Mail' application, simply add the
+local APPS = {'Xcode'}
+-- If we want to add Vim support to the 'Notes' application, simply add the
 --  application name into the @APPS list on darvim.lua
-local APPS = {'Notes', 'Mail'}
+local APPS = {'Xcode', 'Notes'}
 -- Keep appending to the list as desired. See documentation above the variable inside
 --  darvim.lua for more information about application names. Examples included.
 ```
@@ -392,16 +407,9 @@ everything should work now.
 - [ ] Fix `t` and `f`. Gonna type the next letter if there are no search
       function (i.e Anki)
 - [ ] Move listeners to a separate function to avoid repetition
-- [ ] Create table of contents
-- [ ] Add more apps by default and test different names and add them as a comment.
-- [ ] Create installation script
 - [ ] Fix last operation. For example with:  `c<word>`
 - [ ] Fix `ctrl + b` and `ctrl + f` scrolling bug
 - [ ] Missing `.` functionality when using `r<char>`
-- [ ] Ability for user tho change stuff like, Apps that they want included in
-    VIM mode, change Normal mode key and other options.
-- [ ] Add leader key functionality.
-- [ ] Complete documentation on how to install and use.
 - [ ] Disable all hotkeys when spotlight is beign used.
 - [ ] Add macro recordings
 - [ ] Add options in menu to let user chose keybinds for specific operations

@@ -545,8 +545,6 @@ function jumpNextWord() hs.eventtap.keyStroke({'alt'}, 'right', delay) end
 -- TODO: Fix bug: If there is empty space between the cursor position and the
 -- next character...it will jump to that next word and delete it instead of
 -- deleting the space in betwen like in Native VIM.
--- Make 'D' behave like 'dw' or 'dd'?
--- For 'dw' we have 'C', do I want both? Do I have something that does 'dd'?
 
 
 -- TODO: Last operation command it's not working here.
