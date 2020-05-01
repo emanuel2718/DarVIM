@@ -597,7 +597,7 @@ normal:bind({}, 'c',
       char = event:getCharacters()
       listener:stop()
       if char == 'w' then
-        hs.eventtap.keyStroke({'option'}, 'right', 200)
+        hs.eventtap.keyStroke({'shift', 'option'}, 'right', 200)
         hs.eventtap.keyStroke({'option'}, 'delete', 200)
         setBarIcon(insertNotification)
         lastOperation({}, 'c')
