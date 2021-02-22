@@ -1,3 +1,4 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <h1 align="center" style="font-size: 3rem;">
 DarVIM
 </h1>
@@ -30,7 +31,7 @@ the time.
 
 
 If you find something is not working like it's supposed to, refer to the
-[Troubleshoot](#troubleshoot) section and it will probrably be solved.
+[Troubleshoot](#troubleshoot) section or feel free to open a pull request.
 
 
 # Index
