@@ -2,6 +2,13 @@
 DarVIM
 </h1>
 
+
+&nbsp;
+
+**Warning** This project is no longer beinn maintained. Use at your own risk.
+
+&nbsp;
+
 Vim system keybinds for macOS using [Hammerspoon](http://www.hammerspoon.org/),
 but only on the applications you want Vim keybinds on.
 
@@ -29,8 +36,8 @@ supposed to, but some of them (i.e OneNote) will not behave as intended 100% of
 the time.
 
 
-If you find something is not working like it's supposed to, refer to the
-[Troubleshoot](#troubleshoot) section and it will probrably be solved.
+If you find something that is not working, please refer to the
+[Troubleshoot](#troubleshoot) or feel free to open a  pull request.
 
 
 # Index
@@ -405,7 +412,6 @@ everything should work now.
 
 - [ ] ERROR HANDLING
 - [ ] Fix `t` and `f`. Gonna type the next letter if there are no search
-      function (i.e Anki)
 - [ ] Move listeners to a separate function to avoid repetition
 - [ ] Fix last operation. For example with:  `c<word>`
 - [ ] Fix `ctrl + b` and `ctrl + f` scrolling bug
