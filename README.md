@@ -37,13 +37,8 @@ supposed to, but some of them (i.e OneNote) will not behave as intended 100% of
 the time.
 
 
-<<<<<<< HEAD
 If you find something that is not working, please refer to the
-[Troubleshoot](#troubleshoot) or feel free to open a  pull request.
-=======
-If you find something is not working like it's supposed to, refer to the
 [Troubleshoot](#troubleshoot) section or feel free to open a pull request.
->>>>>>> 67aed231cc8407f9d055004c631e40a09bad093a
 
 
 # Index
