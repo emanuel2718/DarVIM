@@ -6,7 +6,9 @@ DarVIM
 
 &nbsp;
 
-**Warning** This project is no longer beinn maintained. Use at your own risk.
+# WARNING
+
+This project is no longer beinn maintained. Use at your own risk.
 
 &nbsp;
 
