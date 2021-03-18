@@ -8,7 +8,7 @@ DarVIM
 
 ### WARNING
 
-This project is no longer beinn maintained. Use at your own risk.
+This project is no longer being maintained. Use at your own risk.
 
 &nbsp;
 
