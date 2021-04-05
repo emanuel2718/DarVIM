@@ -43,6 +43,12 @@ If you find something that is not working, please refer to the
 [Troubleshoot](#troubleshoot) section or feel free to open a pull request.
 
 
+# Preview
+
+![Alt Text](https://media.giphy.com/media/f67PtLjfiRjDBaoVqS/giphy.gif)
+
+&nbsp; 
+
 # Index
 
 * [Installation](#installation)
